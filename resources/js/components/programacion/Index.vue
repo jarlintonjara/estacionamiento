@@ -22,11 +22,23 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <div class="panel-hdr">
-                            <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
-                            <button style="margin-left: 62%;" class="btn btn-danger" @click="showT(1)">Semana Actual</button>
-                            <button style="margin-left: auto;" class="btn btn-danger" @click="showT(2)">Semana siguiente</button>
-                        </div><br>
+                        
+                            <div class="row">
+                                
+                                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                        <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                        <button class="btn btn-danger" @click="showT(1)">Semana Actual</button>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                                    <button class="btn btn-danger" @click="showT(2)">Semana siguiente</button>
+                                    </div>
+                                
+                            </div>  
+                        <br>
                      
                         <table id="td-schedule" class="table table-bordered table-hover table-striped w-100">
                             <thead class="bg-warning-200">

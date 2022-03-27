@@ -193,6 +193,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import Select2 from '../common/select2.vue'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Programacion",
@@ -1447,44 +1459,65 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "panel-container show" }, [
             _c("div", { staticClass: "panel-content" }, [
-              _c("div", { staticClass: "panel-hdr" }, [
+              _c("div", { staticClass: "row" }, [
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    on: { click: _vm.abrirModalCrear },
-                  },
-                  [_vm._v("Nuevo")]
+                  "div",
+                  { staticClass: "col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: { click: _vm.abrirModalCrear },
+                      },
+                      [_vm._v("Nuevo")]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3",
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.showT(1)
+                          },
+                        },
+                      },
+                      [_vm._v("Semana Actual")]
+                    ),
+                  ]
                 ),
                 _vm._v(" "),
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-danger",
-                    staticStyle: { "margin-left": "62%" },
-                    on: {
-                      click: function ($event) {
-                        return _vm.showT(1)
+                  "div",
+                  { staticClass: "col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function ($event) {
+                            return _vm.showT(2)
+                          },
+                        },
                       },
-                    },
-                  },
-                  [_vm._v("Semana Actual")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-danger",
-                    staticStyle: { "margin-left": "auto" },
-                    on: {
-                      click: function ($event) {
-                        return _vm.showT(2)
-                      },
-                    },
-                  },
-                  [_vm._v("Semana siguiente")]
+                      [_vm._v("Semana siguiente")]
+                    ),
+                  ]
                 ),
               ]),
+              _vm._v(" "),
               _c("br"),
               _vm._v(" "),
               _c(

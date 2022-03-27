@@ -95,6 +95,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Setting",
   components: {},
@@ -1033,198 +1047,275 @@ var render = function () {
           _c("div", { staticClass: "panel-container show" }, [
             _c("div", { staticClass: "panel-content" }, [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "input-group mb-3" }, [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.time,
-                          expression: "datos.time",
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6",
+                  },
+                  [
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.datos.time,
+                            expression: "datos.time",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "time", type: "time", name: "time" },
+                        domProps: { value: _vm.datos.time },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.datos, "time", $event.target.value)
+                          },
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { id: "time", type: "time", name: "time" },
-                      domProps: { value: _vm.datos.time },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "time", $event.target.value)
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
+                      }),
+                    ]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "input-group mb-3" }, [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.email,
-                          expression: "datos.email",
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6",
+                  },
+                  [
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.datos.email,
+                            expression: "datos.email",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "email",
+                          id: "email",
+                          name: "email",
+                          "aria-label": "Email",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "email",
-                        name: "email",
-                        "aria-label": "Email",
-                      },
-                      domProps: { value: _vm.datos.email },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "email", $event.target.value)
+                        domProps: { value: _vm.datos.email },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.datos, "email", $event.target.value)
+                          },
                         },
-                      },
-                    }),
-                  ]),
-                ]),
+                      }),
+                    ]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-12" }, [
-                  _c("div", { staticClass: "input-group mb-3" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12",
+                  },
+                  [
+                    _c("div", { staticClass: "input-group" }, [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c(
+                        "div",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.email1,
-                          expression: "datos.email1",
+                          staticClass:
+                            "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "email1",
-                        name: "email1",
-                        "aria-label": "Email1",
-                      },
-                      domProps: { value: _vm.datos.email1 },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "email1", $event.target.value)
-                        },
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.email1,
+                                expression: "datos.email1",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "email",
+                              id: "email1",
+                              name: "email1",
+                              "aria-label": "Email1",
+                            },
+                            domProps: { value: _vm.datos.email1 },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "email1",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.email2,
-                          expression: "datos.email2",
+                          staticClass:
+                            "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "email2",
-                        name: "email2",
-                        "aria-label": "Email2",
-                      },
-                      domProps: { value: _vm.datos.email2 },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "email2", $event.target.value)
-                        },
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.email2,
+                                expression: "datos.email2",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "email",
+                              id: "email2",
+                              name: "email2",
+                              "aria-label": "Email2",
+                            },
+                            domProps: { value: _vm.datos.email2 },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "email2",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.email3,
-                          expression: "datos.email3",
+                          staticClass:
+                            "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "email3",
-                        name: "email3",
-                        "aria-label": "Email3",
-                      },
-                      domProps: { value: _vm.datos.email3 },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "email3", $event.target.value)
-                        },
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.email3,
+                                expression: "datos.email3",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "email",
+                              id: "email3",
+                              name: "email3",
+                              "aria-label": "Email3",
+                            },
+                            domProps: { value: _vm.datos.email3 },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "email3",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.email4,
-                          expression: "datos.email4",
+                          staticClass:
+                            "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        id: "email4",
-                        name: "email4",
-                        "aria-label": "Email4",
-                      },
-                      domProps: { value: _vm.datos.email4 },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "email4", $event.target.value)
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.email4,
+                                expression: "datos.email4",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "email",
+                              id: "email4",
+                              name: "email4",
+                              "aria-label": "Email4",
+                            },
+                            domProps: { value: _vm.datos.email4 },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "email4",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]
+                ),
               ]),
               _vm._v(" "),
-              _vm.btnEditar
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" },
-                      on: {
-                        click: function ($event) {
-                          $event.preventDefault()
-                          return _vm.editar.apply(null, arguments)
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col align-self-end" }, [
+                  _vm.btnEditar
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return _vm.editar.apply(null, arguments)
+                            },
+                          },
                         },
-                      },
-                    },
-                    [_vm._v("Guardar Cambios")]
-                  )
-                : _vm._e(),
+                        [_vm._v("Guardar Cambios")]
+                      )
+                    : _vm._e(),
+                ]),
+              ]),
             ]),
           ]),
         ]),
@@ -1301,7 +1392,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-prepend" }, [
+    return _c("div", { staticClass: "input-group-prepend col-12 col-sm-12" }, [
       _c("span", { staticClass: "input-group-text" }, [
         _vm._v("Correos de copia"),
       ]),
