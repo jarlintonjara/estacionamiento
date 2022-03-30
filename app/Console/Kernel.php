@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\SettingModel;
+
 use App\Console\Commands\SendMail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -16,8 +18,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:mail')->everyFiveMinutes();
-        // ->dailyAt('21:55');	
+        $time = SettingModel::first();
+
+        $schedule->command('send:mail')->dailyAt($time->time);
+        // ->everySixHours();
+        // ->dailyAt($time->time);	
     }
 
     /**

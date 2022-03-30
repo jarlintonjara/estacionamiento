@@ -1,15 +1,11 @@
 <?php
 
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EstacionamientoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ScheduleExportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
