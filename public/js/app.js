@@ -5371,28 +5371,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      user: null
-    };
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    axios.get('/api/athenticated').then(function () {
-      _this.$router.push({
-        name: "Dashboard"
-      });
-    })["catch"](function (error) {
-      console.log(error);
-
-      _this.$router.push({
-        name: "Login"
-      });
-    });
-  }
-});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
 
@@ -5445,6 +5424,7 @@ window.Vue = vue__WEBPACK_IMPORTED_MODULE_8__["default"];
 
 
 
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_8__["default"].component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_11___default()));
 
 vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_9__["default"], (axios__WEBPACK_IMPORTED_MODULE_10___default()));
@@ -5614,18 +5594,25 @@ var Programacion = function Programacion() {
     component: Layout,
     name: 'Layout',
     beforeEnter: function beforeEnter(to, form, next) {
-      axios.get('/api/athenticated').then(function () {
-        next();
-      })["catch"](function (error) {
-        console.log(error);
+      var token = localStorage.getItem('access_token');
+
+      if (token) {
+        axios.get('api/getSession/' + token).then(function (res) {
+          next();
+        })["catch"](function (error) {
+          return next({
+            name: 'Login'
+          });
+        });
+      } else {
         return next({
           name: 'Login'
         });
-      });
+      }
     },
     children: [{
       path: "/dashboard",
-      name: "Dashboard",
+      name: "dashboard",
       component: Dashboard
     }, {
       path: '/usuarios',

@@ -34,11 +34,11 @@ export default {
             });
     },
     methods:{
-        async init(){
+       /*  async init(){
             await axios.get('/api/user').then((res)=>{
                 this.user = res.data;
             })
-        }
+        } */
     },
     watch: {
         value: function(value) {

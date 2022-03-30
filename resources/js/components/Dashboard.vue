@@ -4,10 +4,7 @@
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-chart-area'></i> <span class='fw-300'>Dashboard</span>
-                <button @click="sendEmail" class="btn btn-primary">send email</button>
-                <!-- <button @click="exportExcel" class="btn btn-primary">Excel</button> -->
-                <small>
-                </small>
+      
             </h1>
         </div>
         <div class="row">

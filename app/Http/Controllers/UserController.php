@@ -87,9 +87,9 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function edit(User $user)
+    public function edit($user)
     {
-        //
+        return $user;
     }
 
     public function update(Request $request, $id)

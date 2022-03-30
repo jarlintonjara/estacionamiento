@@ -8,6 +8,7 @@ use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScheduleExportController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,17 +23,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    //print_r($request->user()->role()->nombre);
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-Route::middleware('auth:sanctum')->get('/athenticated', function () {
-    return true;
-});
+}); */
 
-Route::post('register', [RegisterController::class, 'register']);
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout']);
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::get('getSession/{token}', [AuthController::class, 'getSession']);
 
 //Route::resource('estacionamiento', EstacionamientoController::class)->only(['index']);
 Route::get('dashboard', [HomeController::class, 'index']);
@@ -42,8 +41,3 @@ Route::resource('estacionamiento', EstacionamientoController::class);
 Route::resource('usuario', UserController::class);
 Route::match(['put', 'patch'], 'updateProfile/{usuario}', [UserController::class, 'updateProfile']);
 Route::resource('rol', RoleController::class);
-
-
-
-// Route::get('export', [UserExportController::class, 'export']);
-Route::get('export/', [ScheduleExportController::class, 'export']);

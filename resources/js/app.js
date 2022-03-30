@@ -17,6 +17,7 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 
 import vSelect from 'vue-select'
+Vue.config.productionTip = false;
 
 Vue.component('v-select', vSelect)
 import 'vue-select/dist/vue-select.css';
@@ -28,7 +29,6 @@ window.JSZip = jszip
 import App from './components/App.vue';
 
 document.title = "Programación de estacionamiento";
-
 
 Vue.prototype.$dateFormat = function(date){
     let dt = new Date(date);
@@ -75,6 +75,7 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
 
 import VueRouter from 'vue-router';
 import routes from './routes';
+
 
 Vue.use(VueRouter);
 
