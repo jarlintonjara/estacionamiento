@@ -53,20 +53,19 @@
 <script>
 export default {
     name: "sidebar",
-    props:['session'],
-    mounted(){
-        this.init();
+    props:[
+        'session'
+    ],
+    watch:{
+        session(val){
+            this.user = val
+        }
     },
     data(){
         return {
-            user: []
-        }
-    },
-    methods:{
-        async init(){
-            await axios.get('/api/user').then((res)=>{
-                this.user = res.data;
-            })
+            user: {
+                role_id : 0
+            }
         }
     }
 }

@@ -205,6 +205,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+>>>>>>> 15b15746e3b748339872fdd22f331a33ffcf010c
 //import Select2 from '../common/select2.vue'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Programacion",
@@ -276,7 +280,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 _this.$tablaGlobal('#td-schedule');
 
-              case 5:
+                _this.$tablaGlobal('#td-schedule2');
+
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -1520,74 +1526,92 @@ var render = function () {
               _vm._v(" "),
               _c("br"),
               _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-bordered table-hover table-striped w-100",
-                  attrs: { id: "td-schedule" },
-                },
-                [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _vm.showTable
-                    ? _c(
-                        "tbody",
-                        _vm._l(_vm.schedulesFilter, function (schedule) {
-                          return _c("tr", { key: schedule.id }, [
-                            _c("td", [_vm._v(_vm._s(schedule.parking.numero))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(
-                                _vm._s(
-                                  schedule.user.nombre +
-                                    " " +
-                                    schedule.user.apellido
-                                )
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.dia))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.hora_inicio))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-warning",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.abrirModalEditar(schedule)
+              _vm.showTable
+                ? _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-schedule" },
+                    },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _vm.showTable
+                        ? _c(
+                            "tbody",
+                            _vm._l(_vm.schedulesFilter, function (schedule) {
+                              return _c("tr", { key: schedule.id }, [
+                                _c("td", [
+                                  _vm._v(_vm._s(schedule.parking.numero)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      schedule.user.nombre +
+                                        " " +
+                                        schedule.user.apellido
+                                    )
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(schedule.dia))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(schedule.hora_inicio)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-warning",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.abrirModalEditar(schedule)
+                                        },
+                                      },
                                     },
-                                  },
-                                },
-                                [_c("i", { staticClass: "far fa-edit" })]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.borrar(schedule.id)
+                                    [_c("i", { staticClass: "far fa-edit" })]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.borrar(schedule.id)
+                                        },
+                                      },
                                     },
-                                  },
-                                },
-                                [_c("i", { staticClass: "fa fa-trash" })]
-                              ),
-                            ]),
-                          ])
-                        }),
-                        0
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.showTable2
-                    ? _c(
+                                    [_c("i", { staticClass: "fa fa-trash" })]
+                                  ),
+                                ]),
+                              ])
+                            }),
+                            0
+                          )
+                        : _vm._e(),
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.showTable2
+                ? _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-schedule2" },
+                    },
+                    [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c(
                         "tbody",
                         _vm._l(_vm.nextSchedulesFilter, function (schedule) {
                           return _c("tr", { key: schedule.id }, [
@@ -1639,10 +1663,10 @@ var render = function () {
                           ])
                         }),
                         0
-                      )
-                    : _vm._e(),
-                ]
-              ),
+                      ),
+                    ]
+                  )
+                : _vm._e(),
             ]),
           ]),
         ]),
@@ -2209,6 +2233,26 @@ var staticRenderFns = [
           "data-original-title": "Fullscreen",
         },
       }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "bg-warning-200" }, [
+      _c("tr", [
+        _c("th", [_vm._v("N_Estac")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Asignado")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Dia de semana")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Hora Incio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Hora Final")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acciones")]),
+      ]),
     ])
   },
   function () {

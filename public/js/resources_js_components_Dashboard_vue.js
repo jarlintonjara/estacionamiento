@@ -301,9 +301,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -1836,8 +1833,6 @@ var staticRenderFns = [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
         _vm._v(" "),
         _c("span", { staticClass: "fw-300" }, [_vm._v("Dashboard")]),
-        _vm._v(" "),
-        _c("small"),
       ]),
     ])
   },

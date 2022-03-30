@@ -13,10 +13,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 //
 //
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Home",
+  data: function data() {
+    return {};
+  },
+  mounted: function mounted() {
+    this.$router.push({
+      name: "dashboard"
+    });
+  }
+});
 
 /***/ }),
 
@@ -104,9 +111,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "text-2xl text-gray-800" }, [
-    _vm._v("\n    Home page\n"),
-  ])
+  return _c("div")
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -38,18 +38,23 @@ export default{
              path: '/layout',
             component: Layout,
             name: 'Layout',
-            beforeEnter: (to, form, next) =>{
-                axios.get('/api/athenticated').then(()=>{
-                    next()
-                }).catch((error) => {
-                    console.log(error);
+            beforeEnter: (to, form, next) => {
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    axios.get('api/getSession/'+ token).then((res)=>{
+                        next()
+                    }).catch((error) => {
+                        return next({ name: 'Login'})
+                    })
+                } else { 
                     return next({ name: 'Login'})
-                })
+                }
+               
             },
             children: [
                {
                     path: "/dashboard",
-                    name: "Dashboard",
+                    name: "dashboard",
                     component: Dashboard,
                 },
                 {

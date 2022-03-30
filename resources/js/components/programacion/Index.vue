@@ -40,7 +40,7 @@
                             </div>  
                         <br>
                      
-                        <table id="td-schedule" class="table table-bordered table-hover table-striped w-100">
+                        <table v-if="showTable" id="td-schedule" class="table table-bordered table-hover table-striped w-100">
                             <thead class="bg-warning-200">
                                 <tr>
                                     <th>N_Estac</th>
@@ -64,7 +64,20 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tbody v-if="showTable2">
+                        
+                        </table>
+                        <table v-if="showTable2" id="td-schedule2" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="bg-warning-200">
+                                <tr>
+                                    <th>N_Estac</th>
+                                    <th>Asignado</th>
+                                    <th>Dia de semana</th>
+                                    <th>Hora Incio</th>
+                                    <th>Hora Final</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr v-for="schedule in nextSchedulesFilter" :key="schedule.id">
                                     <td>{{ schedule.parking.numero }}</td>
                                     <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
@@ -237,6 +250,7 @@ export default {
                 })
                 await this.validarRole();
                 this.$tablaGlobal('#td-schedule');
+                this.$tablaGlobal('#td-schedule2');
         },
         validarCampos(){
             if(!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.fecha || !this.datos.hora_inicio || !this.datos.hora_fin ){
