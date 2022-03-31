@@ -5,11 +5,8 @@
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-chart-area'></i> Roles 
-                <small>
-                </small>
             </h1>
         </div>
-        <br>
         <div class="col-lg-12">
             <div id="panel-4" class="panel">
                 
@@ -105,7 +102,6 @@ export default {
     },
     mounted(){
         this.mostrarItems();
-        
     },
     methods:{
 

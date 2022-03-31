@@ -5,11 +5,8 @@
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-chart-area'></i> Estacionamiento 
-                <small>
-                </small>
             </h1>
         </div>
-        <br>
         <div class="col-lg-12">
                 <div id="panel-4" class="panel">
                     <div class="panel-container show">

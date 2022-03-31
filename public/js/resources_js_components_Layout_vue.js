@@ -1686,10 +1686,7 @@ var render = function () {
                       {
                         attrs: {
                           tag: "li",
-                          to: {
-                            name: "programacion",
-                            query: { ps: _vm.session },
-                          },
+                          to: "/programacion",
                           "active-class": "active",
                         },
                       },

@@ -115,9 +115,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Rol",
   components: {},
@@ -1111,8 +1108,6 @@ var render = function () {
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
       _c("div", { staticClass: "col-lg-12" }, [
         _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
           _c("div", { staticClass: "panel-container show" }, [
@@ -1382,8 +1377,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "subheader" }, [
       _c("h1", { staticClass: "subheader-title" }, [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
-        _vm._v(" Roles \n            "),
-        _c("small"),
+        _vm._v(" Roles \n        "),
       ]),
     ])
   },
