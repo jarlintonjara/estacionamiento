@@ -205,10 +205,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
->>>>>>> 15b15746e3b748339872fdd22f331a33ffcf010c
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import Select2 from '../common/select2.vue'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Programacion",
