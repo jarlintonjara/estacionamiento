@@ -26,7 +26,7 @@
                             <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
                         </div><br> -->
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Hora</span>
@@ -34,7 +34,7 @@
                                     <input class="form-control" id="time" type="time" name="time" v-model="datos.time">
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Correo principal</span>
@@ -42,19 +42,33 @@
                                     <input type="email" id="email" name="email" aria-label="Email" class="form-control" v-model="datos.email">
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Correos de copia</span>
-                                </div>
-                                <input type="email" id="email1" name="email1" aria-label="Email1" class="form-control" v-model="datos.email1">
-                                <input type="email" id="email2" name="email2" aria-label="Email2" class="form-control" v-model="datos.email2">
-                                <input type="email" id="email3" name="email3" aria-label="Email3" class="form-control" v-model="datos.email3">
-                                <input type="email" id="email4" name="email4" aria-label="Email4" class="form-control" v-model="datos.email4">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend col-12 col-sm-12">
+                                        <span class="input-group-text">Correos de copia</span>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                        <input type="email" id="email1" name="email1" aria-label="Email1" class="form-control" v-model="datos.email1">
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                        <input type="email" id="email2" name="email2" aria-label="Email2" class="form-control" v-model="datos.email2">
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                        <input type="email" id="email3" name="email3" aria-label="Email3" class="form-control" v-model="datos.email3">
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                        <input type="email" id="email4" name="email4" aria-label="Email4" class="form-control" v-model="datos.email4">
+                                    </div>
                                 </div> 
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" @click.prevent="editar" v-if="btnEditar">Guardar Cambios</button>
+                        <br>
+                        <div class="row">
+                            <div class="col align-self-end">
+                                 <button type="submit" class="btn btn-primary" @click.prevent="editar" v-if="btnEditar">Guardar Cambios</button>
+                            </div>
+                       
+                        </div>
                     </div>
                 </div>
             </div>
