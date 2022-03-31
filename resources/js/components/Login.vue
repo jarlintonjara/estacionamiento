@@ -60,7 +60,7 @@ export default {
                     axios.post('api/login', this.form)
                         .then(response => {
                             localStorage.setItem('access_token', response.data.access_token);
-                           this.$router.push({ name: "Dashboard"}); 
+                           this.$router.push({ name: "dashboard"}); 
                         })
                         .catch(function (error) {
                             this.$swal.fire({

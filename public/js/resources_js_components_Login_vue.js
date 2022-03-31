@@ -100,7 +100,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     localStorage.setItem('access_token', response.data.access_token);
 
                     _this.$router.push({
-                      name: "Dashboard"
+                      name: "dashboard"
                     });
                   })["catch"](function (error) {
                     this.$swal.fire({
