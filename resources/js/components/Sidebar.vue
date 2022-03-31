@@ -31,7 +31,7 @@
                         <router-link tag="li" v-if="user.role_id == 1" to="/estacionamiento" active-class="active">
                             <a>Estacionamiento</a>
                         </router-link>
-                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3" :to="{ name: 'programacion', query: { ps: session } }" active-class="active">
+                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3" to="/programacion" active-class="active">
                             <a >Programación</a>
                         </router-link>
                         <router-link tag="li" v-if="user.role_id == 1" to="/rol" active-class="active">

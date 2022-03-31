@@ -193,19 +193,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //import Select2 from '../common/select2.vue'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Programacion",
@@ -237,7 +224,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         created_by: ''
       },
       titulo: '',
-      title: '',
+      title: "SEMANA ACTUAL",
       btnCrear: false,
       btnEditar: false,
       id: '',
@@ -245,46 +232,96 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       showTable2: false
     };
   },
-  mounted: function mounted() {
-    this.session = this.$route.query.ps;
-    this.datos.created_by = this.session.id;
-    this.init();
-  },
-  methods: {
-    init: function init() {
+  created: function () {
+    var _created = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
       var _this = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      var token;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              token = localStorage.getItem('access_token');
+              _context.next = 3;
+              return axios.get('api/getSession/' + token).then(function (res) {
+                _this.session = res.data;
+                _this.datos.created_by = _this.session.id;
+              });
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  mounted: function () {
+    var _mounted = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.init();
+
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
+  methods: {
+    init: function init() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context.next = 2;
-                return _this.axios.get('/api/programacion').then(function (response) {
-                  _this.users = response.data.users;
-                  _this.parkings = response.data.parkings;
-                  _this.schedules = response.data.schedules;
-                  _this.nextSchedules = response.data.nextSchedules; //$('#td-schedule').DataTable();
+                _context3.next = 2;
+                return _this2.axios.get('/api/programacion').then(function (response) {
+                  _this2.users = response.data.users;
+                  _this2.parkings = response.data.parkings;
+                  _this2.schedules = response.data.schedules;
+                  _this2.nextSchedules = response.data.nextSchedules;
                 })["catch"](function (error) {
                   console.log(error);
-                  _this.schedules = [];
+                  _this2.schedules = [];
                 });
 
               case 2:
-                _context.next = 4;
-                return _this.validarRole();
-
-              case 4:
-                _this.$tablaGlobal('#td-schedule');
-
-                _this.$tablaGlobal('#td-schedule2');
+                $('#td-schedule').DataTable().destroy();
+                $('#td-schedule2').DataTable().destroy();
+                _context3.next = 6;
+                return _this2.validarRole();
 
               case 6:
+                _this2.$tablaGlobal('#td-schedule');
+
+                _this2.$tablaGlobal('#td-schedule2');
+
+              case 8:
               case "end":
-                return _context.stop();
+                return _context3.stop();
             }
           }
-        }, _callee);
+        }, _callee3);
       }))();
     },
     validarCampos: function validarCampos() {
@@ -300,44 +337,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return true;
     },
     validarRole: function validarRole() {
-      var _this2 = this;
+      var self = this;
+      return new Promise(function (resolve, reject) {
+        self.parkingsFilter = [];
+        self.usersFilter = [];
+        self.schedulesFilter = [];
+        self.nextSchedulesFilter = [];
 
-      this.parkingsFilter = [];
-      this.usersFilter = [];
-      this.schedulesFilter = [];
-      this.nextSchedulesFilter = [];
-
-      if (this.session.role_id === 1) {
-        this.usersFilter = this.users;
-        this.usersFilter = this.usersFilter.map(function (e) {
-          return {
-            code: e.id,
-            label: e.nombre + " " + e.apellido
-          };
-        });
-        this.parkingsFilter = this.parkings;
-        this.schedulesFilter = this.schedules;
-        this.nextSchedulesFilter = this.nextSchedules;
-      } else if (this.session.role_id == 3) {
-        this.parkingsFilter = [].concat(this.parkings.filter(function (e) {
-          return e.id == _this2.session.parking_id;
-        }));
-        this.usersFilter = this.users;
-        this.usersFilter = this.usersFilter.map(function (e) {
-          return {
-            code: e.id,
-            label: e.nombre + " " + e.apellido
-          };
-        });
-        this.schedulesFilter = [].concat(this.schedules.filter(function (e) {
-          return e.estacionamiento_id == _this2.session.parking_id;
-        }));
-        this.nextSchedulesFilter = [].concat(this.nextSchedules.filter(function (e) {
-          return e.created_by == _this2.session.id;
-        }));
-        this.datos.estacionamiento_id = this.session.parking_id;
-        this.datos.user_id = this.session.id;
-      }
+        if (self.session.role_id === 1) {
+          self.usersFilter = self.users;
+          self.usersFilter = self.usersFilter.map(function (e) {
+            return {
+              code: e.id,
+              label: e.nombre + " " + e.apellido
+            };
+          });
+          self.parkingsFilter = self.parkings;
+          self.schedulesFilter = self.schedules;
+          self.nextSchedulesFilter = self.nextSchedules;
+          resolve();
+        } else if (self.session.role_id == 3) {
+          self.parkingsFilter = [].concat(self.parkings.filter(function (e) {
+            return e.id == self.session.parking_id;
+          }));
+          self.usersFilter = self.users;
+          self.usersFilter = self.usersFilter.map(function (e) {
+            return {
+              code: e.id,
+              label: e.nombre + " " + e.apellido
+            };
+          });
+          self.schedulesFilter = [].concat(self.schedules.filter(function (e) {
+            return e.estacionamiento_id == self.session.parking_id;
+          }));
+          self.nextSchedulesFilter = [].concat(self.nextSchedules.filter(function (e) {
+            return e.created_by == self.session.id;
+          }));
+          self.datos.estacionamiento_id = self.session.parking_id;
+          self.datos.user_id = self.session.id;
+          resolve();
+        } else {
+          resolve();
+        }
+      });
     },
     showT: function showT(id) {
       if (id == 1) {
@@ -349,6 +391,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.showTable2 = true;
         this.title = "SEMANA SIGUIENTE";
       }
+
+      $('#td-schedule').DataTable().destroy();
+      $('#td-schedule2').DataTable().destroy();
+      this.$tablaGlobal('#td-schedule');
+      this.$tablaGlobal('#td-schedule2');
     },
     onChange: function onChange(param) {
       this.disabled = false;
@@ -400,25 +447,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     crear: function crear() {
       var _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var valid, resp;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                _context2.next = 2;
+                _context4.next = 2;
                 return _this3.validarCampos();
 
               case 2:
-                valid = _context2.sent;
+                valid = _context4.sent;
                 resp = false;
 
                 if (!valid) {
-                  _context2.next = 10;
+                  _context4.next = 14;
                   break;
                 }
 
-                _context2.next = 7;
+                _context4.next = 7;
                 return axios.post('api/programacion', _this3.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
                     _this3.$swal.fire({
@@ -432,7 +479,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this3.nextSchedules = [].concat(response.data.nextSchedules);
                     $('#modalForm').modal('hide');
 
-                    _this3.$swal.fire('Programación creado correctamente!', '', 'success');
+                    _this3.$swal.fire('Programación creada!', '', 'success');
                   }
                 })["catch"](function (error) {
                   console.log(error);
@@ -440,43 +487,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 if (!resp) {
-                  _context2.next = 10;
+                  _context4.next = 14;
                   break;
                 }
 
-                _context2.next = 10;
+                $('#td-schedule').DataTable().destroy();
+                $('#td-schedule2').DataTable().destroy();
+                _context4.next = 12;
                 return _this3.validarRole();
 
-              case 10:
+              case 12:
+                _this3.$tablaGlobal('#td-schedule');
+
+                _this3.$tablaGlobal('#td-schedule2');
+
+              case 14:
               case "end":
-                return _context2.stop();
+                return _context4.stop();
             }
           }
-        }, _callee2);
+        }, _callee4);
       }))();
     },
     editar: function editar() {
       var _this4 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         var valid, resp;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context3.next = 2;
+                _context5.next = 2;
                 return _this4.validarCampos();
 
               case 2:
-                valid = _context3.sent;
+                valid = _context5.sent;
 
                 if (!valid) {
-                  _context3.next = 10;
+                  _context5.next = 14;
                   break;
                 }
 
                 resp = false;
-                _context3.next = 7;
+                _context5.next = 7;
                 return axios.put('/api/programacion/' + _this4.id, _this4.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
                     _this4.$swal.fire({
@@ -499,19 +553,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 if (!resp) {
-                  _context3.next = 10;
+                  _context5.next = 14;
                   break;
                 }
 
-                _context3.next = 10;
+                $('#td-schedule').DataTable().destroy();
+                $('#td-schedule2').DataTable().destroy();
+                _context5.next = 12;
                 return _this4.validarRole();
 
-              case 10:
+              case 12:
+                _this4.$tablaGlobal('#td-schedule');
+
+                _this4.$tablaGlobal('#td-schedule2');
+
+              case 14:
               case "end":
-                return _context3.stop();
+                return _context5.stop();
             }
           }
-        }, _callee3);
+        }, _callee5);
       }))();
     },
     borrar: function borrar(id) {
@@ -541,7 +602,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     abrirModalCrear: function abrirModalCrear() {
       this.allDay = false;
-      this.partialDay = false;
+      this.morning = false;
+      this.afternoon = false;
       this.disabled = false;
       this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
       this.datos.user_id = '';
@@ -1441,8 +1503,6 @@ var render = function () {
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
       _c("div", { staticClass: "col-lg-12" }, [
         _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
           _c("div", { staticClass: "panel-hdr" }, [
@@ -1476,7 +1536,7 @@ var render = function () {
                   "button",
                   {
                     staticClass: "btn btn-danger",
-                    staticStyle: { "margin-left": "62%" },
+                    staticStyle: { "margin-left": "68%" },
                     on: {
                       click: function ($event) {
                         return _vm.showT(1)
@@ -1503,145 +1563,147 @@ var render = function () {
               _c("br"),
               _vm._v(" "),
               _vm.showTable
-                ? _c(
-                    "table",
-                    {
-                      staticClass:
-                        "table table-bordered table-hover table-striped w-100",
-                      attrs: { id: "td-schedule" },
-                    },
-                    [
-                      _vm._m(2),
-                      _vm._v(" "),
-                      _vm.showTable
-                        ? _c(
-                            "tbody",
-                            _vm._l(_vm.schedulesFilter, function (schedule) {
-                              return _c("tr", { key: schedule.id }, [
-                                _c("td", [
-                                  _vm._v(_vm._s(schedule.parking.numero)),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      schedule.user.nombre +
-                                        " " +
-                                        schedule.user.apellido
-                                    )
-                                  ),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(schedule.dia))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(_vm._s(schedule.hora_inicio)),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-warning",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.abrirModalEditar(schedule)
-                                        },
+                ? _c("div", [
+                    _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-hover table-striped w-100",
+                        attrs: { id: "td-schedule" },
+                      },
+                      [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.schedulesFilter, function (schedule) {
+                            return _c("tr", { key: schedule.id }, [
+                              _c("td", [
+                                _vm._v(_vm._s(schedule.parking.numero)),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    schedule.user.nombre +
+                                      " " +
+                                      schedule.user.apellido
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.dia))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.hora_inicio))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-warning",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.abrirModalEditar(schedule)
                                       },
                                     },
-                                    [_c("i", { staticClass: "far fa-edit" })]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-danger",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.borrar(schedule.id)
-                                        },
+                                  },
+                                  [_c("i", { staticClass: "far fa-edit" })]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.borrar(schedule.id)
                                       },
                                     },
-                                    [_c("i", { staticClass: "fa fa-trash" })]
-                                  ),
-                                ]),
-                              ])
-                            }),
-                            0
-                          )
-                        : _vm._e(),
-                    ]
-                  )
+                                  },
+                                  [_c("i", { staticClass: "fa fa-trash" })]
+                                ),
+                              ]),
+                            ])
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ])
                 : _vm._e(),
               _vm._v(" "),
               _vm.showTable2
-                ? _c(
-                    "table",
-                    {
-                      staticClass:
-                        "table table-bordered table-hover table-striped w-100",
-                      attrs: { id: "td-schedule2" },
-                    },
-                    [
-                      _vm._m(3),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(_vm.nextSchedulesFilter, function (schedule) {
-                          return _c("tr", { key: schedule.id }, [
-                            _c("td", [_vm._v(_vm._s(schedule.parking.numero))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(
-                                _vm._s(
-                                  schedule.user.nombre +
-                                    " " +
-                                    schedule.user.apellido
-                                )
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.dia))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.hora_inicio))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-warning",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.abrirModalEditar(schedule)
-                                    },
-                                  },
-                                },
-                                [_c("i", { staticClass: "far fa-edit" })]
-                              ),
+                ? _c("div", [
+                    _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-hover table-striped w-100",
+                        attrs: { id: "td-schedule2" },
+                      },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.nextSchedulesFilter, function (schedule) {
+                            return _c("tr", { key: schedule.id }, [
+                              _c("td", [
+                                _vm._v(_vm._s(schedule.parking.numero)),
+                              ]),
                               _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.borrar(schedule.id)
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    schedule.user.nombre +
+                                      " " +
+                                      schedule.user.apellido
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.dia))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.hora_inicio))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-warning",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.abrirModalEditar(schedule)
+                                      },
                                     },
                                   },
-                                },
-                                [_c("i", { staticClass: "fa fa-trash" })]
-                              ),
-                            ]),
-                          ])
-                        }),
-                        0
-                      ),
-                    ]
-                  )
+                                  [_c("i", { staticClass: "far fa-edit" })]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger",
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.borrar(schedule.id)
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fa fa-trash" })]
+                                ),
+                              ]),
+                            ])
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ])
                 : _vm._e(),
             ]),
           ]),
@@ -1654,7 +1716,7 @@ var render = function () {
             _c("div", { staticClass: "modal-header" }, [
               _c("h5", { staticClass: "modal-title" }, [
                 _c("i", { staticClass: "fa fa-user-plus" }),
-                _vm._v(" " + _vm._s(_vm.titulo) + "\n                "),
+                _vm._v(" " + _vm._s(_vm.titulo)),
               ]),
               _vm._v(" "),
               _c(
@@ -2180,8 +2242,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "subheader" }, [
       _c("h1", { staticClass: "subheader-title" }, [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
-        _vm._v(" PROGRAMACIÓN DE ESTACIONAMIENTOS\n            "),
-        _c("small"),
+        _vm._v(" PROGRAMACIÓN DE ESTACIONAMIENTOS\n        "),
       ]),
     ])
   },

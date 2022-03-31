@@ -1,87 +1,82 @@
 <template>
-    
+
     <main id="js-page-content" role="main" class="page-content">
         
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-chart-area'></i> PROGRAMACIÓN DE ESTACIONAMIENTOS
-                <small>
-                </small>
             </h1>
         </div>
-        <br>
         <div class="col-lg-12">
             <div id="panel-4" class="panel">
                 <div class="panel-hdr">
-                        <h2 style="text-align: center; font-size: 1.125rem;"><b>{{title}} </b></h2>
+                    <h2 style="text-align: center; font-size: 1.125rem;"><b>{{title}} </b></h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                         <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                        <!-- <button class="btn btn-panel waves-effect waves-themed" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button> -->
                     </div>
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="panel-hdr">
                             <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
-                            <button style="margin-left: 62%;" class="btn btn-danger" @click="showT(1)">Semana Actual</button>
+                            <button style="margin-left: 68%;" class="btn btn-danger" @click="showT(1)">Semana Actual</button>
                             <button style="margin-left: auto;" class="btn btn-danger" @click="showT(2)">Semana siguiente</button>
                         </div><br>
-                     
-                        <table v-if="showTable" id="td-schedule" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="bg-warning-200">
-                                <tr>
-                                    <th>N_Estac</th>
-                                    <th>Asignado</th>
-                                    <th>Dia de semana</th>
-                                    <th>Hora Incio</th>
-                                    <th>Hora Final</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody v-if="showTable">
-                                <tr v-for="schedule in schedulesFilter" :key="schedule.id">
-                                    <td>{{ schedule.parking.numero }}</td>
-                                    <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
-                                    <td>{{ schedule.dia }}</td>
-                                    <td>{{ schedule.hora_inicio }}</td>
-                                    <td>{{ schedule.hora_fin }}</td>
-                                    <td>
-                                        <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-danger" @click="borrar(schedule.id)"><i class="fa fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        
-                        </table>
-                        <table v-if="showTable2" id="td-schedule2" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="bg-warning-200">
-                                <tr>
-                                    <th>N_Estac</th>
-                                    <th>Asignado</th>
-                                    <th>Dia de semana</th>
-                                    <th>Hora Incio</th>
-                                    <th>Hora Final</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="schedule in nextSchedulesFilter" :key="schedule.id">
-                                    <td>{{ schedule.parking.numero }}</td>
-                                    <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
-                                    <td>{{ schedule.dia }}</td>
-                                    <td>{{ schedule.hora_inicio }}</td>
-                                    <td>{{ schedule.hora_fin }}</td>
-                                    <td>
-                                        <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-danger" @click="borrar(schedule.id)"><i class="fa fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        
-                        </table>
-                       
-                        <!-- datatable end -->
+                        <div v-if="showTable">
+                            <table id="td-schedule" class="table table-bordered table-hover table-striped w-100">
+                                <thead class="bg-warning-200">
+                                    <tr>
+                                        <th>N_Estac</th>
+                                        <th>Asignado</th>
+                                        <th>Dia de semana</th>
+                                        <th>Hora Incio</th>
+                                        <th>Hora Final</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="schedule in schedulesFilter" :key="schedule.id">
+                                        <td>{{ schedule.parking.numero }}</td>
+                                        <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
+                                        <td>{{ schedule.dia }}</td>
+                                        <td>{{ schedule.hora_inicio }}</td>
+                                        <td>{{ schedule.hora_fin }}</td>
+                                        <td>
+                                            <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger" @click="borrar(schedule.id)"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-if="showTable2">
+                            <table id="td-schedule2" class="table table-bordered table-hover table-striped w-100">
+                                <thead class="bg-warning-200">
+                                    <tr>
+                                        <th>N_Estac</th>
+                                        <th>Asignado</th>
+                                        <th>Dia de semana</th>
+                                        <th>Hora Incio</th>
+                                        <th>Hora Final</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="schedule in nextSchedulesFilter" :key="schedule.id">
+                                        <td>{{ schedule.parking.numero }}</td>
+                                        <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
+                                        <td>{{ schedule.dia }}</td>
+                                        <td>{{ schedule.hora_inicio }}</td>
+                                        <td>{{ schedule.hora_fin }}</td>
+                                        <td>
+                                            <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger" @click="borrar(schedule.id)"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,13 +86,10 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fa fa-user-plus"></i> {{titulo}}
-                    </h5>
-                    
-                <button  @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <h5 class="modal-title"> <i class="fa fa-user-plus"></i> {{titulo}}</h5>
+                        <button  @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <form>
                     <div class="modal-body">
@@ -149,17 +141,12 @@
                                 <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control" :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
                             </div>
                         </div>
-
-
-
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="Observaciones">Observaciones</label>
                                 <textarea id="Observaciones" class="form-control" v-model="datos.observacion"></textarea>
                             </div>
                         </div>
-                        
-                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" @click.prevent="cerrarModal" data-dismiss="modal">Cerrar</button>
@@ -172,16 +159,14 @@
         </div>
         
     </main>
-                    
+       
 </template>
 <script>
 //import Select2 from '../common/select2.vue'
 
 export default {
     name: "Programacion",
-    components: {
-        
-    },
+    components: {},
     data(){
         return {
             users:[],
@@ -209,7 +194,7 @@ export default {
                 created_by : ''
             },
             titulo:'',
-            title:'',
+            title:"SEMANA ACTUAL",
             btnCrear:false,
             btnEditar:false,
             id:'',
@@ -217,10 +202,15 @@ export default {
             showTable2: false
         }
     },
-    mounted(){
-        this.session = this.$route.query.ps;
-        this.datos.created_by = this.session.id
-        this.init();
+    created: async function(){
+       const token = localStorage.getItem('access_token');
+        await axios.get('api/getSession/'+ token).then((res)=>{
+            this.session = res.data;
+            this.datos.created_by = this.session.id;
+        })  
+    },
+    mounted: async function(){
+        await this.init();
     },
     methods:{
         async init(){
@@ -230,12 +220,13 @@ export default {
                     this.parkings = response.data.parkings;
                     this.schedules = response.data.schedules;
                     this.nextSchedules = response.data.nextSchedules;
-                    //$('#td-schedule').DataTable();
                 })
                 .catch(error=>{
                     console.log(error);
                     this.schedules =[]
                 })
+                $('#td-schedule').DataTable().destroy();
+                $('#td-schedule2').DataTable().destroy();
                 await this.validarRole();
                 this.$tablaGlobal('#td-schedule');
                 this.$tablaGlobal('#td-schedule2');
@@ -252,28 +243,34 @@ export default {
             return true;
         },
         validarRole(){
-            this.parkingsFilter = [];
-            this.usersFilter = [];
-            this.schedulesFilter = [];
-            this.nextSchedulesFilter = [];
-            if(this.session.role_id === 1){
-                this.usersFilter = this.users;
-                this.usersFilter = this.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
-                this.parkingsFilter = this.parkings;
-                this.schedulesFilter = this.schedules;
-                this.nextSchedulesFilter = this.nextSchedules;
-                
-            }else if(this.session.role_id == 3){
-                this.parkingsFilter = [].concat(this.parkings.filter(e => e.id == this.session.parking_id))
-                this.usersFilter = this.users;
-                this.usersFilter = this.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
-                this.schedulesFilter = [].concat(this.schedules.filter(e => e.estacionamiento_id == this.session.parking_id));
-                this.nextSchedulesFilter = [].concat(this.nextSchedules.filter(e => e.created_by == this.session.id));
-                this.datos.estacionamiento_id = this.session.parking_id;
-                this.datos.user_id = this.session.id;
-            }
+            let self = this;
+            return new Promise(function(resolve, reject) {
+                self.parkingsFilter = [];
+                self.usersFilter = [];
+                self.schedulesFilter = [];
+                self.nextSchedulesFilter = [];
+                if(self.session.role_id === 1){
+                    self.usersFilter = self.users;
+                    self.usersFilter = self.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
+                    self.parkingsFilter = self.parkings;
+                    self.schedulesFilter = self.schedules;
+                    self.nextSchedulesFilter = self.nextSchedules;
+                    resolve();
+                    
+                }else if(self.session.role_id == 3){
+                    self.parkingsFilter = [].concat(self.parkings.filter(e => e.id == self.session.parking_id))
+                    self.usersFilter = self.users;
+                    self.usersFilter = self.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
+                    self.schedulesFilter = [].concat(self.schedules.filter(e => e.estacionamiento_id == self.session.parking_id));
+                    self.nextSchedulesFilter = [].concat(self.nextSchedules.filter(e => e.created_by == self.session.id));
+                    self.datos.estacionamiento_id = self.session.parking_id;
+                    self.datos.user_id = self.session.id;
+                    resolve();
+                }else{
+                    resolve();
+                }
+            });
         },
-
         showT(id){
             if(id == 1){
                 this.showTable = true;
@@ -284,6 +281,10 @@ export default {
                 this.showTable2 = true;
                 this.title = "SEMANA SIGUIENTE";
             }
+            $('#td-schedule').DataTable().destroy();
+            $('#td-schedule2').DataTable().destroy();
+            this.$tablaGlobal('#td-schedule');
+            this.$tablaGlobal('#td-schedule2');
         },
         onChange(param){
             this.disabled = false;
@@ -328,7 +329,6 @@ export default {
             }
         },
         async crear(){
-            
             let valid = await this.validarCampos();
             let resp = false;
             if(valid){
@@ -345,7 +345,7 @@ export default {
                         this.nextSchedules = [].concat(response.data.nextSchedules);
                         $('#modalForm').modal('hide');
                         this.$swal.fire(
-                            'Programación creado correctamente!',
+                            'Programación creada!',
                             '',
                             'success'
                         )
@@ -355,7 +355,11 @@ export default {
                     console.log(error);
                 });
                 if(resp){
+                    $('#td-schedule').DataTable().destroy();
+                    $('#td-schedule2').DataTable().destroy();
                     await this.validarRole();
+                    this.$tablaGlobal('#td-schedule');
+                    this.$tablaGlobal('#td-schedule2');
                 }
             }
         },
@@ -388,7 +392,11 @@ export default {
                     console.log(error);
                 });
                 if(resp){
+                    $('#td-schedule').DataTable().destroy();
+                    $('#td-schedule2').DataTable().destroy();
                     await this.validarRole();
+                    this.$tablaGlobal('#td-schedule');
+                    this.$tablaGlobal('#td-schedule2');
                 }
             }
         },
@@ -420,7 +428,8 @@ export default {
         },
         abrirModalCrear(){
             this.allDay = false;
-            this.partialDay = false;
+            this.morning = false;
+            this.afternoon = false;
             this.disabled = false;
             this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
             this.datos.user_id = '';
