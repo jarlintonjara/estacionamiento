@@ -56,20 +56,19 @@ export default {
     },
     methods:{
         async login(){
-            await axios.get('/sanctum/csrf-cookie').then(response => {
-                    axios.post('api/login', this.form)
-                        .then(response => {
-                            localStorage.setItem('access_token', response.data.access_token);
-                           this.$router.push({ name: "dashboard"}); 
-                        })
-                        .catch(function (error) {
-                            this.$swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Email o password incorrectos!',
-                            })
-                        });
+            let self = this;
+            await axios.post('api/login', this.form)
+                .then(response => {
+                    localStorage.setItem('access_token', response.data.access_token);
+                    self.$router.push({ name: "dashboard"}); 
                 })
+                .catch(function (error) {
+                    self.$swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email o password incorrectos!',
+                    })
+                });
          }
     }
 }
