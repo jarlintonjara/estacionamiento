@@ -374,12 +374,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     showitem: function showitem(option) {
+      var x = document.getElementById("hoy");
+      var y = document.getElementById("manana");
+
       if (option == 1) {
-        this.item1 = true;
-        this.item2 = false;
-      } else {
-        this.item2 = true;
-        this.item1 = false;
+        y.style.display = "none";
+        x.style.display = "block";
+      } else if (option == 2) {
+        y.style.display = "block";
+        x.style.display = "none";
       }
     },
     logout: function logout() {
@@ -1593,233 +1596,229 @@ var render = function () {
         ),
       ]),
       _vm._v(" "),
-      _vm.item1
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
-                _vm._m(7),
-                _vm._v(" "),
-                _c("div", { staticClass: "panel-container show" }, [
-                  _c("div", { staticClass: "panel-content" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-bordered table-hover table-striped w-100",
-                        attrs: { id: "td-ocupadoshoy" },
-                      },
-                      [
-                        _vm._m(8),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.programacionhoy, function (pm) {
-                            return _c(
-                              "tr",
-                              { key: pm.parking.numero + pm.id },
-                              [
-                                _c("td", [_vm._v(_vm._s(pm.parking.numero))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      pm.user.nombre + " " + pm.user.apellido
-                                    )
-                                  ),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.user.documento))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.fecha))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.hora_inicio))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.hora_fin))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      pm.propietario.nombre +
-                                        " " +
-                                        pm.propietario.apellido
-                                    )
-                                  ),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(_vm.$dateFormat(pm.created_at))
-                                  ),
-                                ]),
-                              ]
-                            )
-                          }),
-                          0
-                        ),
-                      ]
-                    ),
-                  ]),
+      _c(
+        "div",
+        {
+          staticClass: "row",
+          staticStyle: { display: "block" },
+          attrs: { id: "hoy" },
+        },
+        [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
+              _vm._m(7),
+              _vm._v(" "),
+              _c("div", { staticClass: "panel-container show" }, [
+                _c("div", { staticClass: "panel-content" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-ocupadoshoy" },
+                    },
+                    [
+                      _vm._m(8),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.programacionhoy, function (pm) {
+                          return _c("tr", { key: pm.parking.numero + pm.id }, [
+                            _c("td", [_vm._v(_vm._s(pm.parking.numero))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(pm.user.nombre + " " + pm.user.apellido)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.user.documento))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.fecha))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.hora_inicio))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.hora_fin))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  pm.propietario.nombre +
+                                    " " +
+                                    pm.propietario.apellido
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.$dateFormat(pm.created_at))),
+                            ]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
                 ]),
               ]),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
-                _vm._m(9),
-                _vm._v(" "),
-                _c("div", { staticClass: "panel-container show" }, [
-                  _c("div", { staticClass: "panel-content" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-bordered table-hover table-striped w-100",
-                        attrs: { id: "td-disponibleshoy" },
-                      },
-                      [
-                        _vm._m(10),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.estacioneshoy, function (pmd) {
-                            return _c("tr", { key: pmd.numero + pmd.id }, [
-                              _c("td", [_vm._v(_vm._s(pmd.numero))]),
-                              _vm._v(" "),
-                              pmd.nombre == null
-                                ? _c("td", [_vm._v("VISITA")])
-                                : _c("td", [
-                                    _vm._v(
-                                      _vm._s(pmd.nombre + " " + pmd.apellido)
-                                    ),
-                                  ]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(pmd.sede))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
-                            ])
-                          }),
-                          0
-                        ),
-                      ]
-                    ),
-                  ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
+              _vm._m(9),
+              _vm._v(" "),
+              _c("div", { staticClass: "panel-container show" }, [
+                _c("div", { staticClass: "panel-content" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-disponibleshoy" },
+                    },
+                    [
+                      _vm._m(10),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.estacioneshoy, function (pmd) {
+                          return _c("tr", { key: pmd.numero + pmd.id }, [
+                            _c("td", [_vm._v(_vm._s(pmd.numero))]),
+                            _vm._v(" "),
+                            pmd.nombre == null
+                              ? _c("td", [_vm._v("VISITA")])
+                              : _c("td", [
+                                  _vm._v(
+                                    _vm._s(pmd.nombre + " " + pmd.apellido)
+                                  ),
+                                ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.sede))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
                 ]),
               ]),
             ]),
-          ])
-        : _vm._e(),
+          ]),
+        ]
+      ),
       _vm._v(" "),
-      _vm.item2
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
-                _vm._m(11),
-                _vm._v(" "),
-                _c("div", { staticClass: "panel-container show" }, [
-                  _c("div", { staticClass: "panel-content" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-bordered table-hover table-striped w-100",
-                        attrs: { id: "td-ocupadosman" },
-                      },
-                      [
-                        _vm._m(12),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.programacionma, function (pm) {
-                            return _c(
-                              "tr",
-                              { key: pm.parking.numero + pm.id },
-                              [
-                                _c("td", [_vm._v(_vm._s(pm.parking.numero))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      pm.user.nombre + " " + pm.user.apellido
-                                    )
-                                  ),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.user.documento))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.fecha))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.hora_inicio))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(pm.hora_fin))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      pm.propietario.nombre +
-                                        " " +
-                                        pm.propietario.apellido
-                                    )
-                                  ),
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(_vm.$dateFormat(pm.created_at))
-                                  ),
-                                ]),
-                              ]
-                            )
-                          }),
-                          0
-                        ),
-                      ]
-                    ),
-                  ]),
+      _c(
+        "div",
+        {
+          staticClass: "row",
+          staticStyle: { display: "none" },
+          attrs: { id: "manana" },
+        },
+        [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
+              _vm._m(11),
+              _vm._v(" "),
+              _c("div", { staticClass: "panel-container show" }, [
+                _c("div", { staticClass: "panel-content" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-ocupadosman" },
+                    },
+                    [
+                      _vm._m(12),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.programacionma, function (pm) {
+                          return _c("tr", { key: pm.parking.numero + pm.id }, [
+                            _c("td", [_vm._v(_vm._s(pm.parking.numero))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(pm.user.nombre + " " + pm.user.apellido)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.user.documento))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.fecha))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.hora_inicio))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pm.hora_fin))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  pm.propietario.nombre +
+                                    " " +
+                                    pm.propietario.apellido
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.$dateFormat(pm.created_at))),
+                            ]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
                 ]),
               ]),
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
-                _vm._m(13),
-                _vm._v(" "),
-                _c("div", { staticClass: "panel-container show" }, [
-                  _c("div", { staticClass: "panel-content" }, [
-                    _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-bordered table-hover table-striped w-100",
-                        attrs: { id: "td-disponiblesman" },
-                      },
-                      [
-                        _vm._m(14),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.estacionesma, function (pmd) {
-                            return _c("tr", { key: pmd.numero + pmd.id }, [
-                              _c("td", [_vm._v(_vm._s(pmd.numero))]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(_vm._s(pmd.nombre + " " + pmd.apellido)),
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(pmd.sede))]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
-                            ])
-                          }),
-                          0
-                        ),
-                      ]
-                    ),
-                  ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "panel", attrs: { id: "panel-4" } }, [
+              _vm._m(13),
+              _vm._v(" "),
+              _c("div", { staticClass: "panel-container show" }, [
+                _c("div", { staticClass: "panel-content" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-hover table-striped w-100",
+                      attrs: { id: "td-disponiblesman" },
+                    },
+                    [
+                      _vm._m(14),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.estacionesma, function (pmd) {
+                          return _c("tr", { key: pmd.numero + pmd.id }, [
+                            _c("td", [_vm._v(_vm._s(pmd.numero))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(pmd.nombre + " " + pmd.apellido)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.sede))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
                 ]),
               ]),
             ]),
-          ])
-        : _vm._e(),
+          ]),
+        ]
+      ),
     ]
   )
 }

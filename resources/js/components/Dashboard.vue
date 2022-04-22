@@ -84,7 +84,7 @@
         </div>
         
 
-        <div class="row" v-if="item1">
+        <div class="row" id="hoy" style="display:block;">
             <div class="col-lg-12">
                 <div id="panel-4" class="panel">
                 <div class="panel-hdr">
@@ -176,7 +176,7 @@
 
         </div>
 
-        <div class="row"  v-if="item2">
+        <div class="row" id="manana" style="display:none;">
             <div class="col-lg-12">
                 <div id="panel-4" class="panel">
                 <div class="panel-hdr">
@@ -328,12 +328,14 @@ export default {
                     this.$tablaGlobal('#td-disponiblesman');
         },
         showitem(option){
+            var x = document.getElementById("hoy");
+            var y = document.getElementById("manana");
             if(option == 1){
-                this.item1 = true;
-                this.item2 = false;
-            }else{
-                this.item2 = true;
-                this.item1 = false;
+                    y.style.display = "none";
+                    x.style.display = "block";
+            }else if(option == 2){
+                    y.style.display = "block";
+                    x.style.display = "none";
             }
         },
         logout(){
