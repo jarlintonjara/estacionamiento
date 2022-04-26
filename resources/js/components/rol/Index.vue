@@ -9,7 +9,6 @@
         </div>
         <div class="col-lg-12">
             <div id="panel-4" class="panel">
-                
                 <div class="panel-container show">
                     <div class="panel-content">
                             <div class="panel-hdr">
