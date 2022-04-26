@@ -10,11 +10,9 @@ class SettingModel extends Model
     use HasFactory;
 
     protected $table = 'setting';
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
-    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id',
         'time',
         'email',
         'email1',

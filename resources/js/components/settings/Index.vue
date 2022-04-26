@@ -17,14 +17,10 @@
                     <div class="panel-toolbar">
                         <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                         <button class="btn btn-panel waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                        <!-- <button class="btn btn-panel waves-effect waves-themed" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button> -->
                     </div>
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <!-- <div class="panel-hdr">
-                            <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
-                        </div><br> -->
                         <div class="row">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="input-group mb-3">
@@ -65,7 +61,7 @@
                         <br>
                         <div class="row">
                             <div class="col align-self-end">
-                                 <button type="submit" class="btn btn-primary" @click.prevent="editar" v-if="btnEditar">Guardar Cambios</button>
+                                 <button type="submit" class="btn btn-primary" @click.prevent="guardar">Guardar Cambios</button>
                             </div>
                        
                         </div>
@@ -89,20 +85,25 @@ export default {
             items:[],
             datos: {time:'', email:'',email1:'', email2:'', email3:'', email4:''},
             titulo:'',
-            btnEditar:true,
-            id:''
         }
     },
     mounted(){
-        this.mostrarItems();
+        this.init();
     },
     methods:{
-        editar(){
-            console.log( this.datos);
-            axios.put('/api/setting/'+1, this.datos).then(response=>{
+        async init(){
+            await this.axios.get('/api/setting')
+                    .then(response=>{
+                        this.datos = response.data[0]
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                        this.datos =[]
+                    })
+        },
+        guardar(){
+            axios.put('/api/setting/' + 1, this.datos).then(response=>{
                 this.items = [].concat(response.data);          
-                this.id='';
-                //this.getUser()
                 $('#modalForm').modal('hide');
                 this.$swal.fire(
                     'Editado correctamente!',
@@ -114,17 +115,7 @@ export default {
                 console.log(error);
             });
         },
-        async mostrarItems(){
-            await this.axios.get('/api/setting')
-                    .then(response=>{
-                        this.datos = response.data[0]
-                    })
-                    .catch(error=>{
-                        console.log(error);
-                        this.datos =[]
-                    })
-                //    await $('#tableRol').DataTable();
-        }
+        
     }
 }
 </script>

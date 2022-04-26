@@ -6,6 +6,7 @@ use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,7 @@ Route::get('dashboard', [HomeController::class, 'index']);
 Route::get('sendEmail', [HomeController::class, 'index']);
 Route::resource('programacion', ProgramacionController::class);
 Route::resource('estacionamiento', EstacionamientoController::class);
+Route::resource('setting', SettingController::class);
 Route::resource('usuario', UserController::class);
 Route::match(['put', 'patch'], 'updateProfile/{usuario}', [UserController::class, 'updateProfile']);
 Route::resource('rol', RoleController::class);

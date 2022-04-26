@@ -105,10 +105,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Setting",
   components: {},
@@ -123,33 +119,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         email3: '',
         email4: ''
       },
-      titulo: '',
-      btnEditar: true,
-      id: ''
+      titulo: ''
     };
   },
   mounted: function mounted() {
-    this.mostrarItems();
+    this.init();
   },
   methods: {
-    editar: function editar() {
+    init: function init() {
       var _this = this;
-
-      console.log(this.datos);
-      axios.put('/api/setting/' + 1, this.datos).then(function (response) {
-        _this.items = [].concat(response.data);
-        _this.id = ''; //this.getUser()
-
-        $('#modalForm').modal('hide');
-
-        _this.$swal.fire('Editado correctamente!', '', 'success'); //swal("Felicidades!", "Usuario editado correctamente!", "success");
-
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    mostrarItems: function mostrarItems() {
-      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -157,11 +135,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this2.axios.get('/api/setting').then(function (response) {
-                  _this2.datos = response.data[0];
+                return _this.axios.get('/api/setting').then(function (response) {
+                  _this.datos = response.data[0];
                 })["catch"](function (error) {
                   console.log(error);
-                  _this2.datos = [];
+                  _this.datos = [];
                 });
 
               case 2:
@@ -171,6 +149,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    guardar: function guardar() {
+      var _this2 = this;
+
+      axios.put('/api/setting/' + 1, this.datos).then(function (response) {
+        _this2.items = [].concat(response.data);
+        $('#modalForm').modal('hide');
+
+        _this2.$swal.fire('Editado correctamente!', '', 'success'); //swal("Felicidades!", "Usuario editado correctamente!", "success");
+
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -1298,22 +1289,20 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col align-self-end" }, [
-                  _vm.btnEditar
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit" },
-                          on: {
-                            click: function ($event) {
-                              $event.preventDefault()
-                              return _vm.editar.apply(null, arguments)
-                            },
-                          },
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function ($event) {
+                          $event.preventDefault()
+                          return _vm.guardar.apply(null, arguments)
                         },
-                        [_vm._v("Guardar Cambios")]
-                      )
-                    : _vm._e(),
+                      },
+                    },
+                    [_vm._v("Guardar Cambios")]
+                  ),
                 ]),
               ]),
             ]),
