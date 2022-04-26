@@ -7,7 +7,7 @@ const Layout = () => import('./components/Layout.vue');
 const NotFound = () => import('./components/NotFound.vue');
 const Rol = () => import('./components/rol/Index.vue');
 const Settings = () => import('./components/settings/Index.vue');
-const Usuario = () => import('./components/usuario/Index.vue');
+const Usuario = () => import('./components/usuario/index.vue');
 const Perfil = () => import('./components/usuario/Perfil.vue');
 const Estacionamiento = () => import('./components/estacionamiento/Index.vue');
 const Programacion = () => import('./components/programacion/Index.vue');
