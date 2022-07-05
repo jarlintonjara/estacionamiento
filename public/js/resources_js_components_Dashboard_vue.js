@@ -301,6 +301,62 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -1373,7 +1429,7 @@ var render = function () {
                               _vm.programacionhoy.length +
                                 _vm.estacioneshoy.length
                             ) +
-                            " "
+                            "\n                            "
                         ),
                       ]),
                     ]),
@@ -1407,7 +1463,7 @@ var render = function () {
                               _vm.programacionhoy.length +
                                 _vm.estacioneshoy.length
                             ) +
-                            " "
+                            "\n                            "
                         ),
                       ]),
                     ]),
@@ -1696,7 +1752,38 @@ var render = function () {
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(pmd.sede))]),
                             _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.telefono))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.email))]),
+                            _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              pmd.telefono && pmd.telefono.length == 9
+                                ? _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: {
+                                        href:
+                                          "https://api.whatsapp.com/send?phone=51" +
+                                          pmd.telefono +
+                                          "&text=Hola",
+                                        target: "_blank",
+                                      },
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa-brands fa-whatsapp",
+                                        attrs: { "aria-hidden": "true" },
+                                      }),
+                                      _vm._v(
+                                        " mensaje\n                                        "
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
+                            ]),
                           ])
                         }),
                         0
@@ -1940,7 +2027,13 @@ var staticRenderFns = [
         _c(
           "h2",
           { staticStyle: { "text-align": "center", "font-size": "1.125rem" } },
-          [_c("b", [_vm._v(" ESTACIONAMIENTOS DISPONIBLES HOY")])]
+          [
+            _c("b", [
+              _vm._v(
+                " ESTACIONAMIENTOS DISPONIBLES\n                                HOY"
+              ),
+            ]),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -1979,7 +2072,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Sede")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Telefono")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Ubicación")]),
+        _vm._v(" "),
+        _c("th"),
       ]),
     ])
   },
@@ -1992,7 +2091,13 @@ var staticRenderFns = [
         _c(
           "h2",
           { staticStyle: { "text-align": "center", "font-size": "1.125rem" } },
-          [_c("b", [_vm._v(" ESTACIONAMIENTOS OCUPADOS PARA MAÑANA")])]
+          [
+            _c("b", [
+              _vm._v(
+                " ESTACIONAMIENTOS OCUPADOS PARA\n                                MAÑANA"
+              ),
+            ]),
+          ]
         ),
       ]),
       _vm._v(" "),
@@ -2052,7 +2157,13 @@ var staticRenderFns = [
         _c(
           "h2",
           { staticStyle: { "text-align": "center", "font-size": "1.125rem" } },
-          [_c("b", [_vm._v(" ESTACIONAMIENTOS DISPONIBLES PARA MAÑANA")])]
+          [
+            _c("b", [
+              _vm._v(
+                " ESTACIONAMIENTOS DISPONIBLES PARA\n                                MAÑANA"
+              ),
+            ]),
+          ]
         ),
       ]),
       _vm._v(" "),

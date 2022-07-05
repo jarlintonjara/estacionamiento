@@ -40,7 +40,15 @@ class HomeController extends Controller
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
         }
-        $estacioneshoy = User::select('estacionamiento.id','estacionamiento.numero','users.nombre','users.apellido','estacionamiento.sede','estacionamiento.ubicacion')
+        $estacioneshoy = User::select(
+                            'estacionamiento.id',
+                            'estacionamiento.numero',
+                            'users.nombre',
+                            'users.apellido',
+                            'users.telefono',
+                            'users.email',
+                            'estacionamiento.sede',
+                            'estacionamiento.ubicacion')
                 ->rightJoin('estacionamiento', 'users.parking_id', '=', 'estacionamiento.id')
                 ->whereNotIn('estacionamiento.id', $ids2)
                 ->get();
@@ -52,7 +60,15 @@ class HomeController extends Controller
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
         }
-        $estacionesma = User::select('estacionamiento.id','estacionamiento.numero','users.nombre','users.apellido','estacionamiento.sede','estacionamiento.ubicacion')
+        $estacionesma = User::select(
+                            'estacionamiento.id',
+                            'estacionamiento.numero',
+                            'users.nombre',
+                            'users.apellido',
+                            'users.telefono',
+                            'users.email',
+                            'estacionamiento.sede',
+                            'estacionamiento.ubicacion')
         ->rightJoin('estacionamiento', 'users.parking_id', '=', 'estacionamiento.id')
         ->whereNotIn('estacionamiento.id', $ids)
         ->get();
