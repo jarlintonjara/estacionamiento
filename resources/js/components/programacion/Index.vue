@@ -123,15 +123,10 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="Fecha">Fecha de programación</label>
-                                    <input type="date" id="pickerProgramacion" class="form-control" placeholder="Fecha"
-                                        v-model="datos.fecha">
-                                    <date-range-picker 
-                                        ref="picker" 
-                                        :locale-data="{ firstDay: 1, format: 'dd-mm-yyyy HH:mm:ss' }" 
-                                        :dateFormat="dateFormat">
-                                        <template v-slot:input="picker" style="min-width: 350px;">
-                                            {{ picker.startDate | date }} - {{ picker.endDate | date }}
-                                        </template>
+                                    <date-range-picker v-model="pickerDates" :locale-data="locale">
+                                        <template v-slot:input="pickerDates" style="min-width: 350px;">{{
+                                            pickerDates.startDate | date }} - {{ pickerDates.endDate | date
+                                            }} <i class="fa fa-calendar"></i></template>
                                     </date-range-picker>
                                 </div>
                                 <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
@@ -198,22 +193,25 @@ import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
 export default {
     name: "Programacion",
     components: { DateRangePicker },
-    data(){
+    data() {
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate());
         return {
-            //dateRange: Date.now(),
-            dateRange: {
-                startDate: '',
-                endDate : ''
+            pickerDates: {
+                startDate,
+                endDate
             },
-            direction: 'ltr',
-            format: 'mm/dd/yyyy',
-            separator: ' - ',
-            applyLabel: 'Apply',
-            cancelLabel: 'Cancel',
-            weekLabel: 'W',
-            customRangeLabel: 'Custom Range',
-            daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            locale: {
+                format: 'mm/dd/yyyy',
+                separator: ' - ',
+                applyLabel: 'Aplicar',
+                cancelLabel: 'Cancel',
+                daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
+
+            },
+            
             firstDay: 0,
             users:[],
             session: {},
@@ -233,6 +231,8 @@ export default {
                 estacionamiento_id:'', 
                 user_id:'', 
                 fecha:'', 
+                fecha_inicio: startDate, 
+                fecha_fin: endDate, 
                 hora_inicio:'', 
                 hora_fin: '', 
                 turno: '', 
@@ -258,6 +258,11 @@ export default {
     mounted: async function(){
         await this.init();
     },
+    filters: {
+        date(date) {
+            return new Intl.DateTimeFormat("en-US").format(date);
+        }
+    },
     methods:{
         async init(){
             await this.axios.get('/api/programacion')
@@ -278,7 +283,7 @@ export default {
                 this.$tablaGlobal('#td-schedule2');
         },
         validarCampos(){
-            if(!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.fecha || !this.datos.hora_inicio || !this.datos.hora_fin ){
+            if(!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.hora_inicio || !this.datos.hora_fin ){
                 this.$swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -377,7 +382,8 @@ export default {
         async crear(){
             let valid = await this.validarCampos();
             let resp = false;
-            
+            this.datos.fecha_inicio = this.pickerDates.startDate;
+            this.datos.fecha_fin = this.pickerDates.endDate;
             if(valid){
                 await axios.post('api/programacion', this.datos).then(response=>{
                     if(response.data.isSuccess == false){
@@ -386,7 +392,7 @@ export default {
                             title: 'Oops...',
                             text: response.data.message,
                         })
-                    }else{
+                    } else { 
                         resp = true;
                         this.schedules = [].concat(response.data.schedules);          
                         this.nextSchedules = [].concat(response.data.nextSchedules);
@@ -474,6 +480,13 @@ export default {
             })
         },
         abrirModalCrear() {
+            const startDate = new Date();
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate());
+            this.pickerDates = {
+                startDate,
+                endDate
+            }
             this.allDay = false;
             this.morning = false;
             this.afternoon = false;
@@ -481,6 +494,8 @@ export default {
             this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
             this.datos.user_id = '';
             this.datos.fecha = '';
+            this.datos.fecha_inicio = '';
+            this.datos.fecha_fin = '';
             this.datos.hora_inicio = '';
             this.datos.hora_fin = '';
             this.datos.observacion = '';

@@ -6,6 +6,7 @@ use App\Models\EstacionamientoModel;
 use App\Models\ProgramacionModel;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class ProgramacionController extends Controller
@@ -116,52 +117,72 @@ class ProgramacionController extends Controller
     }
     public function store(Request $request)
     {
+        $start_date = Carbon::parse($request->fecha_inicio);
+        $end_date = Carbon::parse($request->fecha_fin);
+
+        $period = new CarbonPeriod($start_date, '1 day', $end_date);
+
         //Validacion por fecha y estacionamiento
-        $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento_id)
-            ->whereDate("fecha", $request->fecha)
+        foreach ($period as $dt) {
+            $newDate = $dt->format("Y-m-d");
+            
+            $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento_id)
+            ->whereDate("fecha", $newDate)
             ->first();
-        if ($register) {
-            if( ($request->turno == "M" || $request->turno == "D" ) && $register->turno == "M"){
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
-            } else if( ($request->turno == "T" || $request->turno == "D" ) && $register->turno == "T"){
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
-            } else if ($register->turno == "D") {
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
+            if ($register) {
+                if (($request->turno == "M" || $request->turno == "D") && $register->turno == "M") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if (($request->turno == "T" || $request->turno == "D") && $register->turno == "T") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if ($register->turno == "D") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "isSuccess" => false
+                    ]);
+                }
             }
         }
 
         //validacion por usuario y fecha
-        $register2 = ProgramacionModel::where("user_id", $request->user_id)
-        ->whereDate("fecha", $request->fecha)
+        foreach ($period as $dt) {
+            $newDate = $dt->format("Y-m-d");
+
+            $register2 = ProgramacionModel::where("user_id", $request->user_id)
+            ->whereDate("fecha", $newDate)
             ->first();
-        if ($register2) {
-            if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
-            } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
-            } else if ($register2->turno == "D") {
-                return response()->json([
-                    "message" => "Estacionamiento ocupado",
-                    "isSuccess" => false
-                ]);
+
+            if ($register2) {
+                if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if ($register2->turno == "D") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                }
             }
         }
-        $schedule = ProgramacionModel::create($request->post());
+        
+        //crear programación
+        $payload = $request->except(['fecha_inicio', 'fecha_fin']);
+        foreach ($period as $dt) {
+            $payload["fecha"] = $dt->format("Y-m-d");
+            $schedule = ProgramacionModel::create($payload);
+        }
         $schedules = ProgramacionModel::select('*')
             ->get()
             ->groupBy(function ($date) {
@@ -190,8 +211,7 @@ class ProgramacionController extends Controller
         return response()->json([
             "isSuccess" => true,
             "schedules" => $schedulesFilter,
-            "nextSchedules" => $nextSchedules,
-            "register" => $register
+            "nextSchedules" => $nextSchedules
         ]);
     }
 

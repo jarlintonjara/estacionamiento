@@ -220,11 +220,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
  //you need to import the CSS manually
 
 
@@ -234,21 +229,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     DateRangePicker: (vue2_daterange_picker__WEBPACK_IMPORTED_MODULE_1___default())
   },
   data: function data() {
+    var startDate = new Date();
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate());
     return {
-      //dateRange: Date.now(),
-      dateRange: {
-        startDate: '',
-        endDate: ''
+      pickerDates: {
+        startDate: startDate,
+        endDate: endDate
       },
-      direction: 'ltr',
-      format: 'mm/dd/yyyy',
-      separator: ' - ',
-      applyLabel: 'Apply',
-      cancelLabel: 'Cancel',
-      weekLabel: 'W',
-      customRangeLabel: 'Custom Range',
-      daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      locale: {
+        format: 'mm/dd/yyyy',
+        separator: ' - ',
+        applyLabel: 'Aplicar',
+        cancelLabel: 'Cancel',
+        daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
+      },
       firstDay: 0,
       users: [],
       session: {},
@@ -268,6 +264,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         estacionamiento_id: '',
         user_id: '',
         fecha: '',
+        fecha_inicio: startDate,
+        fecha_fin: endDate,
         hora_inicio: '',
         hora_fin: '',
         turno: '',
@@ -336,6 +334,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     return mounted;
   }(),
+  filters: {
+    date: function date(_date) {
+      return new Intl.DateTimeFormat("en-US").format(_date);
+    }
+  },
   methods: {
     init: function init() {
       var _this2 = this;
@@ -376,7 +379,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     validarCampos: function validarCampos() {
-      if (!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.fecha || !this.datos.hora_inicio || !this.datos.hora_fin) {
+      if (!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
         this.$swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -510,13 +513,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 valid = _context4.sent;
                 resp = false;
+                _this3.datos.fecha_inicio = _this3.pickerDates.startDate;
+                _this3.datos.fecha_fin = _this3.pickerDates.endDate;
 
                 if (!valid) {
-                  _context4.next = 14;
+                  _context4.next = 16;
                   break;
                 }
 
-                _context4.next = 7;
+                _context4.next = 9;
                 return axios.post('api/programacion', _this3.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
                     _this3.$swal.fire({
@@ -536,23 +541,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 7:
+              case 9:
                 if (!resp) {
-                  _context4.next = 14;
+                  _context4.next = 16;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context4.next = 12;
+                _context4.next = 14;
                 return _this3.validarRole();
 
-              case 12:
+              case 14:
                 _this3.$tablaGlobal('#td-schedule');
 
                 _this3.$tablaGlobal('#td-schedule2');
 
-              case 14:
+              case 16:
               case "end":
                 return _context4.stop();
             }
@@ -652,6 +657,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     abrirModalCrear: function abrirModalCrear() {
+      var startDate = new Date();
+      var endDate = new Date();
+      endDate.setDate(endDate.getDate());
+      this.pickerDates = {
+        startDate: startDate,
+        endDate: endDate
+      };
       this.allDay = false;
       this.morning = false;
       this.afternoon = false;
@@ -659,6 +671,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
       this.datos.user_id = '';
       this.datos.fecha = '';
+      this.datos.fecha_inicio = '';
+      this.datos.fecha_fin = '';
       this.datos.hora_inicio = '';
       this.datos.hora_fin = '';
       this.datos.observacion = '';
@@ -1942,57 +1956,35 @@ var render = function () {
                         _vm._v("Fecha de programación"),
                       ]),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.datos.fecha,
-                            expression: "datos.fecha",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "date",
-                          id: "pickerProgramacion",
-                          placeholder: "Fecha",
-                        },
-                        domProps: { value: _vm.datos.fecha },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.datos, "fecha", $event.target.value)
-                          },
-                        },
-                      }),
-                      _vm._v(" "),
                       _c("date-range-picker", {
-                        ref: "picker",
-                        attrs: {
-                          "locale-data": {
-                            firstDay: 1,
-                            format: "dd-mm-yyyy HH:mm:ss",
-                          },
-                          dateFormat: _vm.dateFormat,
-                        },
+                        attrs: { "locale-data": _vm.locale },
                         scopedSlots: _vm._u([
                           {
                             key: "input",
-                            fn: function (picker) {
+                            fn: function (pickerDates) {
                               return [
                                 _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(_vm._f("date")(picker.startDate)) +
+                                  _vm._s(
+                                    _vm._f("date")(pickerDates.startDate)
+                                  ) +
                                     " - " +
-                                    _vm._s(_vm._f("date")(picker.endDate)) +
-                                    "\n                                    "
+                                    _vm._s(
+                                      _vm._f("date")(pickerDates.endDate)
+                                    ) +
+                                    " "
                                 ),
+                                _c("i", { staticClass: "fa fa-calendar" }),
                               ]
                             },
                           },
                         ]),
+                        model: {
+                          value: _vm.pickerDates,
+                          callback: function ($$v) {
+                            _vm.pickerDates = $$v
+                          },
+                          expression: "pickerDates",
+                        },
                       }),
                     ],
                     1
