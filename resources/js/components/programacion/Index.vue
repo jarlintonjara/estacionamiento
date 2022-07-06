@@ -123,7 +123,10 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="Fecha">Fecha de programación</label>
-                                    <date-range-picker v-model="pickerDates" :locale-data="locale">
+                                    <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                        placeholder="Fecha" v-model="datos.fecha">
+
+                                    <date-range-picker v-if="!btnEditar" v-model="pickerDates" :locale-data="locale">
                                         <template v-slot:input="pickerDates" style="min-width: 350px;">{{
                                             pickerDates.startDate | date }} - {{ pickerDates.endDate | date
                                             }} <i class="fa fa-calendar"></i></template>

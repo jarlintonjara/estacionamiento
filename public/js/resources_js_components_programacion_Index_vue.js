@@ -220,6 +220,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
  //you need to import the CSS manually
 
 
@@ -1956,36 +1959,77 @@ var render = function () {
                         _vm._v("Fecha de programación"),
                       ]),
                       _vm._v(" "),
-                      _c("date-range-picker", {
-                        attrs: { "locale-data": _vm.locale },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "input",
-                            fn: function (pickerDates) {
-                              return [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm._f("date")(pickerDates.startDate)
-                                  ) +
-                                    " - " +
-                                    _vm._s(
-                                      _vm._f("date")(pickerDates.endDate)
-                                    ) +
-                                    " "
-                                ),
-                                _c("i", { staticClass: "fa fa-calendar" }),
-                              ]
+                      _vm.btnEditar
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.fecha,
+                                expression: "datos.fecha",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              id: "pickerProgramacion",
+                              placeholder: "Fecha",
                             },
-                          },
-                        ]),
-                        model: {
-                          value: _vm.pickerDates,
-                          callback: function ($$v) {
-                            _vm.pickerDates = $$v
-                          },
-                          expression: "pickerDates",
-                        },
-                      }),
+                            domProps: { value: _vm.datos.fecha },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "fecha",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.btnEditar
+                        ? _c("date-range-picker", {
+                            attrs: { "locale-data": _vm.locale },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "input",
+                                  fn: function (pickerDates) {
+                                    return [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm._f("date")(pickerDates.startDate)
+                                        ) +
+                                          " - " +
+                                          _vm._s(
+                                            _vm._f("date")(pickerDates.endDate)
+                                          ) +
+                                          " "
+                                      ),
+                                      _c("i", {
+                                        staticClass: "fa fa-calendar",
+                                      }),
+                                    ]
+                                  },
+                                },
+                              ],
+                              null,
+                              false,
+                              3777879630
+                            ),
+                            model: {
+                              value: _vm.pickerDates,
+                              callback: function ($$v) {
+                                _vm.pickerDates = $$v
+                              },
+                              expression: "pickerDates",
+                            },
+                          })
+                        : _vm._e(),
                     ],
                     1
                   ),

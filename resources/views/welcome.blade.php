@@ -33,7 +33,6 @@
 
     <link rel="stylesheet" media="screen, print" href="{{ asset('admin/css/markdown.css') }}">
     <link rel="stylesheet" media="screen, print" href="{{ asset('admin/css/datagrid/datatables/datatables.bundle.css') }}">
-    <link rel="stylesheet" media="screen, print" href="{{ asset('admin/css/formplugins/bootstrap-daterangepicker/bootstrap-daterangepicker.css') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
@@ -62,16 +61,8 @@
     <script src="{{ asset('admin/js/vendors.bundle.js') }}"></script>
     <script src="{{ asset('admin/js/app.bundle.js') }}"></script>
     <script src="{{ asset('admin/js/datagrid/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('admin/js/formplugins/bootstrap-daterangepicker/bootstrap-daterangepicker.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $(function() {
-                $('#pickerProgramacion').daterangepicker({
-                    opens: 'left'
-                }, function(start, end, label) {
-                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-                });
-            });
             /* init datatables */
             $('#dt-basic-example').dataTable({
                 responsive: true,

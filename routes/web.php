@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ScheduleExportController;
+use App\Http\Controllers\EventController;
 use App\Mail\SchedulesForTomorrow;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
 */
 
 Route::get( 'test', function(){
-    $correo = SettingModel::first();
+    /* $correo = SettingModel::first();
 
     // $texto = "Hola";
     // Storage::append("archivo.txt",$texto);
@@ -50,8 +50,14 @@ Route::get( 'test', function(){
     Mail::to($correo->email)
         ->cc($correos)
         ->send($email);
-    return "Mensaje enviado";
+    return "Mensaje enviado"; */
 });
+
+Route::get('event/{event}/{user}', 'EventController@subscribe')
+    ->name('event.subscribe');
+
+Route::get('event/link-subscribe', [EventController::class, 'getLinkSubscribe'])
+    ->name('event.getLinkSubscribe');
 
 Route::get('/{any}', function () {
     return view('welcome');
