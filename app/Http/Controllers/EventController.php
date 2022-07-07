@@ -78,6 +78,6 @@ class EventController extends Controller
         }
 
         ProgramacionModel::create($payload);
-        return view('requestEmail', ['message' => 'Te has programado al estacionamiento ' . $parking->numero, 'error' => false]);
+        return view('requestEmail', ['message' => 'Te has programado el estacionamiento numero' . $parking->numero.' para el dia de mañana', 'error' => false]);
     }   
 }

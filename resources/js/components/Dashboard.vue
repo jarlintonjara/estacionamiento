@@ -314,13 +314,13 @@
                                             <a :href="'https://api.whatsapp.com/send?phone=51' + pmd.telefono +'&text=Hola'"
                                                 target="_blank" v-if="pmd.telefono && pmd.telefono.length == 9"
                                                 class="btn btn-success">
-                                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> mensaje
+                                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                                             </a>
+
                                         </td>
                                         <td>
-                                            <button @click="sendEmail(pmd)"
-                                                class="btn btn-primary">
-                                                <i class="fa fa-list" aria-hidden="true"></i> Solicitud
+                                            <button @click="sendEmail(pmd)" class="btn btn-primary">
+                                                <i class="fa fa-envelope" aria-hidden="true"></i> Solicitud
                                             </button>
                                         </td>
                                     </tr>

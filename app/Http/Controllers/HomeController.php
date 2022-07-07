@@ -42,15 +42,15 @@ class HomeController extends Controller
             $pml["propietario"] = $pml->propietario;
         }
         $estacioneshoy = User::select(
-                            'users.id as user_id',
-                            'estacionamiento.id',
-                            'estacionamiento.numero',
-                            'users.nombre',
-                            'users.apellido',
-                            'users.telefono',
-                            'users.email',
-                            'estacionamiento.sede',
-                            'estacionamiento.ubicacion')
+                'users.id as user_id',
+                'estacionamiento.id',
+                'estacionamiento.numero',
+                'users.nombre',
+                'users.apellido',
+                'users.telefono',
+                'users.email',
+                'estacionamiento.sede',
+                'estacionamiento.ubicacion')
                 ->rightJoin('estacionamiento', 'users.parking_id', '=', 'estacionamiento.id')
                 ->whereNotIn('estacionamiento.id', $ids2)
                 ->get();

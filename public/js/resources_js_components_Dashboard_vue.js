@@ -1927,9 +1927,6 @@ var render = function () {
                                         staticClass: "fa-brands fa-whatsapp",
                                         attrs: { "aria-hidden": "true" },
                                       }),
-                                      _vm._v(
-                                        " mensaje\n                                        "
-                                      ),
                                     ]
                                   )
                                 : _vm._e(),
@@ -1948,7 +1945,7 @@ var render = function () {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "fa fa-list",
+                                    staticClass: "fa fa-envelope",
                                     attrs: { "aria-hidden": "true" },
                                   }),
                                   _vm._v(
