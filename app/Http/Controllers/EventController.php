@@ -84,7 +84,7 @@ class EventController extends Controller
         $page = new ConfirmationParkingMail($user["nombre"], $parking["numero"]);
 
         //Mail::to("fredy.acp25@gmail.com")
-        Mail::to($request->parking["email"])
+        Mail::to($user["email"])
             ->send($page);
 
         return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero' . $parking->numero.' para el dia de mañana', 'error' => false]);
