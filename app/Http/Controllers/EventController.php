@@ -29,12 +29,14 @@ class EventController extends Controller
 
         date_default_timezone_set("America/Lima");
         $fecha = date('Y-m-d');
+        $nuevafecha = strtotime('+1 day', strtotime($fecha));
+        $nuevafecha = date('Y-m-d', $nuevafecha);
         
         $parking = EstacionamientoModel::find($request->estacionamiento);
 
         $payload["user_id"] = $user->id;
         $payload["estacionamiento_id"] = $parking->id;
-        $payload["fecha"] = $fecha;
+        $payload["fecha"] = $nuevafecha;
         $payload["hora_inicio"] = "07:00:00";
         $payload["hora_fin"] = "19:00:00";
         $payload["fecha"] = $fecha;
