@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
+use App\Mail\ConfirmationParkingMail;
 use App\Models\{Event, User, EstacionamientoModel, ProgramacionModel};
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use \Illuminate\Support\Facades\URL;
 
 class EventController extends Controller
@@ -78,6 +80,13 @@ class EventController extends Controller
         }
 
         ProgramacionModel::create($payload);
-        return view('requestEmail', ['message' => 'Te has programado el estacionamiento numero' . $parking->numero.' para el dia de mañana', 'error' => false]);
+
+        $page = new ConfirmationParkingMail($user["nombre"], $parking["numero"]);
+
+        //Mail::to("fredy.acp25@gmail.com")
+        Mail::to($request->parking["email"])
+            ->send($page);
+
+        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero' . $parking->numero.' para el dia de mañana', 'error' => false]);
     }   
 }
