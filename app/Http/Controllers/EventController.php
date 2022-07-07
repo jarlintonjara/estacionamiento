@@ -16,7 +16,7 @@ class EventController extends Controller
         $parking = EstacionamientoModel::find($parking_id);
         return URL::temporarySignedRoute(
             'event.programming',
-            now()->addMinutes(1),
+            now()->addHours(8),
             ['user' => $user, 'estacionamiento' => $parking]
         );
     }
