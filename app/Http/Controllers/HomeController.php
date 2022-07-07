@@ -103,11 +103,11 @@ class HomeController extends Controller
 
     function sendEmail(Request $request)
     {
-        $user_id = $request->user->id; 
-        $parking_id = $request->parking->id; 
+        $user_id = $request->user["id"]; 
+        $parking_id = $request->parking["id"]; 
         $event = new EventController();
         $link = $event->getLinkProgramming($user_id, $parking_id);
-        $page = new RequestParking($request->user->nombre, $request->parking->numero, $request->parking->nombre, $link);
+        $page = new RequestParking($request->user["nombre"], $request->parking["numero"], $request->parking["nombre"], $link);
         
         Mail::to("fredy.acp25@gmail.com")
             ->send($page);
