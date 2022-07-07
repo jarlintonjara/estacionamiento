@@ -409,16 +409,13 @@ export default {
                     x.style.display = "none";
             }
         },
-        async sendEmail(row){
+        async sendEmail(row) {
             await axios.post('/api/sendEmail',{
-                    'user': this.user.nombre,
-                    'name': row.name,
-                    'numero': row.numero,
-                    "email": row.email,
-                    "link": row.link 
+                    'user': this.user,
+                    'parking': row
             }).then((res) => {
                 this.$swal.fire(
-                    'Solicitud de correo enviado',
+                    'Solicitud enviada',
                     '',
                     'success'
                 )

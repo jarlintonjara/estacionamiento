@@ -469,13 +469,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.next = 2;
                 return axios.post('/api/sendEmail', {
-                  'user': _this2.user.nombre,
-                  'name': row.name,
-                  'numero': row.numero,
-                  "email": row.email,
-                  "link": row.link
+                  'user': _this2.user,
+                  'parking': row
                 }).then(function (res) {
-                  _this2.$swal.fire('Solicitud de correo enviado', '', 'success');
+                  _this2.$swal.fire('Solicitud enviada', '', 'success');
 
                   console.log(res);
                 })["catch"](function (error) {

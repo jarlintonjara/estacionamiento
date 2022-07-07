@@ -62,10 +62,7 @@ class HomeController extends Controller
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
         }
-        $event = new EventController();
-        foreach ($estacioneshoy as $row) {
-            $row["link"] = $event->getLinkProgramming(143, $row["id"]);
-        }
+
         $estacionesma = User::select(
             'users.id as user_id',
             'estacionamiento.id',
@@ -104,10 +101,14 @@ class HomeController extends Controller
         ]);
     }
 
-    function sendEmail(Request $request){
-
-        $page = new RequestParking($request->user, $request->numero, $request->name, $request->link);
-
+    function sendEmail(Request $request)
+    {
+        $user_id = $request->user->id; 
+        $parking_id = $request->parking->id; 
+        $event = new EventController();
+        $link = $event->getLinkProgramming($user_id, $parking_id);
+        $page = new RequestParking($request->user->nombre, $request->parking->numero, $request->parking->nombre, $link);
+        
         Mail::to("fredy.acp25@gmail.com")
             ->send($page);
 
