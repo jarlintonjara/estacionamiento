@@ -67,14 +67,15 @@ class HomeController extends Controller
             $row["link"] = $event->getLinkProgramming(143, $row["id"]);
         }
         $estacionesma = User::select(
-                            'estacionamiento.id',
-                            'estacionamiento.numero',
-                            'users.nombre',
-                            'users.apellido',
-                            'users.telefono',
-                            'users.email',
-                            'estacionamiento.sede',
-                            'estacionamiento.ubicacion')
+            'users.id as user_id',
+            'estacionamiento.id',
+            'estacionamiento.numero',
+            'users.nombre',
+            'users.apellido',
+            'users.telefono',
+            'users.email',
+            'estacionamiento.sede',
+            'estacionamiento.ubicacion')
         ->rightJoin('estacionamiento', 'users.parking_id', '=', 'estacionamiento.id')
         ->whereNotIn('estacionamiento.id', $ids)
         ->get();
@@ -105,14 +106,11 @@ class HomeController extends Controller
 
     function sendEmail(Request $request){
 
-        $page = new RequestParking($request->name, $request->link);
+        $page = new RequestParking($request->user, $request->numero, $request->name, $request->link);
 
         Mail::to("fredy.acp25@gmail.com")
             ->send($page);
 
-        /* Mail::send('mail.schedulesTomorrow', [], function ($message) {
-            $message->to($email)->subject('Prueba !');
-        });  */
-        return response()->json(["message" => "exitoso"]);
+        return response()->json(["message" => "exitoso", "isSuccess" => true]);
     }
 }

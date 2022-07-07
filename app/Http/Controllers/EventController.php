@@ -24,7 +24,7 @@ class EventController extends Controller
     public function programming(Request $request, User $user, EstacionamientoModel $parking)
     {
         if (!$request->hasValidSignature()) {
-            abort(403);
+            return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
         }
 
         date_default_timezone_set("America/Lima");
@@ -49,13 +49,13 @@ class EventController extends Controller
 
         if ($register) {
             if (($payload["turno"] == "M" || $payload["turno"] == "D") && $register->turno == "M") {
-                return response('El usuario ya tiene una programación en la mañana');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la mañana', 'error' => true]);
 
             } else if (($payload["turno"] == "T" || $payload["turno"] == "D") && $register->turno == "T") {
-                return response('El usuario ya tiene una programación en la tarde');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la tarde', 'error' => true]);
             
             } else if ($register->turno == "D") {
-                return response('El usuario ya tiene una programación todo el día');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación todo el día', 'error' => true]);
             }
         }
 
@@ -63,20 +63,20 @@ class EventController extends Controller
         $register2 = ProgramacionModel::where("user_id", $payload["user_id"])
         ->whereDate("fecha", $payload["fecha"])
             ->first();
+
         if ($register2) {
             if (($payload["turno"] == "M" || $payload["turno"] == "D") && $register2->turno == "M") {
-                return response('El usuario ya tiene una programación en la mañana');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la mañana', 'error' => true]);
 
             } else if (($payload["turno"] == "T" || $payload["turno"] == "D") && $register2->turno == "T") {
-                return response('El usuario ya tiene una programación en la tarde');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la tarde', 'error' => true]);
 
             } else if ($register2->turno == "D") {
-                return response('El usuario ya tiene una programación todo el día');
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación todo el día', 'error' => true]);
             }
         }
 
         ProgramacionModel::create($payload);
-
-        return response('Te has programado al estacionamiento '.$parking->numero);
+        return view('requestEmail', ['message' => 'Te has programado al estacionamiento ' . $parking->numero, 'error' => false]);
     }   
 }

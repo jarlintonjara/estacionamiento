@@ -364,11 +364,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       item1: true,
       item2: false,
+      user: null,
       schedules: [],
       programacionma: [],
       estacionesma: [],
@@ -396,11 +400,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var token;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                token = localStorage.getItem('access_token');
+                _context.next = 3;
+                return axios.get('api/getSession/' + token).then(function (res) {
+                  _this.user = res.data;
+                });
+
+              case 3:
+                _context.next = 5;
                 return _this.axios.get('/api/dashboard').then(function (response) {
                   var report = response.data;
                   _this.report.totalUsers = report.usersTotal;
@@ -418,7 +430,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 2:
+              case 5:
                 _this.$tablaGlobal('#td-ocupadoshoy');
 
                 _this.$tablaGlobal('#td-disponibleshoy');
@@ -427,7 +439,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.$tablaGlobal('#td-disponiblesman');
 
-              case 6:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -447,16 +459,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         x.style.display = "none";
       }
     },
-    logout: function logout() {
+    sendEmail: function sendEmail(row) {
       var _this2 = this;
 
-      axios.post('/api/logout').then(function () {
-        _this2.$router.push({
-          name: "Login"
-        });
-      });
-    },
-    sendEmail: function sendEmail(name, email, link) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -464,11 +469,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.next = 2;
                 return axios.post('/api/sendEmail', {
-                  'name': name,
-                  "email": email,
-                  "link": link
+                  'user': _this2.user.nombre,
+                  'name': row.name,
+                  'numero': row.numero,
+                  "email": row.email,
+                  "link": row.link
                 }).then(function (res) {
+                  _this2.$swal.fire('Solicitud de correo enviado', '', 'success');
+
                   console.log(res);
+                })["catch"](function (error) {
+                  _this2.$swal.fire({
+                    icon: 'error',
+                    title: 'Error de envio',
+                    text: 'Ocurrio un error'
+                  });
                 });
 
               case 2:
@@ -1781,60 +1796,6 @@ var render = function () {
                             _c("td", [_vm._v(_vm._s(pmd.email))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              pmd.telefono && pmd.telefono.length == 9
-                                ? _c(
-                                    "a",
-                                    {
-                                      staticClass: "btn btn-success",
-                                      attrs: {
-                                        href:
-                                          "https://api.whatsapp.com/send?phone=51" +
-                                          pmd.telefono +
-                                          "&text=Hola",
-                                        target: "_blank",
-                                      },
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa-brands fa-whatsapp",
-                                        attrs: { "aria-hidden": "true" },
-                                      }),
-                                      _vm._v(
-                                        " mensaje\n                                        "
-                                      ),
-                                    ]
-                                  )
-                                : _vm._e(),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.sendEmail(
-                                        pmd.nombre,
-                                        pmd.email,
-                                        pmd.link
-                                      )
-                                    },
-                                  },
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-list",
-                                    attrs: { "aria-hidden": "true" },
-                                  }),
-                                  _vm._v(
-                                    " Solicitud\n                                        "
-                                  ),
-                                ]
-                              ),
-                            ]),
                           ])
                         }),
                         0
@@ -1945,6 +1906,60 @@ var render = function () {
                             _c("td", [_vm._v(_vm._s(pmd.sede))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(pmd.ubicacion))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.telefono))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(pmd.email))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              pmd.telefono && pmd.telefono.length == 9
+                                ? _c(
+                                    "a",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: {
+                                        href:
+                                          "https://api.whatsapp.com/send?phone=51" +
+                                          pmd.telefono +
+                                          "&text=Hola",
+                                        target: "_blank",
+                                      },
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa-brands fa-whatsapp",
+                                        attrs: { "aria-hidden": "true" },
+                                      }),
+                                      _vm._v(
+                                        " mensaje\n                                        "
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.sendEmail(pmd)
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-list",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(
+                                    " Solicitud\n                                        "
+                                  ),
+                                ]
+                              ),
+                            ]),
                           ])
                         }),
                         0
@@ -2128,10 +2143,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Ubicación")]),
-        _vm._v(" "),
-        _c("th"),
-        _vm._v(" "),
-        _c("th"),
       ]),
     ])
   },
@@ -2256,6 +2267,14 @@ var staticRenderFns = [
         _c("th", [_vm._v("Sede")]),
         _vm._v(" "),
         _c("th", [_vm._v("Ubicación")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Telefono")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th"),
+        _vm._v(" "),
+        _c("th"),
       ]),
     ])
   },

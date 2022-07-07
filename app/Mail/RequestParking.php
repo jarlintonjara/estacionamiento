@@ -16,8 +16,10 @@ class RequestParking extends Mailable
      *
      * @return void
      */
-    public function __construct($name, $link)
+    public function __construct($user, $numero, $name, $link)
     {
+        $this->user = $user;
+        $this->numero = $numero;
         $this->name = $name;
         $this->link = $link;
     }
@@ -31,6 +33,8 @@ class RequestParking extends Mailable
     {
         return $this->view('mail.requestParking')
         ->subject('Solicitud de estacionamiento')->with([
+            'user'=> $this->user,
+            'numero'=> $this->numero,
             'name'=> $this->name,
             'link'=> $this->link, 
         ]);

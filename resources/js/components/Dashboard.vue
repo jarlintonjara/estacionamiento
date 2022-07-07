@@ -196,8 +196,6 @@
                                         <th>Telefono</th>
                                         <th>Email</th>
                                         <th>Ubicación</th>
-                                        <th></th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -209,19 +207,6 @@
                                         <td>{{ pmd.telefono }}</td>
                                         <td>{{ pmd.email }}</td>
                                         <td>{{ pmd.ubicacion }}</td>
-                                        <td>
-                                            <a :href="'https://api.whatsapp.com/send?phone=51' + pmd.telefono +'&text=Hola'"
-                                                target="_blank" v-if="pmd.telefono && pmd.telefono.length == 9"
-                                                class="btn btn-success">
-                                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> mensaje
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <button @click="sendEmail(pmd.nombre, pmd.email, pmd.link)"
-                                                class="btn btn-primary">
-                                                <i class="fa fa-list" aria-hidden="true"></i> Solicitud
-                                            </button>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -311,7 +296,10 @@
                                         <th>Propietario</th>
                                         <th>Sede</th>
                                         <th>Ubicación</th>
-
+                                        <th>Telefono</th>
+                                        <th>Email</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -320,6 +308,21 @@
                                         <td>{{ pmd.nombre + " " + pmd.apellido}}</td>
                                         <td>{{ pmd.sede }}</td>
                                         <td>{{ pmd.ubicacion }}</td>
+                                        <td>{{ pmd.telefono }}</td>
+                                        <td>{{ pmd.email }}</td>
+                                        <td>
+                                            <a :href="'https://api.whatsapp.com/send?phone=51' + pmd.telefono +'&text=Hola'"
+                                                target="_blank" v-if="pmd.telefono && pmd.telefono.length == 9"
+                                                class="btn btn-success">
+                                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> mensaje
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button @click="sendEmail(pmd)"
+                                                class="btn btn-primary">
+                                                <i class="fa fa-list" aria-hidden="true"></i> Solicitud
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -338,7 +341,8 @@ export default {
     data(){
         return{
             item1:true,
-            item2:false,
+            item2: false,
+            user: null,
             schedules: [],
             programacionma: [],
             estacionesma: [],
@@ -363,6 +367,10 @@ export default {
     },
     methods:{
         async init() {
+            const token = localStorage.getItem('access_token');
+            await axios.get('api/getSession/' + token).then((res) => {
+                this.user = res.data;
+            });
 
             await this.axios.get('/api/dashboard')
                     .then(response=> {
@@ -401,16 +409,28 @@ export default {
                     x.style.display = "none";
             }
         },
-        logout(){
-            axios.post('/api/logout').then(()=>{
-                this.$router.push({ name: "Login"})
-            })
-        },
-        async sendEmail(name, email, link){
-            await axios.post('/api/sendEmail', {'name' :name, "email" : email, "link" : link 
-             }).then((res)=>{
-                console.log(res)
-            }); 
+        async sendEmail(row){
+            await axios.post('/api/sendEmail',{
+                    'user': this.user.nombre,
+                    'name': row.name,
+                    'numero': row.numero,
+                    "email": row.email,
+                    "link": row.link 
+            }).then((res) => {
+                this.$swal.fire(
+                    'Solicitud de correo enviado',
+                    '',
+                    'success'
+                )
+                 console.log(res)
+                
+             }).catch(error => {
+                 this.$swal.fire({
+                     icon: 'error',
+                     title: 'Error de envio',
+                     text: 'Ocurrio un error',
+                 })
+             }); 
         },
         exportExcel(){
             axios.get('/api/export').then((res)=>{
