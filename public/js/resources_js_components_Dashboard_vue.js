@@ -463,7 +463,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/sendEmail/' + name + '/' + email + '/' + link).then(function (res) {
+                return axios.post('/api/sendEmail', {
+                  'name': name,
+                  "email": email,
+                  "link": link
+                }).then(function (res) {
                   console.log(res);
                 });
 

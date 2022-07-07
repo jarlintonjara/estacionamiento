@@ -407,7 +407,8 @@ export default {
             })
         },
         async sendEmail(name, email, link){
-            await axios.get('/sendEmail/' + name + '/' + email +'/'+link).then((res)=>{
+            await axios.post('/api/sendEmail', {'name' :name, "email" : email, "link" : link 
+             }).then((res)=>{
                 console.log(res)
             }); 
         },

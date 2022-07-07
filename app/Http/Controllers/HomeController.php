@@ -103,9 +103,9 @@ class HomeController extends Controller
         ]);
     }
 
-    function sendEmail($name, $email, $link ){
+    function sendEmail(Request $request){
 
-        $page = new RequestParking($name, $link);
+        $page = new RequestParking($request->name, $request->link);
 
         Mail::to("fredy.acp25@gmail.com")
             ->send($page);
