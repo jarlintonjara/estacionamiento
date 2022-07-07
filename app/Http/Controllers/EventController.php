@@ -39,7 +39,6 @@ class EventController extends Controller
         $payload["fecha"] = $nuevafecha;
         $payload["hora_inicio"] = "07:00:00";
         $payload["hora_fin"] = "19:00:00";
-        $payload["fecha"] = $fecha;
         $payload["created_by"] = 196;
         $payload["turno"] = "D";
         $payload["observacion"] = "Creado pòr solicitud";
