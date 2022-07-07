@@ -197,6 +197,7 @@
                                         <th>Email</th>
                                         <th>Ubicación</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -214,6 +215,12 @@
                                                 class="btn btn-success">
                                                 <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> mensaje
                                             </a>
+                                        </td>
+                                        <td>
+                                            <button @click="sendEmail(pmd.nombre, pmd.email, pmd.link)"
+                                                class="btn btn-primary">
+                                                <i class="fa fa-list" aria-hidden="true"></i> Solicitud
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -332,7 +339,6 @@ export default {
         return{
             item1:true,
             item2:false,
-            user: null,
             schedules: [],
             programacionma: [],
             estacionesma: [],
@@ -356,8 +362,9 @@ export default {
         this.init();
     },
     methods:{
-        async init(){
-             await this.axios.get('/api/dashboard')
+        async init() {
+
+            await this.axios.get('/api/dashboard')
                     .then(response=> {
                         let report = response.data;
                         this.report.totalUsers = report.usersTotal;
@@ -399,8 +406,8 @@ export default {
                 this.$router.push({ name: "Login"})
             })
         },
-        sendEmail(){
-            axios.get('/sendEmail').then((res)=>{
+        async sendEmail(name, email, link){
+            await axios.get('/sendEmail/' + name + '/' + email +'/'+link).then((res)=>{
                 console.log(res)
             }); 
         },

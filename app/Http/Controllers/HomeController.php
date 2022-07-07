@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RequestParking;
 use App\Mail\SchedulesForTomorrow;
 use App\Models\EstacionamientoModel;
 use App\Models\ProgramacionModel;
@@ -35,12 +36,13 @@ class HomeController extends Controller
         $programacionhoy = ProgramacionModel::whereDate("fecha",$fecha)->get();
         $ids2= [];
         foreach ($programacionhoy as $pml) {
-            array_push($ids2,$pml->id);
+            array_push($ids2,$pml->estacionamiento_id);
             $pml["user"] = $pml->user;
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
         }
         $estacioneshoy = User::select(
+                            'users.id as user_id',
                             'estacionamiento.id',
                             'estacionamiento.numero',
                             'users.nombre',
@@ -59,6 +61,10 @@ class HomeController extends Controller
             $pml["user"] = $pml->user;
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
+        }
+        $event = new EventController();
+        foreach ($estacioneshoy as $row) {
+            $row["link"] = $event->getLinkProgramming(143, $row["id"]);
         }
         $estacionesma = User::select(
                             'estacionamiento.id',
@@ -97,32 +103,16 @@ class HomeController extends Controller
         ]);
     }
 
-    function sendEmail(){
-        /* $validator = \Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:255',
-                'email' => 'required|email|max:255',
-                'subject' => 'required',
-                'bodymessage' => 'required'
-            ]
-        );
+    function sendEmail($name, $email, $link ){
 
-        if ($validator->fails()) {
-            return redirect('contact')->withInput()->withErrors($validator);
-        } */
+        $page = new RequestParking($name, $link);
 
+        Mail::to("fredy.acp25@gmail.com")
+            ->send($page);
 
-        /*   $name = $request->name;
-        $email = $request->email;
-        $title = $request->subject;
-        $content = $request->bodymessage; */
-
-        //Mail::to("fredy.acp25@gmail.com")->send(new SchedulesForTomorrow);
-
-        Mail::send('mail.schedulesTomorrow', [], function ($message) {
-            $message->to('fredy.acp25@gmail.com')->subject('Prueba !');
-        }); 
+        /* Mail::send('mail.schedulesTomorrow', [], function ($message) {
+            $message->to($email)->subject('Prueba !');
+        });  */
         return response()->json(["message" => "exitoso"]);
     }
 }

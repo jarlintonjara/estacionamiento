@@ -357,12 +357,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       item1: true,
       item2: false,
-      user: null,
       schedules: [],
       programacionma: [],
       estacionesma: [],
@@ -450,10 +456,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       });
     },
-    sendEmail: function sendEmail() {
-      axios.get('/sendEmail').then(function (res) {
-        console.log(res);
-      });
+    sendEmail: function sendEmail(name, email, link) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get('/sendEmail/' + name + '/' + email + '/' + link).then(function (res) {
+                  console.log(res);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     },
     exportExcel: function exportExcel() {
       axios.get('/api/export').then(function (res) {
@@ -1784,6 +1804,33 @@ var render = function () {
                                   )
                                 : _vm._e(),
                             ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.sendEmail(
+                                        pmd.nombre,
+                                        pmd.email,
+                                        pmd.link
+                                      )
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-list",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                  _vm._v(
+                                    " Solicitud\n                                        "
+                                  ),
+                                ]
+                              ),
+                            ]),
                           ])
                         }),
                         0
@@ -2077,6 +2124,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Ubicación")]),
+        _vm._v(" "),
+        _c("th"),
         _vm._v(" "),
         _c("th"),
       ]),

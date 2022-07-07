@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EstacionamientoModel extends Model
 {
     use HasFactory;
-    //protected $primaryKey = 'flight_id';
+    protected $primaryKey = 'id';
     //public $timestamps = false;
 
     protected $table = 'estacionamiento';

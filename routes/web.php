@@ -53,11 +53,11 @@ Route::get( 'test', function(){
     return "Mensaje enviado"; */
 });
 
-Route::get('event/{event}/{user}', 'EventController@subscribe')
-    ->name('event.subscribe');
+Route::get('event/{user}/{estacionamiento}', [EventController::class, 'programming'])
+    ->name('event.programming');
 
-Route::get('event/link-subscribe', [EventController::class, 'getLinkSubscribe'])
-    ->name('event.getLinkSubscribe');
+Route::get('event/link-programming/{user}/{estacionamiento}', [EventController::class, 'getLinkProgramming'])
+    ->name('event.getLinkProgramming');
 
 Route::get('/{any}', function () {
     return view('welcome');
