@@ -57,7 +57,7 @@ class HomeController extends Controller
 
         $ids = [];
         foreach ($programacionma as $pml) {
-            array_push($ids,$pml->id);
+            array_push($ids,$pml->estacionamiento_id);
             $pml["user"] = $pml->user;
             $pml["parking"] = $pml->parking;
             $pml["propietario"] = $pml->propietario;
