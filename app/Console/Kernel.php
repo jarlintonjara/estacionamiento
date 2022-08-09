@@ -19,10 +19,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $time = SettingModel::first();
-
         $schedule->command('send:mail')->dailyAt($time->time);
-        // ->everySixHours();
-        // ->dailyAt($time->time);	
+        $schedule->command('send:programacionSemana')->fridays()->dailyAt('08:00:00');
     }
 
     /**
