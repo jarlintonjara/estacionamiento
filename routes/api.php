@@ -33,6 +33,7 @@ Route::get('getSession/{token}', [AuthController::class, 'getSession']);
 //Route::resource('estacionamiento', EstacionamientoController::class)->only(['index']);
 Route::get('dashboard', [HomeController::class, 'index']);
 Route::post('sendEmail', [HomeController::class, 'sendEmail']);
+Route::post('emailProgramacionSemanal', [HomeController::class, 'emailProgramacionSemanal']);
 Route::resource('programacion', ProgramacionController::class);
 Route::resource('estacionamiento', EstacionamientoController::class);
 Route::resource('setting', SettingController::class);

@@ -21,12 +21,12 @@ use Illuminate\Support\Facades\Storage;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/* 
 Route::get('test', function(){
-    $correo = SettingModel::first();
+    
+    try {
+        $correo = SettingModel::first();
 
-        // $texto = "Hola";
-        // Storage::append("archivo.txt",$texto);
         Storage::delete('schedule.xlsx');
 
         $s = new ScheduleExportController;
@@ -51,9 +51,15 @@ Route::get('test', function(){
         Mail::to($correo->email)
         ->cc($correos)
         ->send($email);
-        return "Mensaje enviado";
-});
 
+        return ["message" => "Correo enviado", "error" => ""];
+        
+    } catch (Exception $ex) {
+        return ["message" => "Error en el envio", "error" => $ex->getMessage()];
+    }
+    
+});
+ */
 Route::get('event/{user}/{estacionamiento}', [EventController::class, 'programming'])
     ->name('event.programming');
 

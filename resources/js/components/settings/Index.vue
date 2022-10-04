@@ -22,7 +22,12 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="col-md-12">
+                                <button class="btn btn-success" @click="envio">Envio de correo</button>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Hora</span>
@@ -30,7 +35,7 @@
                                     <input class="form-control" id="time" type="time" name="time" v-model="datos.time">
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="col-md-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Correo principal</span>
@@ -38,7 +43,7 @@
                                     <input type="email" id="email" name="email" aria-label="Email" class="form-control" v-model="datos.email">
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="col-md-12">
                                 <div class="input-group">
                                     <div class="input-group-prepend col-12 col-sm-12">
                                         <span class="input-group-text">Correos de copia</span>
@@ -115,7 +120,30 @@ export default {
                 console.log(error);
             });
         },
-        
+        envio() {
+            axios.post('/api/emailProgramacionSemanal').then((res) => {
+                if (res.data.success) {
+                    this.$swal.fire(
+                        'Solicitud enviada',
+                        '',
+                        'success'
+                    )
+                } else { 
+                    this.$swal.fire({
+                        icon: 'error',
+                        title: 'Error de envio',
+                        text: res.data.error,
+                    })
+                }
+               
+            }).catch(error => {
+                this.$swal.fire({
+                    icon: 'error',
+                    title: 'Error de envio',
+                    text: 'Ocurrio un error',
+                })
+            }); 
+        }
     }
 }
 </script>

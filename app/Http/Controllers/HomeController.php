@@ -6,9 +6,12 @@ use App\Mail\RequestParking;
 use App\Mail\SchedulesForTomorrow;
 use App\Models\EstacionamientoModel;
 use App\Models\ProgramacionModel;
+use App\Models\SettingModel;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -114,5 +117,42 @@ class HomeController extends Controller
             ->send($page);
 
         return response()->json(["message" => "exitoso", "isSuccess" => true]);
+    }
+
+    function emailProgramacionSemanal(Request $request)
+    {
+        try {
+            $correo = SettingModel::first();
+
+            Storage::delete('schedule.xlsx');
+
+            $s = new ScheduleExportController;
+            $s->export();
+
+            $email = new SchedulesForTomorrow;
+
+            $correos = [];
+            if ($correo->email1 != NULL OR $correo->email1 != '') {
+                array_push($correos,$correo->email1);
+            } 
+            if ($correo->email2 != NULL OR $correo->email2 != '') {
+                array_push($correos,$correo->email2);
+            } 
+            if ($correo->email3 != NULL OR $correo->email3 != '') {
+                array_push($correos,$correo->email3);
+            } 
+            if ($correo->email4 != NULL OR $correo->email4 != '') {
+                array_push($correos,$correo->email4);
+            }    
+            
+            Mail::to($correo->email)
+            ->cc($correos)
+            ->send($email);
+
+            return ["success" => true, "message" => "Correo enviado", "error" => ""];
+            
+        } catch (Exception $ex) {
+            return ["success" => false, "message" => "Error en el envio", "error" => $ex->getMessage()];
+        }
     }
 }
