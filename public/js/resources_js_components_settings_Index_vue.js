@@ -173,7 +173,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios.post('/api/emailProgramacionSemanal').then(function (res) {
         if (res.data.success) {
-          _this3.$swal.fire('Solicitud enviada', '', 'success');
+          _this3.$swal.fire('Correo enviado', '', 'success');
         } else {
           _this3.$swal.fire({
             icon: 'error',

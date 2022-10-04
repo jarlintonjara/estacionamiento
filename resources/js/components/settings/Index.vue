@@ -124,7 +124,7 @@ export default {
             axios.post('/api/emailProgramacionSemanal').then((res) => {
                 if (res.data.success) {
                     this.$swal.fire(
-                        'Solicitud enviada',
+                        'Correo enviado',
                         '',
                         'success'
                     )
