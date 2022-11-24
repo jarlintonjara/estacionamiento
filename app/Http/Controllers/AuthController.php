@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -60,6 +63,7 @@ class AuthController extends Controller
             ], 404);
         }
     }
+
     public function getSession($token)
     {
         [$id, $user_token] = explode('|', $token, 2);
@@ -79,5 +83,31 @@ class AuthController extends Controller
             DB::table('personal_access_tokens')->where('tokenable_id', $token_data->tokenable_id)->delete();
         }
         Auth::logout();
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!$request->hasValidSignature()) {
+            return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
+        }
+
+        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero para el dia de mañana', 'error' => false]);
+    } 
+
+    function sendResetLinkEmail($email)
+    {
+        $user = User::where('email', $email)->first();
+        if(!$user){
+            return response()->json(["message" => "El email ingresado no existe", "isSuccess" => false]);
+        }
+        try{
+            $event = new EventController();
+            $link = $event->getLinkPassword($user);
+            $page = new PasswordMail($user->nombre, $link);
+            Mail::to($user->email)->send($page);
+        }catch(\Exception $e){
+            return response()->json(["message" => $e->getMessage(), "isSuccess" => false]);
+        }
+        return response()->json(["message" => $link, "isSuccess" => true]);
     }
 }

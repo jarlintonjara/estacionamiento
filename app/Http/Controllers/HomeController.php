@@ -112,7 +112,6 @@ class HomeController extends Controller
         $link = $event->getLinkProgramming($user_id, $parking_id);
         $page = new RequestParking($request->user["nombre"], $request->parking["numero"], $request->parking["nombre"], $link);
         
-        //Mail::to("fredy.acp25@gmail.com")
         Mail::to($request->parking["email"])
             ->send($page);
 

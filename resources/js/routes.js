@@ -1,6 +1,7 @@
 
 const Home = () => import('./components/Home.vue');
 const Login = () => import('./components/Login.vue');
+const RecoverPassword = () => import('./components/RecoverPassword.vue');
 const Register = () => import('./components/Register.vue');
 const Dashboard = () => import('./components/Dashboard.vue');
 const Layout = () => import('./components/Layout.vue');
@@ -33,6 +34,11 @@ export default{
             path: '/login',
             component: Login,
             name: 'Login'
+        },
+        {
+            path: '/recover-password',
+            component: RecoverPassword,
+            name: 'RecoverPassword'
         },
         {
              path: '/layout',

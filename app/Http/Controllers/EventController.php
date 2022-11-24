@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ConfirmationParkingMail;
-use App\Models\{Event, User, EstacionamientoModel, ProgramacionModel};
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
+use App\Models\{User, EstacionamientoModel, ProgramacionModel};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use \Illuminate\Support\Facades\URL;
@@ -80,13 +78,18 @@ class EventController extends Controller
         }
 
         ProgramacionModel::create($payload);
-
         $page = new ConfirmationParkingMail($user["nombre"], $parking["numero"]);
-
-        //Mail::to("fredy.acp25@gmail.com")
         Mail::to($user["email"])
             ->send($page);
-
         return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero' . $parking->numero.' para el dia de mañana', 'error' => false]);
     }   
+    
+    public function getLinkPassword($user)
+    {
+        return URL::temporarySignedRoute(
+            'event.resetPassword',
+            now()->addHours(8),
+            ['user' => $user]
+        );
+    }
 }
