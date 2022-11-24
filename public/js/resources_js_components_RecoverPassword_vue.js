@@ -66,8 +66,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       form: {
-        email: '',
-        password: ''
+        email: ''
       },
       errors: []
     };
@@ -84,16 +83,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 self = _this;
                 _context.next = 3;
-                return axios.post('api/recover', _this.form).then(function (response) {
-                  localStorage.setItem('access_token', response.data.access_token);
-                  self.$router.push({
-                    name: "dashboard"
-                  });
+                return axios.get('api/sendResetLinkEmail' + _this.form.email).then(function (response) {
+                  console.log(response);
                 })["catch"](function (error) {
                   self.$swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Email o password incorrectos!'
+                    text: 'Ocurrio un error al enviar el correo!'
                   });
                 });
 
@@ -1020,7 +1016,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("Login")]
+              [_vm._v("recuperar")]
             ),
           ]),
         ]

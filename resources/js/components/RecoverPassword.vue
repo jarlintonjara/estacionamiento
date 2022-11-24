@@ -15,7 +15,7 @@
                             Your email
                         </span> -->
                     </div>
-                    <button @click.prevent="recover" class="btn btn-primary float-right">Login</button>
+                    <button @click.prevent="recover" class="btn btn-primary float-right">recuperar</button>
                 </form>
             </div>
             <div class="blankpage-footer text-center">
@@ -35,8 +35,7 @@ export default {
     data(){
         return{
             form:{
-                email: '',
-                password: ''
+                email: ''
             },
             errors: []
         }
@@ -44,16 +43,15 @@ export default {
     methods:{
         async recover(){
             let self = this;
-            await axios.post('api/recover', this.form)
+            await axios.get('api/sendResetLinkEmail' + this.form.email)
                 .then(response => {
-                    localStorage.setItem('access_token', response.data.access_token);
-                    self.$router.push({ name: "dashboard"}); 
+                    console.log(response);
                 })
                 .catch(function (error) {
                     self.$swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Email o password incorrectos!',
+                        text: 'Ocurrio un error al enviar el correo!',
                     })
                 });
          }
