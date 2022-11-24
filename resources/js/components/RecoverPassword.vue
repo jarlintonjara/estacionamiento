@@ -43,7 +43,7 @@ export default {
     methods:{
         async recover(){
             let self = this;
-            await axios.get('api/sendResetLinkEmail' + this.form.email)
+            await axios.get('api/sendResetLinkEmail/' + this.form.email)
                 .then(response => {
                     console.log(response);
                 })

@@ -83,7 +83,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 self = _this;
                 _context.next = 3;
-                return axios.get('api/sendResetLinkEmail' + _this.form.email).then(function (response) {
+                return axios.get('api/sendResetLinkEmail/' + _this.form.email).then(function (response) {
                   console.log(response);
                 })["catch"](function (error) {
                   self.$swal.fire({
