@@ -228,7 +228,6 @@ export default {
             return day +"-"+ month+"-"+ year
         }
     }
-    
 }
 
 </script>

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProgramacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,7 @@ Route::get('getSession/{token}', [AuthController::class, 'getSession']);
 
 //Route::resource('estacionamiento', EstacionamientoController::class)->only(['index']);
 Route::get('dashboard', [HomeController::class, 'index']);
-Route::post('sendEmail', [HomeController::class, 'sendEmail']);
+Route::post('sendProgrammingLink', [EventController::class, 'sendProgrammingLink']);
 Route::post('emailProgramacionSemanal', [HomeController::class, 'emailProgramacionSemanal']);
 Route::resource('programacion', ProgramacionController::class);
 Route::resource('estacionamiento', EstacionamientoController::class);

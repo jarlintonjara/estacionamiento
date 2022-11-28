@@ -33,7 +33,7 @@
             </div>
 
             <div class="col-sm-12 col-md-6 col-md-5 col-xl-5" @click="showitem(1)">
-                <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
+                <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g" style="cursor:pointer">
                     <div class="d-flex mt-2">
                         <h5><b>ESTACIONES OCUPADOS HOY</b></h5>
                         <span class="d-inline-block ml-auto">
@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-6 col-md-5 col-xl-5" @click="showitem(2)">
-                <div class="p-3 bg-danger-200 rounded overflow-hidden position-relative text-white mb-g">
+                <div class="p-3 bg-danger-200 rounded overflow-hidden position-relative text-white mb-g" style="cursor:pointer">
                     <div class="d-flex mt-2">
                         <h5><b>ESTACIONES OCUPADOS MAÑANA</b></h5>
                         <span class="d-inline-block ml-auto">
@@ -319,7 +319,7 @@
 
                                         </td>
                                         <td>
-                                            <button @click="sendEmail(pmd)" class="btn btn-primary">
+                                            <button @click="abrirModal(pmd)" class="btn btn-primary">
                                                 <i class="fa fa-envelope" aria-hidden="true"></i> Solicitud
                                             </button>
                                         </td>
@@ -333,12 +333,104 @@
             </div>
 
         </div>
+
+        <div class="modal fade" id="modalForm">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> <i class="fa fa-paper-plane"></i> Solicitud por Email</h5>
+                        <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Propietario">Propietario:</label>
+                                    <input type="text" id="Propietario" class="form-control" placeholder="" required="" v-model="propietario" :disabled="true">
+        
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Estacionamiento">Estacionamiento:</label>
+                                    <input type="text" id="Estacionamiento" class="form-control" placeholder="Ej. SOTANO 1" required="" v-model="numero" :disabled="true">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="form-group col-md-6">
+                                    <label for="Fecha">Fecha:</label>
+                                    <input type="text" id="Fecha" class="form-control" placeholder="" required="" v-model="fecha"
+                                        :disabled="true">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-2">
+                                <!-- <div class="form-group col-md-4">
+                                    <label for="Fecha">Fecha de programación</label>
+                                    <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control" placeholder="Fecha"
+                                        v-model="datos.fecha">
+                            
+                                    <date-range-picker v-if="!btnEditar" v-model="pickerDates" :locale-data="locale">
+                                        <template v-slot:input="pickerDates" style="min-width: 350px;">{{
+                                            pickerDates.startDate | date }} - {{ pickerDates.endDate | date
+                                            }} <i class="fa fa-calendar"></i></template>
+                                    </date-range-picker>
+                                </div> -->
+                                <div class="frame-wrap bg-faded col-md-12">
+                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                        <input type="checkbox" class="custom-control-input" name="bordered" id="option-bordered" v-model="allDay"
+                                            @click="onChange('D')">
+                                        <label class="custom-control-label" for="option-bordered">Todo el día</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                        <input type="checkbox" class="custom-control-input" name="small" id="option-small" v-model="morning"
+                                            @click="onChange('M')">
+                                        <label class="custom-control-label" for="option-small">Mañana</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                        <input type="checkbox" class="custom-control-input" name="small" id="option-small2" v-model="afternoon"
+                                            @click="onChange('T')">
+                                        <label class="custom-control-label" for="option-small2">Tarde</label>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="hora_inicio">Hora Inicio:</label>
+                                    <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control" :disabled="true"
+                                        placeholder="Hora inicio" v-model="datos.hora_inicio">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="hora_fin">Hora Fin:</label>
+                                    <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control" :disabled="true"
+                                        placeholder="Hora fin" v-model="datos.hora_fin">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
+                                data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" @click.prevent="sendEmail">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
 </template>
 <script>
 
 export default {
-    data(){
+    data() {
+        let date = new Date();
+        date.setDate(date.getDate() + 1);
+        console.log(date)
         return{
             item1:true,
             item2: false,
@@ -348,6 +440,25 @@ export default {
             estacionesma: [],
             programacionhoy: [],
             estacioneshoy: [],
+            allDay: false,
+            morning: false,
+            afternoon: false,
+            disabled: false,
+            datos: {
+                estacionamiento_id: '',
+                user_id: '',
+                fecha: date,
+                fecha_inicio: '',
+                fecha_fin: '',
+                hora_inicio: '',
+                hora_fin: '',
+                turno: '',
+                observacion: '',
+                created_by: ''
+            },
+            propietario: "",
+            numero: "",
+            fecha: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
             report: {
                 totalUsers : 0,
                 totalParkings : 0,
@@ -409,17 +520,25 @@ export default {
                     x.style.display = "none";
             }
         },
-        async sendEmail(row) {
-            await axios.post('/api/sendEmail',{
+        async sendEmail() {
+            if (!this.datos.estacionamiento_id || !this.datos.user_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
+                this.$swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Completa los campos requeridos!',
+                });
+                return false;
+            }
+            await axios.post('/api/sendProgrammingLink',{
                     'user': this.user,
-                    'parking': row
+                    'programacion': this.datos
             }).then((res) => {
                 this.$swal.fire(
                     'Solicitud enviada',
                     '',
                     'success'
                 )
-                 console.log(res)
+                $('#modalForm').modal('hide')
                 
              }).catch(error => {
                  this.$swal.fire({
@@ -429,10 +548,68 @@ export default {
                  })
              }); 
         },
+        onChange(param) {
+            this.disabled = false;
+            switch (param) {
+                case "D":
+                    this.allDay = !this.allDay;
+                    this.morning = false;
+                    this.afternoon = false;
+
+                    if (this.allDay) {
+                        this.disabled = true;
+                        this.datos.hora_inicio = "07:00";
+                        this.datos.hora_fin = "19:00";
+                        this.datos.turno = "D";
+                    }
+
+                    break;
+                case "M":
+                    this.morning = !this.morning;
+                    this.allDay = false;
+                    this.afternoon = false;
+
+                    if (this.morning) {
+                        this.disabled = true;
+                        this.datos.hora_inicio = "07:00";
+                        this.datos.hora_fin = "13:30";
+                        this.datos.turno = "M";
+                    }
+                    break;
+                case "T":
+                    this.afternoon = !this.afternoon;
+                    this.morning = false;
+                    this.allDay = false;
+
+                    if (this.afternoon) {
+                        this.disabled = true;
+                        this.datos.hora_inicio = "13:31";
+                        this.datos.hora_fin = "19:00";
+                        this.datos.turno = "T";
+                    }
+                    break;
+            }
+        },
+        abrirModal(item) {
+            this.datos.estacionamiento_id = item.id;
+            this.datos.user_id = this.user.id;
+            this.datos.hora_inicio = "";
+            this.datos.hora_fin = "";
+            this.datos.turno = "";
+            this.propietario = item.nombre + " " + item.apellido;
+            this.numero = item.numero;
+            this.allDay = false;
+            this.morning = false;
+            this.afternoon = false;
+            $('#modalForm').modal('show')
+        },
         exportExcel(){
             axios.get('/api/export').then((res)=>{
                 console.log(res)
             }); 
+        },
+        cerrarModal() {
+            $('#modalForm').modal('hide');
         }
     }
 }

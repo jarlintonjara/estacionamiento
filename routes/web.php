@@ -2,15 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\ScheduleExportController;
-use App\Mail\SchedulesForTomorrow;
-use App\Models\ProgramacionModel;
-use App\Models\SettingModel;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\ProgramacionController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,23 +16,19 @@ use Illuminate\Support\Facades\Storage;
 |
 */
  
-Route::get('test', function(){
-    $class = new AuthController();
-    return $class->sendResetLinkEmail('fredy.acp25@gmail.com');
-    
-});
- 
-Route::get('event/{user}/{estacionamiento}', [EventController::class, 'programming'])
+//confirmacion de reserva
+Route::get('event/{user}', [ProgramacionController::class, 'programming'])
     ->name('event.programming');
+    
+Route::get('event/link-programming/{user}', [EventController::class, 'getLinkProgramming'])
+->name('event.getLinkProgramming');
 
-Route::get('event/link-programming/{user}/{estacionamiento}', [EventController::class, 'getLinkProgramming'])
-    ->name('event.getLinkProgramming');
-
-Route::get('event/{user}', [AuthController::class, 'resetPassword'])
+//recuperación de contraseña
+Route::get('reset-password/{user}', [AuthController::class, 'resetPassword'])
 ->name('event.resetPassword');
 
 Route::get('event/link-programming/{user}', [EventController::class, 'getLinkPassword'])
-    ->name('event.getLinkPassword');
+    ->name('event.getLinkPassword'); 
 
 Route::get('/{any}', function () {
     return view('welcome');

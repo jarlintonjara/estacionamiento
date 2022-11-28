@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ConfirmationParkingMail;
 use App\Models\EstacionamientoModel;
 use App\Models\ProgramacionModel;
 use App\Models\User;
@@ -282,6 +283,66 @@ class ProgramacionController extends Controller
         $estacionamiento = ProgramacionModel::findOrFail($id);
         $estacionamiento->delete();
         return response()->json($estacionamiento);
+    }
+
+    public function programming(Request $request, User $user)
+    {
+        if (!$request->hasValidSignature()) {
+            return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
+        }
+
+        date_default_timezone_set("America/Lima");
+        $fecha = Carbon::parse($request->programacion["fecha"]);
+        $parking = EstacionamientoModel::findOrFail($request->programacion["estacionamiento_id"]);
+
+        $payload["user_id"] = $user->id;
+        $payload["estacionamiento_id"] = $parking->id;
+        $payload["fecha"] = $fecha->format('Y-m-d');
+        $payload["hora_inicio"] = $request->programacion["hora_inicio"];
+        $payload["hora_fin"] = $request->programacion["hora_fin"];
+        $payload["created_by"] = 196;
+        $payload["turno"] = $request->programacion["turno"];
+        $payload["observacion"] = "Creado pòr solicitud";
+
+        //Validacion por fecha y estacionamiento
+        $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento)
+            ->whereDate("fecha", $payload["fecha"])
+            ->first();
+
+        if ($register) {
+            if (($payload["turno"] == "M" || $payload["turno"] == "D") && $register->turno == "M") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la mañana', 'error' => true]);
+
+            } else if (($payload["turno"] == "T" || $payload["turno"] == "D") && $register->turno == "T") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la tarde', 'error' => true]);
+            
+            } else if ($register->turno == "D") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación todo el día', 'error' => true]);
+            }
+        }
+
+        //validacion por usuario y fecha
+        $register2 = ProgramacionModel::where("user_id", $payload["user_id"])
+        ->whereDate("fecha", $payload["fecha"])
+            ->first();
+
+        if ($register2) {
+            if (($payload["turno"] == "M" || $payload["turno"] == "D") && $register2->turno == "M") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la mañana', 'error' => true]);
+
+            } else if (($payload["turno"] == "T" || $payload["turno"] == "D") && $register2->turno == "T") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la tarde', 'error' => true]);
+
+            } else if ($register2->turno == "D") {
+                return view('requestEmail', ['message' => 'El usuario ya tiene una programación todo el día', 'error' => true]);
+            }
+        }
+
+        ProgramacionModel::create($payload);
+        $page = new ConfirmationParkingMail($user["nombre"], $parking["numero"]);
+        Mail::to($user["email"])
+            ->send($page);
+        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero para el dia de mañana', 'error' => false]);
     }
     
 }
