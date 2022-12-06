@@ -2123,26 +2123,28 @@ var render = function () {
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.abrirModal(pmd)
+                              pmd.email && pmd.email.includes("@")
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.abrirModal(pmd)
+                                        },
+                                      },
                                     },
-                                  },
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-envelope",
-                                    attrs: { "aria-hidden": "true" },
-                                  }),
-                                  _vm._v(
-                                    " Solicitud\n                                        "
-                                  ),
-                                ]
-                              ),
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-envelope",
+                                        attrs: { "aria-hidden": "true" },
+                                      }),
+                                      _vm._v(
+                                        " Solicitud\n                                        "
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
                             ]),
                           ])
                         }),

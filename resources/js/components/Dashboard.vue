@@ -319,7 +319,7 @@
 
                                         </td>
                                         <td>
-                                            <button @click="abrirModal(pmd)" class="btn btn-primary">
+                                            <button @click="abrirModal(pmd)" class="btn btn-primary" v-if="pmd.email && pmd.email.includes('@')">
                                                 <i class="fa fa-envelope" aria-hidden="true"></i> Solicitud
                                             </button>
                                         </td>
