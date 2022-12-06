@@ -15,15 +15,15 @@ class EventController extends Controller
     {
         $user = User::find($request->user["id"]);
         $estacionamiento = EstacionamientoModel::find($request->programacion["estacionamiento_id"]);
-        $propietario = User::find($estacionamiento["id_usuario"]);
+        $propietario = User::where('id', $estacionamiento["id_usuario"])->first();
         $event = new EventController();
        
         $link = $event->getLinkProgramming($user, $request->programacion);
-        $page = new RequestParking($request->user["nombre"], $estacionamiento["numero"], $propietario["nombre"], $link);
+        /* $page = new RequestParking($request->user["nombre"], $estacionamiento["numero"], $propietario["nombre"], $link);
         
         Mail::to($propietario["email"])
-            ->send($page);
-
+            ->send($page); */
+        return $propietario;
         return response()->json(["message" => "exitoso", "isSuccess" => true, 'link' => $link, "email" => $propietario["email"] ]);
     }
     
