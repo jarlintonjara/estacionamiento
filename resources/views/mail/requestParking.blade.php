@@ -29,14 +29,15 @@
 	 <tr>
 		<td style="word-wrap:break-word;font-size:0px;padding:0px 25px 0px 25px;padding-top:0px;padding-bottom:0px" align="left">
 			<div style="color:#55575d;font-family:Arial,sans-serif;font-size:13px;line-height:22px;text-align:left">
-				<p style="font-size:13px;margin:10px 0"><span style="font-size:14px">El usuario {{ $user }} solicita reservar espacio en el estacionamiento numero {{ $numero }} para el dia de mañana .</span></p>
+				<p style="font-size:13px;margin:10px 0"><span style="font-size:14px">El usuario {{ $user }} solicita reservar espacio en el estacionamiento numero {{ $numero }} para el dia {{ $fecha }} .</span></p>
 			</div>
 		</td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;font-size:0px;padding:0px 25px 0px 25px;padding-top:0px;padding-bottom:0px" align="left">
 			<div style="color:#55575d;font-family:Arial,sans-serif;font-size:13px;line-height:22px;text-align:left">
-				<p style="font-size:13px;margin:10px 0"><span style="font-size:14px">Has clic para aceptar o rechazar.</span></p>
+				<p style="font-size:13px;margin:10px 0"><span style="font-size:14px">SOLO SI DESEAS APROBAR LA SOLICITUD, HAS CLICK EN EL SIGUIENTE LINK.</span></p>
+                <p style="font-size:13px;"><b><a href="{{ $link }}" target="_blank" style="font-size:14px">{{ $link }}</a></p>
 			</div>
 		</td>
 	</tr>

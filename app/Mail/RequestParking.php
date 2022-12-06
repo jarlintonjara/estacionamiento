@@ -16,12 +16,13 @@ class RequestParking extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $numero, $name, $link)
+    public function __construct($user, $numero, $name, $link, $fecha)
     {
         $this->user = $user;
         $this->numero = $numero;
         $this->name = $name;
         $this->link = $link;
+        $this->fecha = $fecha;
     }
 
     /**
@@ -37,6 +38,7 @@ class RequestParking extends Mailable
             'numero'=> $this->numero,
             'name'=> $this->name,
             'link'=> $this->link, 
+            'fecha'=> $this->fecha 
         ]);
 
     }

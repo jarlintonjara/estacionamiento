@@ -290,11 +290,10 @@ class ProgramacionController extends Controller
         if (!$request->hasValidSignature()) {
             return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
         }
-
+        
         date_default_timezone_set("America/Lima");
         $fecha = Carbon::parse($request->programacion["fecha"]);
         $parking = EstacionamientoModel::findOrFail($request->programacion["estacionamiento_id"]);
-
         $payload["user_id"] = $user->id;
         $payload["estacionamiento_id"] = $parking->id;
         $payload["fecha"] = $fecha->format('Y-m-d');
@@ -342,7 +341,6 @@ class ProgramacionController extends Controller
         $page = new ConfirmationParkingMail($user["nombre"], $parking["numero"]);
         Mail::to($user["email"])
             ->send($page);
-        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero para el dia de mañana', 'error' => false]);
+        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero '.$parking["numero"].' para el dia '.$fecha->format('d/m/Y').' de '.$payload["hora_inicio"].' a '.$payload["hora_fin"], 'error' => false]);
     }
-    
 }
