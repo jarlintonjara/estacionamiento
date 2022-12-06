@@ -41,16 +41,7 @@
 			</div>
 		</td>
 	</tr>
-	<tr>
-		<td style="word-wrap:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px" align="left">
-			<div style="color:#55575d;font-family:Arial,sans-serif;font-size:13px;line-height:22px;text-align:left">
-				<p style="font-size:13px;margin:10px 0; text-align: center">
-					<span style="font-size:14px; margin-right: 40px"><i><b><a href="{{ $link }}" style="padding: 10px; background: green; color: #fff; text-decoration:none; border-radius: 5px">Aceptar</a></b></i></span>
-					<span style="font-size:14px"><i><b><a href="https://parking.derco.com.pe/" style="padding: 10px; background: red; color: #fff ; text-decoration:none; border-radius: 5px"">Rechazar</a></b></i></span>
-				</p>
-			</div>
-		</td>
-	</tr>
+	
 	<tr>
 		<td style="word-wrap:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px" align="left"></td>
 	</tr>
