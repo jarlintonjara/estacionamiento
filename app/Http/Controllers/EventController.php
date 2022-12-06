@@ -21,7 +21,7 @@ class EventController extends Controller
         $fecha = Carbon::parse($request->programacion["fecha"]);
         $fecha = $fecha->format('d-m-Y');
         $link = $event->getLinkProgramming($user, $request->programacion);
-        $page = new RequestParking($request->user["nombre"], $estacionamiento["numero"], $propietario["nombre"], $link, $fecha);
+        $page = new RequestParking($user["nombre"].' '.$user["apellido"], $estacionamiento["numero"], $propietario["nombre"], $link, $fecha);
         
         Mail::to($propietario["email"])
             ->send($page);
