@@ -24,7 +24,7 @@ class EventController extends Controller
         Mail::to($propietario["email"])
             ->send($page);
 
-        return response()->json(["message" => "exitoso", "isSuccess" => true, 'link' => $link]);
+        return response()->json(["message" => "exitoso", "isSuccess" => true, 'link' => $link, "email" => $propietario["email"] ]);
     }
     
     public function getLinkProgramming($user, $programacion)
