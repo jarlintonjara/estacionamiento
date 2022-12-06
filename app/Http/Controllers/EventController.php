@@ -21,7 +21,7 @@ class EventController extends Controller
         $link = $event->getLinkProgramming($user, $request->programacion);
         $page = new RequestParking($request->user["nombre"], $estacionamiento["numero"], $propietario["nombre"], $link);
         
-        Mail::to($request->parking["email"])
+        Mail::to($propietario["email"])
             ->send($page);
 
         return response()->json(["message" => "exitoso", "isSuccess" => true, 'link' => $link]);
