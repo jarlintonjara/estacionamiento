@@ -91,7 +91,7 @@ class AuthController extends Controller
             return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
         }
 
-        return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero para el dia de mañana', 'error' => false]);
+        return view('requestEmail', ['message' => 'Se te facilitara una contraseña momentanea', 'error' => false]);
     } 
 
     function sendResetLinkEmail($email)
@@ -106,7 +106,7 @@ class AuthController extends Controller
             $page = new PasswordMail($user->nombre, $link);
             Mail::to($user->email)->send($page);
         }catch(\Exception $e){
-            return response()->json(["message" => $e->getMessage(), "isSuccess" => false]);
+            return response()->json(["message" => $e->getMessage(), "isSuccess" => false])->setStatusCode(500);
         }
         return response()->json(["message" => $link, "isSuccess" => true]);
     }

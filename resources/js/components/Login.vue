@@ -1,9 +1,9 @@
 <template>
-    <div class="">
+    <div class="back-login">
         <div class="blankpage-form-field">
             <div class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
                 <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
-                    <span class="page-logo-text mr-1">Login</span>
+                    <span class="page-logo-text mr-1">Parking Derco | Login</span>
                 </a>
             </div>
             <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
@@ -16,7 +16,7 @@
                         </span> -->
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password">Contraseña</label>
                         <input type="password" v-model="form.password" id="password" class="form-control" placeholder="password" value="password123">
                         <!-- <span class="help-block">
                             Your password
@@ -30,11 +30,13 @@
                     </div> -->
                     <button @click.prevent="login" class="btn btn-primary float-right">Login</button>
                 </form>
+                <hr>
+                <div class="blankpage-footer text-center" >
+                    <router-link to="/recover-password" style="font-size: 14px"><strong>Recuperar contraseña</strong></router-link>
+                    <!-- | <router-link to="/register"><strong>Registrar Cuenta</strong></router-link> -->
+                </div>
             </div>
-            <div class="blankpage-footer text-center">
-                <router-link to="/recover-password"><strong>Recuperar Password</strong></router-link>
-                <!-- | <router-link to="/register"><strong>Registrar Cuenta</strong></router-link> -->
-            </div> 
+            
         </div>
         <!-- <video poster="/public/admin/img/backgrounds/clouds.png" id="bgvid" playsinline autoplay muted loop>
             <source src="./public/admin/assets/media/video/cc.webm" type="video/webm">

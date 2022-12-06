@@ -212,7 +212,6 @@ export default {
                     console.log(error)
                 })
             }
-
         },
         abrirModalCrear(){
             this.datos = {nombre:'', apellido:'', documento:'', email:'', role_id: '', parking_id:'', cargo: '', area: '', password: ''};

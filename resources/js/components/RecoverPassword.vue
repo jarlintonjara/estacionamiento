@@ -1,9 +1,9 @@
 <template>
-    <div class="">
+    <div class="back-login">
         <div class="blankpage-form-field">
             <div class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
                 <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
-                    <span class="page-logo-text mr-1">Recuperar contraseña</span>
+                    <span class="page-logo-text mr-1">Parking Derco | Recuperar contraseña</span>
                 </a>
             </div>
             <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
@@ -15,18 +15,16 @@
                             Your email
                         </span> -->
                     </div>
-                    <button @click.prevent="recover" class="btn btn-primary float-right">recuperar</button>
+                    <button @click.prevent="recover" class="btn btn-primary float-right">Enviar</button>
                 </form>
+                <hr>
+                <div class="blankpage-footer text-center">
+                    <router-link to="/login" style="font-size: 14px"><strong>Login</strong></router-link>
+                    <!-- | <router-link to="/register"><strong>Registrar Cuenta</strong></router-link> -->
+                </div>
             </div>
-            <div class="blankpage-footer text-center">
-                <router-link to="/login"><strong>Login</strong></router-link>
-                <!-- | <router-link to="/register"><strong>Registrar Cuenta</strong></router-link> -->
-            </div> 
+            
         </div>
-        <!-- <video poster="/public/admin/img/backgrounds/clouds.png" id="bgvid" playsinline autoplay muted loop>
-            <source src="./public/admin/assets/media/video/cc.webm" type="video/webm">
-            <source src="/public/admin/assets/media/video/cc.mp4" type="video/mp4">
-        </video> -->
     </div>
     
 </template>
@@ -45,6 +43,13 @@ export default {
             let self = this;
             await axios.get('api/sendResetLinkEmail/' + this.form.email)
                 .then(response => {
+                    if (!response.data.isSuccess) { 
+                        self.$swal.fire({
+                            icon: 'error',
+                            title: 'Envio de email',
+                            text: 'El correo ingresado no existe',
+                        })
+                    }
                     console.log(response);
                 })
                 .catch(function (error) {

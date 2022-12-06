@@ -75,6 +75,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -975,7 +977,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "back-login" }, [
     _c("div", { staticClass: "blankpage-form-field" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -1026,7 +1028,7 @@ var render = function () {
               _c(
                 "label",
                 { staticClass: "form-label", attrs: { for: "password" } },
-                [_vm._v("Password")]
+                [_vm._v("Contraseña")]
               ),
               _vm._v(" "),
               _c("input", {
@@ -1071,18 +1073,25 @@ var render = function () {
               [_vm._v("Login")]
             ),
           ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "blankpage-footer text-center" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticStyle: { "font-size": "14px" },
+                  attrs: { to: "/recover-password" },
+                },
+                [_c("strong", [_vm._v("Recuperar contraseña")])]
+              ),
+            ],
+            1
+          ),
         ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "blankpage-footer text-center" },
-        [
-          _c("router-link", { attrs: { to: "/recover-password" } }, [
-            _c("strong", [_vm._v("Recuperar Password")]),
-          ]),
-        ],
-        1
       ),
     ]),
   ])
@@ -1108,7 +1117,7 @@ var staticRenderFns = [
           },
           [
             _c("span", { staticClass: "page-logo-text mr-1" }, [
-              _vm._v("Login"),
+              _vm._v("Parking Derco | Login"),
             ]),
           ]
         ),

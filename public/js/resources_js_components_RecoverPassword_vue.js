@@ -60,8 +60,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -84,6 +82,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 self = _this;
                 _context.next = 3;
                 return axios.get('api/sendResetLinkEmail/' + _this.form.email).then(function (response) {
+                  if (!response.data.isSuccess) {
+                    self.$swal.fire({
+                      icon: 'error',
+                      title: 'Envio de email',
+                      text: 'El correo ingresado no existe'
+                    });
+                  }
+
                   console.log(response);
                 })["catch"](function (error) {
                   self.$swal.fire({
@@ -958,7 +964,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "back-login" }, [
     _c("div", { staticClass: "blankpage-form-field" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -1016,21 +1022,28 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("recuperar")]
+              [_vm._v("Enviar")]
             ),
           ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "blankpage-footer text-center" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticStyle: { "font-size": "14px" },
+                  attrs: { to: "/login" },
+                },
+                [_c("strong", [_vm._v("Login")])]
+              ),
+            ],
+            1
+          ),
         ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "blankpage-footer text-center" },
-        [
-          _c("router-link", { attrs: { to: "/login" } }, [
-            _c("strong", [_vm._v("Login")]),
-          ]),
-        ],
-        1
       ),
     ]),
   ])
@@ -1056,7 +1069,7 @@ var staticRenderFns = [
           },
           [
             _c("span", { staticClass: "page-logo-text mr-1" }, [
-              _vm._v("Recuperar contraseña"),
+              _vm._v("Parking Derco | Recuperar contraseña"),
             ]),
           ]
         ),
