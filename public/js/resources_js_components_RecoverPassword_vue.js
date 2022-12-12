@@ -59,7 +59,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -91,6 +90,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   } else {
                     _this.$swal.fire('Recuperar contraseña!', 'Se envio el link a tu correo para restablecer tu contraseña!', 'success');
                   }
+
+                  _this.form.email = "";
                 })["catch"](function (error) {
                   self.$swal.fire({
                     icon: 'error',

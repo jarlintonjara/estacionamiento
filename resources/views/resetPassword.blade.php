@@ -51,7 +51,8 @@
                     html = "<div class='alert alert-danger'>"+ response.message +"</div>";
                 }
                 $("#message").html(html);
-                console.log(response);
+                $("#password").val("");
+                $("#repet-password").val("");
             }
         });
     }

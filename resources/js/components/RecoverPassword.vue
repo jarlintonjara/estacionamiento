@@ -20,7 +20,6 @@
                 <hr>
                 <div class="blankpage-footer text-center">
                     <router-link to="/login" style="font-size: 14px"><strong>Login</strong></router-link>
-                    <!-- | <router-link to="/register"><strong>Registrar Cuenta</strong></router-link> -->
                 </div>
             </div>
             
@@ -56,6 +55,7 @@ export default {
                             'success'
                         )
                     }
+                    this.form.email = "";
                 })
                 .catch(function (error) {
                     self.$swal.fire({
