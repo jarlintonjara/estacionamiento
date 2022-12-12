@@ -11,6 +11,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -63,7 +65,6 @@ class AuthController extends Controller
             ], 404);
         }
     }
-
     public function getSession($token)
     {
         [$id, $user_token] = explode('|', $token, 2);
@@ -84,16 +85,27 @@ class AuthController extends Controller
         }
         Auth::logout();
     }
-
     public function resetPassword(Request $request, User $user)
     {
         if (!$request->hasValidSignature()) {
             return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
-        }
-
-        return view('requestEmail', ['message' => 'Se te facilitara una contraseña momentanea', 'error' => false]);
+        } 
+        return view('resetPassword', ['user' => $user->id]);
     } 
-
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'id' => ['required'],
+            'repet-password' => ['required'],
+            'new-password' => ['required']
+        ]);
+        if($request->input('new-password') != $request->input('repet-password')){
+            return response()->json(['message' => 'Las Contraseñas no son iguales', 'isSuccess' => false]);
+        }
+        $user = User::findOrFail($request->id);
+        $user->update(['password' => Hash::make($request->input('new-password'))]);
+        return response()->json(['message' => 'Se restablecio la contraseña', 'isSuccess' => true]);
+    } 
     function sendResetLinkEmail($email)
     {
         $user = User::where('email', $email)->first();
@@ -104,10 +116,12 @@ class AuthController extends Controller
             $event = new EventController();
             $link = $event->getLinkPassword($user);
             $page = new PasswordMail($user->nombre, $link);
+            //$signature = strstr( $link , 'signature=');
+            //$link = url("/reset-password?user="."25".$signature);
             Mail::to($user->email)->send($page);
         }catch(\Exception $e){
             return response()->json(["message" => $e->getMessage(), "isSuccess" => false])->setStatusCode(500);
         }
-        return response()->json(["message" => $link, "isSuccess" => true]);
+        return response()->json(["message" => "Se envio el link a tu correo", "isSuccess" => true]);
     }
 }

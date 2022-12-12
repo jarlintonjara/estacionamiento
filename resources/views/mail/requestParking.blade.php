@@ -49,8 +49,8 @@
 		<td style="word-wrap:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px" align="left">
 			<div style="color:#55575d;font-family:Arial,sans-serif;font-size:13px;line-height:24px;text-align:left">
 				<p style="font-size:13px;line-height:12px;margin:10px 0">&nbsp;</p><p style="font-size:13px;line-height:12px;margin:10px 0">
-					<span style="font-size:14px"><span style="color:#606060">Atentamente,</span></span></p><p style="font-size:13px;line-height:12px;margin:10px 0">
-					<span style="font-size:14px"><b><span style="color:#606060">Equipo OPEN CODEV</span></b></span>
+					<span style="font-size:14px"><span style="color:#606060"></span></span></p><p style="font-size:13px;line-height:12px;margin:10px 0">
+					<span style="font-size:14px"><b><span style="color:#606060">Gerente de Personas y Transformación</span></b></span>
 				</p>
 				<p style="font-size:13px;line-height:12px;margin:10px 0">&nbsp;</p>
 			</div>

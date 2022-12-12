@@ -5547,6 +5547,10 @@ var RecoverPassword = function RecoverPassword() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_RecoverPassword_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/RecoverPassword.vue */ "./resources/js/components/RecoverPassword.vue"));
 };
 
+var ResetPassword = function ResetPassword() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_ResetPassword_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/ResetPassword.vue */ "./resources/js/components/ResetPassword.vue"));
+};
+
 var Register = function Register() {
   return __webpack_require__.e(/*! import() */ "resources_js_components_Register_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Register.vue */ "./resources/js/components/Register.vue"));
 };
@@ -5607,6 +5611,10 @@ var Programacion = function Programacion() {
     path: '/recover-password',
     component: RecoverPassword,
     name: 'RecoverPassword'
+  }, {
+    path: '/reset-password',
+    component: ResetPassword,
+    name: 'ResetPassword'
   }, {
     path: '/layout',
     component: Layout,
@@ -88353,7 +88361,7 @@ Vue.compile = compileToFunctions;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_Home_vue":1,"resources_js_components_Login_vue":1,"resources_js_components_RecoverPassword_vue":1,"resources_js_components_Register_vue":1,"resources_js_components_Dashboard_vue":1,"resources_js_components_Layout_vue":1,"resources_js_components_NotFound_vue":1,"resources_js_components_rol_Index_vue":1,"resources_js_components_settings_Index_vue":1,"resources_js_components_usuario_index_vue":1,"resources_js_components_usuario_Perfil_vue":1,"resources_js_components_estacionamiento_Index_vue":1,"resources_js_components_programacion_Index_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Home_vue":1,"resources_js_components_Login_vue":1,"resources_js_components_RecoverPassword_vue":1,"resources_js_components_ResetPassword_vue":1,"resources_js_components_Register_vue":1,"resources_js_components_Dashboard_vue":1,"resources_js_components_Layout_vue":1,"resources_js_components_NotFound_vue":1,"resources_js_components_rol_Index_vue":1,"resources_js_components_settings_Index_vue":1,"resources_js_components_usuario_index_vue":1,"resources_js_components_usuario_Perfil_vue":1,"resources_js_components_estacionamiento_Index_vue":1,"resources_js_components_programacion_Index_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

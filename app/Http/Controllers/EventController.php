@@ -41,7 +41,7 @@ class EventController extends Controller
     {
         return URL::temporarySignedRoute(
             'event.resetPassword',
-            now()->addMinutes(15),
+            now()->addMinutes(59),
             ['user' => $user]
         );
     }

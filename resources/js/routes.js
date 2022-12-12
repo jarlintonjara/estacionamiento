@@ -2,6 +2,7 @@
 const Home = () => import('./components/Home.vue');
 const Login = () => import('./components/Login.vue');
 const RecoverPassword = () => import('./components/RecoverPassword.vue');
+const ResetPassword = () => import('./components/ResetPassword.vue');
 const Register = () => import('./components/Register.vue');
 const Dashboard = () => import('./components/Dashboard.vue');
 const Layout = () => import('./components/Layout.vue');
@@ -25,7 +26,6 @@ export default{
             component: Home,
             name: "Home"
         },
-        
         {
             path: '/register',
             component: Register
@@ -41,7 +41,12 @@ export default{
             name: 'RecoverPassword'
         },
         {
-             path: '/layout',
+            path: '/reset-password',
+            component: ResetPassword,
+            name: 'ResetPassword'
+        },
+        {
+            path: '/layout',
             component: Layout,
             name: 'Layout',
             beforeEnter: (to, form, next) => {
