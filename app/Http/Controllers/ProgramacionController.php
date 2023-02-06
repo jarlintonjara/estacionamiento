@@ -62,8 +62,9 @@ class ProgramacionController extends Controller
 
         //Programaciones de la semana actual
         $week = Carbon::now()->weekOfYear;
-        $schedulesFilter = isset($schedules[$week])? $schedules[$week] : [] ;
-        
+        $schedulesFilter = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)])? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [] ;
+
+
         foreach ($schedulesFilter as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
             $schedule["dia"] = self::DAYS[$newDate->dayOfWeekIso]." ". $newDate->day." de ". self::MONTHS[$newDate->month];
@@ -72,7 +73,7 @@ class ProgramacionController extends Controller
         }
         //Programaciones de la semana siguiente
         $week = Carbon::now()->weekOfYear + 1;
-        $nextSchedules = isset($schedules[$week]) ? $schedules[$week] : [];
+        $nextSchedules = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)]) ? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [];
 
         foreach ($nextSchedules as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
@@ -127,7 +128,7 @@ class ProgramacionController extends Controller
         //Validacion por fecha y estacionamiento
         foreach ($period as $dt) {
             $newDate = $dt->format("Y-m-d");
-            
+
             $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento_id)
             ->whereDate("fecha", $newDate)
             ->first();
@@ -178,7 +179,7 @@ class ProgramacionController extends Controller
                 }
             }
         }
-        
+
         //crear programación
         $payload = $request->except(['fecha_inicio', 'fecha_fin']);
         foreach ($period as $dt) {
@@ -192,7 +193,7 @@ class ProgramacionController extends Controller
             });
         //Programaciones de la semana actual
         $week = Carbon::now()->weekOfYear;
-        $schedulesFilter = isset($schedules[$week]) ? $schedules[$week] : [];
+        $schedulesFilter = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)]) ? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [];
 
         foreach ($schedulesFilter as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
@@ -202,7 +203,7 @@ class ProgramacionController extends Controller
         }
         //Programaciones de la semana siguiente
         $week = Carbon::now()->weekOfYear + 1;
-        $nextSchedules = isset($schedules[$week]) ? $schedules[$week] : [];
+        $nextSchedules = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)]) ? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [];
 
         foreach ($nextSchedules as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
@@ -253,7 +254,7 @@ class ProgramacionController extends Controller
             });
         //Programaciones de la semana actual
         $week = Carbon::now()->weekOfYear;
-        $schedulesFilter = isset($schedules[$week]) ? $schedules[$week] : [];
+        $schedulesFilter = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)]) ? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [];
 
         foreach ($schedulesFilter as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
@@ -263,7 +264,7 @@ class ProgramacionController extends Controller
         }
         //Programaciones de la semana siguiente
         $week = Carbon::now()->weekOfYear + 1;
-        $nextSchedules = isset($schedules[$week]) ? $schedules[$week] : [];
+        $nextSchedules = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)]) ? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [];
 
         foreach ($nextSchedules as $schedule) {
             $newDate = Carbon::parse($schedule->fecha);
@@ -290,7 +291,7 @@ class ProgramacionController extends Controller
         if (!$request->hasValidSignature()) {
             return view('requestEmail', ['message' => 'Caduco el tiempo de solicitud', 'error' => true]);
         }
-        
+
         date_default_timezone_set("America/Lima");
         $fecha = Carbon::parse($request->programacion["fecha"]);
         $parking = EstacionamientoModel::findOrFail($request->programacion["estacionamiento_id"]);
@@ -314,7 +315,7 @@ class ProgramacionController extends Controller
 
             } else if (($payload["turno"] == "T" || $payload["turno"] == "D") && $register->turno == "T") {
                 return view('requestEmail', ['message' => 'El usuario ya tiene una programación en la tarde', 'error' => true]);
-            
+
             } else if ($register->turno == "D") {
                 return view('requestEmail', ['message' => 'El usuario ya tiene una programación todo el día', 'error' => true]);
             }

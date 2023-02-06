@@ -96,7 +96,7 @@ class HomeController extends Controller
             "schedulesTotal" => count($schedules),
             "schedules" => $schedules,
             "programacionManana" => $programacionManana,
-            
+
             "programacionma" => $programacionma,
             "estacionesma" => $estacionesma,
             "programacionhoy" => $programacionhoy,
@@ -104,7 +104,7 @@ class HomeController extends Controller
         ]);
     }
 
-    
+
 
     function emailProgramacionSemanal(Request $request)
     {
@@ -121,23 +121,23 @@ class HomeController extends Controller
             $correos = [];
             if ($correo->email1 != NULL OR $correo->email1 != '') {
                 array_push($correos,$correo->email1);
-            } 
+            }
             if ($correo->email2 != NULL OR $correo->email2 != '') {
                 array_push($correos,$correo->email2);
-            } 
+            }
             if ($correo->email3 != NULL OR $correo->email3 != '') {
                 array_push($correos,$correo->email3);
-            } 
+            }
             if ($correo->email4 != NULL OR $correo->email4 != '') {
                 array_push($correos,$correo->email4);
-            }    
-            
+            }
+
             Mail::to($correo->email)
             ->cc($correos)
             ->send($email);
 
             return ["success" => true, "message" => "Correo enviado", "error" => ""];
-            
+
         } catch (Exception $ex) {
             return ["success" => false, "message" => "Error en el envio", "error" => $ex->getMessage()];
         }
