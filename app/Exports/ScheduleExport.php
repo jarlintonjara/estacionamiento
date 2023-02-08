@@ -18,7 +18,7 @@ class ScheduleExport implements FromCollection, WithHeadings
         $nuevafecha = strtotime ( '+1 day' , strtotime ( $fecha ) ) ;
         $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
 
-        $programacionma = ProgramacionModel::select('estacionamiento.numero','users.nombre','users.apellido','users.documento','fecha','turno','hora_inicio','hora_fin','observacion')
+        $programacionma = ProgramacionModel::distinct()->select('estacionamiento.numero','users.nombre','users.apellido','users.documento','fecha','turno','hora_inicio','hora_fin','observacion')
                 ->Join('estacionamiento', 'programacion.estacionamiento_id', '=', 'estacionamiento.id')
                 ->Join('users', 'programacion.user_id', '=', 'users.id')
                 ->whereDate("fecha",$nuevafecha)
