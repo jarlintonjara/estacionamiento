@@ -38,7 +38,7 @@ class UserController extends Controller
                 ];
             }
             $user["role"] = $user->role;
-        } 
+        }
         $roles = RoleModel::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('status', 1)->get();
         return response()->json([
@@ -68,7 +68,7 @@ class UserController extends Controller
     {
         $data = $request->post();
         $data['password'] = Hash::make($request->password);
-        
+
         $user = User::create($data);
         if ($user->parking_id) {
             $user["parking"] = $user->parking;
@@ -78,7 +78,7 @@ class UserController extends Controller
                 "sede" => ""
             ];
             $user["role"] = $user->role;
-        } 
+        }
         return response()->json($user);
     }
 
@@ -97,6 +97,14 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         // $data = $request->post();
         $request['password'] = Hash::make($request->password);
+
+        if ( $request->parking_id === 'Seleccione un estacionamiento') {
+            $request['parking_id'] = 0;
+        } else {
+            $request['parking_id'] = $request->parking_id;
+        }
+
+
         $user->update($request->all());
         $data = User::all();
         return response()->json($data);
