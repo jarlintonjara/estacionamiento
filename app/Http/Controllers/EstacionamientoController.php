@@ -23,8 +23,8 @@ class EstacionamientoController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {   
-        $data = EstacionamientoModel::all();
+    {
+        $data = EstacionamientoModel::where('status',1)->get();
         return response()->json($data);
     }
 
@@ -45,7 +45,7 @@ class EstacionamientoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         //$estacionamiento = EstacionamientoModel::create($request->post());
         $estacionamiento = EstacionamientoModel::create($request->post());
         return response()->json($estacionamiento);
@@ -83,7 +83,7 @@ class EstacionamientoController extends Controller
     {
         $estacionamiento = EstacionamientoModel::findOrFail($id);
         $estacionamiento->update($request->all());
-        $data = EstacionamientoModel::all();
+        $data = EstacionamientoModel::where('status',1)->get();
         return response()->json($data);
     }
 
@@ -96,8 +96,10 @@ class EstacionamientoController extends Controller
     public function destroy($id)
     {
         $estacionamiento = EstacionamientoModel::findOrFail($id);
-        $estacionamiento->delete();
-        $data = EstacionamientoModel::all();
+        $estacionamiento->status = 0;
+        $estacionamiento->save();
+        // $estacionamiento->delete();
+        $data = EstacionamientoModel::where('status',1)->get();
         return response()->json($data);
     }
 }

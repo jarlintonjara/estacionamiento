@@ -23,9 +23,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $schedules = ProgramacionModel::all();
+        $schedules = ProgramacionModel::where('status',1)->get();
         $users = User::all()->count();
-        $parkings = EstacionamientoModel::all()->count();
+        $parkings = EstacionamientoModel::where('status',1)->get()->count();
 
         date_default_timezone_set("America/Lima");
         $fecha = date('Y-m-d');
@@ -34,9 +34,9 @@ class HomeController extends Controller
         $nuevafechad = strtotime ( '+1 day' , strtotime ( $fecha ) ) ;
         $nuevafechad = date ( 'Y-m-d' , $nuevafechad );
 
-        $programacionManana = ProgramacionModel::whereDate("fecha",$nuevafecha)->get()->count();
-        $programacionma = ProgramacionModel::whereDate("fecha",$nuevafecha)->get();
-        $programacionhoy = ProgramacionModel::whereDate("fecha",$fecha)->get();
+        $programacionManana = ProgramacionModel::where('status',1)->whereDate("fecha",$nuevafecha)->get()->count();
+        $programacionma = ProgramacionModel::where('status',1)->whereDate("fecha",$nuevafecha)->get();
+        $programacionhoy = ProgramacionModel::where('status',1)->whereDate("fecha",$fecha)->get();
         $ids2= [];
         foreach ($programacionhoy as $pml) {
             array_push($ids2,$pml->estacionamiento_id);

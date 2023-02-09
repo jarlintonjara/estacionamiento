@@ -23,7 +23,7 @@ class RoleController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {   
+    {
         $data = RoleModel::all();
         return response()->json($data);
     }
@@ -45,7 +45,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         //$estacionamiento = RoleModel::create($request->post());
         $estacionamiento = RoleModel::create($request->post());
         return response()->json($estacionamiento);
@@ -96,7 +96,9 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $estacionamiento = RoleModel::findOrFail($id);
-        $estacionamiento->delete();
+        $estacionamiento->status = 0;
+        $estacionamiento->save();
+        // $estacionamiento->delete();
         $data = RoleModel::all();
         return response()->json($data);
     }

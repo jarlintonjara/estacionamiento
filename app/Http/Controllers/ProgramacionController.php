@@ -53,8 +53,9 @@ class ProgramacionController extends Controller
     public function index()
     {
         $users = User::all();
-        $parkings = EstacionamientoModel::all();
+        $parkings = EstacionamientoModel::where('status',1)->get();
         $schedules = ProgramacionModel::select('*')
+            ->where('status',1)
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->fecha)->format('W');
@@ -97,6 +98,7 @@ class ProgramacionController extends Controller
     public function validateSchedule($request)
     {
         $register = ProgramacionModel::where("user_id", $request->user_id)
+            ->where('status',1)
             ->whereDate("fecha", $request->fecha)->first();
         if ($register) {
             switch ($register->turno) {
@@ -130,6 +132,7 @@ class ProgramacionController extends Controller
             $newDate = $dt->format("Y-m-d");
 
             $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento_id)
+            ->where('status',1)
             ->whereDate("fecha", $newDate)
             ->first();
             if ($register) {
@@ -157,6 +160,7 @@ class ProgramacionController extends Controller
             $newDate = $dt->format("Y-m-d");
 
             $register2 = ProgramacionModel::where("user_id", $request->user_id)
+            ->where('status',1)
             ->whereDate("fecha", $newDate)
             ->first();
 
@@ -187,6 +191,7 @@ class ProgramacionController extends Controller
             $schedule = ProgramacionModel::create($payload);
         }
         $schedules = ProgramacionModel::select('*')
+            ->where('status',1)
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->fecha)->format('W');
@@ -222,6 +227,7 @@ class ProgramacionController extends Controller
     {
         $register = ProgramacionModel::where("user_id", $request->user_id)
             ->where("id", "!=", $id)
+            ->where('status',1)
             ->where("estacionamiento_id", $request->estacionamiento_id)
             ->whereDate("fecha", $request->fecha)->first();
 
@@ -248,6 +254,7 @@ class ProgramacionController extends Controller
         $updateSchedule = ProgramacionModel::findOrFail($id);
         $updateSchedule->update($request->all());
         $schedules = ProgramacionModel::select('*')
+            ->where('status',1)
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->fecha)->format('W');
@@ -282,7 +289,9 @@ class ProgramacionController extends Controller
     public function destroy($id)
     {
         $estacionamiento = ProgramacionModel::findOrFail($id);
-        $estacionamiento->delete();
+        $estacionamiento->status = 0;
+        $estacionamiento->save();
+        // $estacionamiento->delete();
         return response()->json($estacionamiento);
     }
 
@@ -306,6 +315,7 @@ class ProgramacionController extends Controller
 
         //Validacion por fecha y estacionamiento
         $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento)
+            ->where('status',1)
             ->whereDate("fecha", $payload["fecha"])
             ->first();
 
@@ -323,6 +333,7 @@ class ProgramacionController extends Controller
 
         //validacion por usuario y fecha
         $register2 = ProgramacionModel::where("user_id", $payload["user_id"])
+        ->where('status',1)
         ->whereDate("fecha", $payload["fecha"])
             ->first();
 

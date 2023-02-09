@@ -1,15 +1,15 @@
 <template>
-    
+
     <main id="js-page-content" role="main" class="page-content">
-        
+
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-chart-area'></i> Usuarios 
+                <i class='subheader-icon fal fa-chart-area'></i> Usuarios
             </h1>
         </div>
         <div class="col-lg-12">
             <div id="panel-4" class="panel">
-                
+
                 <div class="panel-container show">
                     <div class="panel-content">
                             <div class="panel-hdr">
@@ -43,14 +43,14 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            
+
                         </table>
                         <!-- datatable end -->
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="modal fade" id="modalForm">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -131,9 +131,9 @@
                 </div>
             </div>
         </div>
-        
+
     </main>
-    
+
 </template>
 <script>
 
@@ -190,7 +190,7 @@ export default {
             let valid = await this.validarCampos();
             if(valid){
                 axios.put('/api/usuario/'+this.id, this.datos).then(response=>{
-                    this.users = [].concat(response.data);          
+                    this.users = [].concat(response.data);
                     this.id='';
                     //this.getUser()
                     $('#modalForm').modal('hide');
@@ -228,7 +228,7 @@ export default {
         },
         abrirModalEditar(datos){
             this.parkingsFilter = [];
-            this.datos= {nombre: datos.nombre, apellido: datos.apellido, documento: datos.documento, email: datos.email, 
+            this.datos= {nombre: datos.nombre, apellido: datos.apellido, documento: datos.documento, email: datos.email,
                         role_id: datos.role_id, parking_id: datos.parking_id, password: datos.password };
             this.parkings.map(i => {
                 if(!this.users.find(e => e.parking_id == i.id)){
@@ -250,14 +250,14 @@ export default {
                         this.users = response.data.users;
                         this.roles = response.data.roles;
                         this.parkings = response.data.parkings;
-                         
+
                     })
                     .catch(error=>{
                         console.log(error);
                         //this.users =[]
-                    }) 
-            
-            await $('#tableUser').DataTable();      
+                    })
+
+            await $('#tableUser').DataTable();
         },
         cerrarModal(){
             $('#modalForm').modal('hide');

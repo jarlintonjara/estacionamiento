@@ -15,19 +15,19 @@ class EventController extends Controller
     function sendProgrammingLink(Request $request)
     {
         $user = User::find($request->user["id"]);
-        $estacionamiento = EstacionamientoModel::find($request->programacion["estacionamiento_id"]);
+        $estacionamiento = EstacionamientoModel::where('status',1)->find($request->programacion["estacionamiento_id"]);
         $propietario = User::where('parking_id', $request->programacion["estacionamiento_id"])->first();
         $event = new EventController();
         $fecha = Carbon::parse($request->programacion["fecha"]);
         $fecha = $fecha->format('d-m-Y');
         $link = $event->getLinkProgramming($user, $request->programacion);
         $page = new RequestParking($user["nombre"].' '.$user["apellido"], $estacionamiento["numero"], $propietario["nombre"], $link, $fecha);
-        
+
         Mail::to($propietario["email"])
             ->send($page);
         return response()->json(["message" => "exitoso", "isSuccess" => true, 'link' => $link]);
     }
-    
+
     public function getLinkProgramming($user, $programacion)
     {
         return URL::temporarySignedRoute(
@@ -36,7 +36,7 @@ class EventController extends Controller
             ['user' => $user, 'programacion' => $programacion]
         );
     }
-    
+
     public function getLinkPassword($user)
     {
         return URL::temporarySignedRoute(

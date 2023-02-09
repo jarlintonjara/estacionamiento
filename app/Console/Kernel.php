@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
         $time = SettingModel::first();
         $schedule->command('send:mail')->dailyAt($time->time);
-        $schedule->command('send:programacionSemana')->fridays()->dailyAt('08:00:00');
+        // $schedule->command('send:programacionSemana')->fridays()->dailyAt('08:00:00');
     }
 
     /**

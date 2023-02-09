@@ -214,7 +214,7 @@ export default {
                 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
 
             },
-            
+
             firstDay: 0,
             users:[],
             session: {},
@@ -231,15 +231,15 @@ export default {
             disabled: false,
             info: [],
             datos: {
-                estacionamiento_id:'', 
-                user_id:'', 
-                fecha:'', 
-                fecha_inicio: startDate, 
-                fecha_fin: endDate, 
-                hora_inicio:'', 
-                hora_fin: '', 
-                turno: '', 
-                observacion: '', 
+                estacionamiento_id:'',
+                user_id:'',
+                fecha:'',
+                fecha_inicio: startDate,
+                fecha_fin: endDate,
+                hora_inicio:'',
+                hora_fin: '',
+                turno: '',
+                observacion: '',
                 created_by : ''
             },
             titulo:'',
@@ -256,7 +256,7 @@ export default {
         await axios.get('api/getSession/'+ token).then((res)=>{
             this.session = res.data;
             this.datos.created_by = this.session.id;
-        })  
+        })
     },
     mounted: async function(){
         await this.init();
@@ -310,7 +310,7 @@ export default {
                     self.schedulesFilter = self.schedules;
                     self.nextSchedulesFilter = self.nextSchedules;
                     resolve();
-                    
+
                 }else if(self.session.role_id == 3){
                     self.parkingsFilter = [].concat(self.parkings.filter(e => e.id == self.session.parking_id))
                     self.usersFilter = self.users;
@@ -395,9 +395,9 @@ export default {
                             title: 'Oops...',
                             text: response.data.message,
                         })
-                    } else { 
+                    } else {
                         resp = true;
-                        this.schedules = [].concat(response.data.schedules);          
+                        this.schedules = [].concat(response.data.schedules);
                         this.nextSchedules = [].concat(response.data.nextSchedules);
                         $('#modalForm').modal('hide');
                         this.$swal.fire(
@@ -406,7 +406,7 @@ export default {
                             'success'
                         )
                     }
-                   
+
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -425,7 +425,7 @@ export default {
                 let resp = false;
                 await axios.put('/api/programacion/'+this.id, this.datos).then(response=>{
                     if(response.data.isSuccess == false){
-                        
+
                         this.$swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -433,8 +433,8 @@ export default {
                         })
                     }else{
                         resp = true;
-                        this.schedules = [].concat(response.data.schedules);          
-                        this.nextSchedules = [].concat(response.data.nextSchedules);          
+                        this.schedules = [].concat(response.data.schedules);
+                        this.nextSchedules = [].concat(response.data.nextSchedules);
                         this.id='';
                         $('#modalForm').modal('hide');
                         this.$swal.fire(
@@ -443,7 +443,7 @@ export default {
                             'success'
                         )
                     }
-                    
+
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -458,16 +458,19 @@ export default {
         },
         borrar(id){
             let self = this;
-            this.$swal.fire({
-                title: 'Seguro de eliminar?',
-                text: "",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si'
-            }).then(function () {
-                
+            // this.$swal.fire({
+            //     title: 'Seguro de eliminar?',
+            //     text: "",
+            //     type: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Si'
+            // }).then(function (result) {
+            //     if (result.isConfirmed) {
+            //     }
+            // })
+            if(confirm("¿Confirma eliminar el registro?")){
                 self.axios.delete(`/api/programacion/${id}`).then(response => {
                     let id = response.data.id;
                     self.schedulesFilter = [].concat(self.schedulesFilter.filter(e => e.id !== id));
@@ -480,7 +483,7 @@ export default {
                 }).catch(error=>{
                     console.log(error)
                 })
-            })
+            }
         },
         abrirModalCrear() {
             const startDate = new Date();

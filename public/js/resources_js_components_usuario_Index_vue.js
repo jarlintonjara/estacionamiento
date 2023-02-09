@@ -1813,7 +1813,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "subheader" }, [
       _c("h1", { staticClass: "subheader-title" }, [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
-        _vm._v(" Usuarios \n        "),
+        _vm._v(" Usuarios\n        "),
       ]),
     ])
   },
