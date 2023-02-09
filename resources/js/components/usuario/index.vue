@@ -111,7 +111,7 @@
                             <div v-if="datos.role_id=='3'" class="form-group col-md-4">
                                 <label for="Parking">Estacionamiento</label>
                                 <select id="Parking" class="browser-default custom-select" v-model="datos.parking_id">
-                                    <option>Seleccione un estacionamiento</option>
+                                    <option value="0">Seleccione un estacionamiento</option>
                                     <option v-for="parking in parkingsFilter" :key="parking.numero+parking.id" :value="parking.id">{{ parking.numero + " - "+parking.sede }}</option>
                                 </select>
                             </div>
