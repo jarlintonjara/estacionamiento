@@ -239,6 +239,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     $('#modalForm').modal('hide');
 
                     _this.$swal.fire('Usuario creado correctamente!', '', 'success');
+
+                    _this.mostrarusers();
                   })["catch"](function (error) {
                     console.log(error);
                   });
@@ -275,6 +277,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     $('#modalForm').modal('hide');
 
                     _this2.$swal.fire('Usuario editado correctamente!', '', 'success');
+
+                    _this2.mostrarusers();
                   })["catch"](function (error) {
                     console.log(error);
                   });
@@ -338,7 +342,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         email: datos.email,
         role_id: datos.role_id,
         parking_id: datos.parking_id,
-        password: datos.password
+        password: datos.password,
+        sede_id: datos.sede_id,
+        cargo: datos.cargo,
+        area: datos.area
       };
       this.parkings.map(function (i) {
         if (!_this5.users.find(function (e) {

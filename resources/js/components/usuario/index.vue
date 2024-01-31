@@ -188,6 +188,7 @@ export default {
                         '',
                         'success'
                     )
+                    this.mostrarusers();
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -207,6 +208,7 @@ export default {
                         '',
                         'success'
                     )
+                    this.mostrarusers()
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -237,7 +239,7 @@ export default {
         abrirModalEditar(datos){
             this.parkingsFilter = [];
             this.datos= {nombre: datos.nombre, apellido: datos.apellido, documento: datos.documento, email: datos.email,
-                        role_id: datos.role_id, parking_id: datos.parking_id, password: datos.password };
+                        role_id: datos.role_id, parking_id: datos.parking_id, password: datos.password, sede_id: datos.sede_id, cargo: datos.cargo, area: datos.area };
             this.parkings.map(i => {
                 if(!this.users.find(e => e.parking_id == i.id)){
                     this.parkingsFilter.push(i)
