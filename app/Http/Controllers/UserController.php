@@ -6,6 +6,7 @@ use App\Models\EstacionamientoModel;
 use App\Models\RoleModel;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Sede;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -28,6 +29,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('status', 1)->orderBy('apellido', 'ASC')->get();
+        $sedes = Sede::get();
         foreach ($users as $user) {
             if($user->parking_id){
                 $user["parking"] = $user->parking;
@@ -38,11 +40,14 @@ class UserController extends Controller
                 ];
             }
             $user["role"] = $user->role;
+            $user["sede"] = $user->sede;
         }
+
         $roles = RoleModel::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('status', 1)->get();
         return response()->json([
             "roles" => $roles,
+            "sedes" => $sedes,
             "parkings" => $parkings,
             "users" => $users,
         ]);
@@ -70,6 +75,7 @@ class UserController extends Controller
         $data['password'] = Hash::make($request->password);
 
         $user = User::create($data);
+        
         if ($user->parking_id) {
             $user["parking"] = $user->parking;
         } else {

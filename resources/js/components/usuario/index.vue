@@ -22,7 +22,7 @@
                                     <th>Apellidos</th>
                                     <th>Rol</th>
                                     <th>Documento</th>
-                                    <th>Estacionamiento</th>
+                                    <th>Sede</th>
                                     <th>Email</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
@@ -34,7 +34,7 @@
                                     <td>{{ user.apellido }}</td>
                                     <td>{{ user.role.description }}</td>
                                     <td>{{ user.documento }}</td>
-                                    <td>{{ user.parking.numero + " - "+ user.parking.sede}}</td>
+                                    <td>{{ user.sede.name }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ $dateFormat(user.created_at) }}</td>
                                     <td>
@@ -116,6 +116,13 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
+                                <label for="Sede">Sede</label>
+                                <select id="Sede" class="browser-default custom-select" v-model="datos.sede_id">
+                                    <option>Seleccione una Sede</option>
+                                    <option v-for="sede in sedes" :key="sede.name+sede.id" :value="sede.id">{{sede.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
                                 <label for="password">Contraseña</label>
                                 <input type="password" id="password" class="form-control" placeholder="password" v-model="datos.password">
                             </div>
@@ -143,6 +150,7 @@ export default {
         return {
             users:[],
             roles:[],
+            sedes:[],
             parkings:[],
             parkingsFilter:[],
             datos: {nombre:'', apellido:'', documento:'', email:'', cargo: '', area: '', role_id: '', parking_id: '', telefono:''},
@@ -214,7 +222,7 @@ export default {
             }
         },
         abrirModalCrear(){
-            this.datos = {nombre:'', apellido:'', documento:'', email:'', role_id: '', parking_id:'', cargo: '', area: '', password: ''};
+            this.datos = {nombre:'', apellido:'', documento:'', email:'', role_id: '', parking_id:'', cargo: '', area: '', password: '', sede_id: ''};
             this.parkingsFilter = [];
             this.parkings.map(i => {
                 if(!this.users.find(e => e.parking_id == i.id)){
@@ -249,8 +257,8 @@ export default {
                     .then(response=>{
                         this.users = response.data.users;
                         this.roles = response.data.roles;
+                        this.sedes = response.data.sedes;
                         this.parkings = response.data.parkings;
-
                     })
                     .catch(error=>{
                         console.log(error);

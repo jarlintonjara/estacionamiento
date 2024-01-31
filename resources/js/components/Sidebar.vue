@@ -59,6 +59,7 @@ export default {
     watch:{
         session(val){
             this.user = val
+            console.log(this.user)
         }
     },
     data(){

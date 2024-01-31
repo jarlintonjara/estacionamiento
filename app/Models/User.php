@@ -62,4 +62,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(EstacionamientoModel::class, 'id', 'parking_id');
     }
+
+    public function sede() {
+        return $this->hasOne(Sede::class, 'id', 'sede_id');
+    }
 }

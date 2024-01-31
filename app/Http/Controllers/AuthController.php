@@ -37,6 +37,15 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
+        // $user = User::create([
+        //     'nombre' => 'estiven',
+        //     'apellido' => 'mayhuay',
+        //     'perfil' => 1,
+        //     'documento' => '75203680',
+        //     'email' => 'estiven@gmail.com',
+        //     'password' => Hash::make('N78D99FC')
+        // ]);
+
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required']
