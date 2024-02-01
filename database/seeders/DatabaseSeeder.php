@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'created_at' => date('Y-m-d H:i:s')
-        ]);
+            ]);
 
         foreach (self::$roles as $role) {
             \App\Models\RoleModel::insert([
