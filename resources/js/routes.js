@@ -10,6 +10,7 @@ const NotFound = () => import('./components/NotFound.vue');
 const Rol = () => import('./components/rol/Index.vue');
 const Settings = () => import('./components/settings/Index.vue');
 const Usuario = () => import('./components/usuario/index.vue');
+const Sede = () => import('./components/sedes/index.vue');
 const Perfil = () => import('./components/usuario/Perfil.vue');
 const Estacionamiento = () => import('./components/estacionamiento/Index.vue');
 const Programacion = () => import('./components/programacion/Index.vue');
@@ -72,6 +73,11 @@ export default{
                     path: '/usuarios',
                     component: Usuario,
                     name: 'usuario'
+                },
+                {
+                    path: '/sedes',
+                    component: Sede,
+                    name: 'sedes'
                 },
                 {
                     path: '/estacionamiento',

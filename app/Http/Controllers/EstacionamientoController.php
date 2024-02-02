@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EstacionamientoModel;
+use App\Models\Sede;
 
 class EstacionamientoController extends Controller
 {
@@ -24,8 +25,18 @@ class EstacionamientoController extends Controller
      */
     public function index()
     {
-        $data = EstacionamientoModel::where('status',1)->get();
-        return response()->json($data);
+        $estacionamientos = EstacionamientoModel::where('deleted_at', null)->get();
+        $sedes = Sede::where('deleted_at', null)->get();
+
+        foreach($estacionamientos as $row) {
+            $row['sede'] = $row->sede;
+        }
+
+        return response()->json([
+            'status' => true,
+            'estacionamientos' => $estacionamientos,
+            'sedes' => $sedes
+        ]);
     }
 
     /**
@@ -46,9 +57,15 @@ class EstacionamientoController extends Controller
      */
     public function store(Request $request)
     {
-        //$estacionamiento = EstacionamientoModel::create($request->post());
-        $estacionamiento = EstacionamientoModel::create($request->post());
-        return response()->json($estacionamiento);
+        $estacionamiento = EstacionamientoModel::create([
+            'numero' => $request->nro,
+            'sede_id' => $request->sede_id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'estacionamiento' => $estacionamiento
+        ]);
     }
 
     /**
@@ -81,10 +98,16 @@ class EstacionamientoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $estacionamiento = EstacionamientoModel::findOrFail($id);
-        $estacionamiento->update($request->all());
-        $data = EstacionamientoModel::where('status',1)->get();
-        return response()->json($data);
+        // $estacionamiento = EstacionamientoModel::findOrFail($id);
+        // $estacionamiento->update($request->all());
+        // $data = EstacionamientoModel::where('status',1)->get();
+        $estacionamiento = EstacionamientoModel::find($id);
+
+        $estacionamiento->numero = $request->nro;
+        $estacionamiento->sede_id = $request->sede_id;
+        $estacionamiento->update();
+
+        return response()->json($estacionamiento);
     }
 
     /**
@@ -95,11 +118,11 @@ class EstacionamientoController extends Controller
      */
     public function destroy($id)
     {
-        $estacionamiento = EstacionamientoModel::findOrFail($id);
-        $estacionamiento->status = 0;
-        $estacionamiento->save();
-        // $estacionamiento->delete();
-        $data = EstacionamientoModel::where('status',1)->get();
-        return response()->json($data);
+        $estacionamiento = EstacionamientoModel::find($id);
+
+        $estacionamiento->deleted_at = date('Y-m-d H:i:s');
+        $estacionamiento->update();
+
+        return response()->json($estacionamiento);
     }
 }

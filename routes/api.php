@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\SedeController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,4 @@ Route::resource('setting', SettingController::class);
 Route::resource('usuario', UserController::class);
 Route::match(['put', 'patch'], 'updateProfile/{usuario}', [UserController::class, 'updateProfile']);
 Route::resource('rol', RoleController::class);
+Route::resource('sede', SedeController::class);

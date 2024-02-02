@@ -13,5 +13,9 @@ class EstacionamientoModel extends Model
 
     protected $table = 'estacionamiento';
 
-    protected $fillable = ['id','numero', 'sede', 'ubicacion', 'created_at', 'asignado'];
+    protected $fillable = ['id', 'numero', 'sede_id', 'created_at', 'deleted_at'];
+
+    public function sede() {
+        return $this->hasOne(Sede::class, 'id', 'sede_id');
+    }
 }

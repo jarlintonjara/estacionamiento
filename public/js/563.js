@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[563],{8563:(e,n,t)=>{t.r(n),t.d(n,{default:()=>s});const u={name:"Home",data:function(){return{}},mounted:function(){this.$router.push({name:"dashboard"})}};const s=(0,t(1900).Z)(u,(function(){var e=this.$createElement;return(this._self._c||e)("div")}),[],!1,null,null,null).exports}}]);

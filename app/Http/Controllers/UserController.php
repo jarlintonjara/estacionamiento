@@ -29,7 +29,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('status', 1)->orderBy('apellido', 'ASC')->get();
-        $sedes = Sede::get();
+        $sedes = Sede::where('deleted_at', null)->get();
         foreach ($users as $user) {
             if($user->parking_id){
                 $user["parking"] = $user->parking;
@@ -44,7 +44,7 @@ class UserController extends Controller
         }
 
         $roles = RoleModel::where('status', 1)->get();
-        $parkings = EstacionamientoModel::where('status', 1)->get();
+        $parkings = EstacionamientoModel::where('deleted_at', null)->get();
         return response()->json([
             "roles" => $roles,
             "sedes" => $sedes,

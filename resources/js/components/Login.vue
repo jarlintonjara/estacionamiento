@@ -3,7 +3,7 @@
         <div class="blankpage-form-field">
             <div class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
                 <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
-                    <span class="page-logo-text mr-1">Parking Derco | Login</span>
+                    <span class="page-logo-text mr-1">Parking Derco | Logi n</span>
                 </a>
             </div>
             <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">

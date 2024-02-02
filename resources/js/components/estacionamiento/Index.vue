@@ -12,75 +12,89 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <div class="panel-hdr">
-                                <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
+                                <button class="btn btn-success" @click="openModalCreate">Nuevo</button>
                             </div><br>
                             <table id="dt-estacionamiento" class="table table-bordered table-hover table-striped w-100">
                                 <thead class="bg-warning-200">
-                                    <tr>
+                                    <tr class="text-center">
                                         <th>N.Estación</th>
                                         <th>Sede</th>
-                                        <th>Ubicación</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in items" :key="item.id">
-                                        <td>{{ item.numero }}</td>
-                                        <td>{{ item.sede }}</td>
-                                        <td>{{ item.ubicacion }}</td>
+                                    <tr v-if="estacionamientos.length === 0" class="text-center">
+                                        <td colspan="3">No hay datos</td>
+                                    </tr>
+
+                                    <tr v-if="estacionamientos.length > 0" v-for="estacionamiento in estacionamientos" class="text-center">
+                                        <td>{{estacionamiento.numero}}</td>
+                                        <td>{{estacionamiento.sede.name}}</td>
                                         <td>
-                                            <button class="btn btn-warning" @click="abrirModalEditar(item)"><i class="far fa-edit"></i></button>
-                                            <button class="btn btn-danger" @click="borrar(item.id)"><i class="fa fa-trash"></i></button>
-                                            <!--router-link :to="{name:'editarEstacionamiento', params:{id:item.id}}" class="btn btn-info"><i class="far fa-edit"></i></!--router-link-->
+                                            <button class="btn btn-warning" @click="editModal(estacionamiento)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+
+                                            <button class="btn btn-danger" @click="deleteElem(estacionamiento.id)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- datatable end -->
                         </div>
                     </div>
                 </div>
             </div>
             
         
-        <div class="modal fade" id="modalForm">
+        <div class="modal fade" id="modalEstacionamiento">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fa fa-user-plus"></i> {{titulo}}
-                    </h5>
-                    <button type="button" @click.prevent="cerrarModal" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <h5 class="modal-title">
+                            {{title}}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <form>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="nombre">Número</label>
-                            <input type="text" class="form-control" placeholder="numero" required="" v-model="datos.numero">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombres">Sede</label>
-                            <input value="OLGUIN" type="text" class="form-control" id="sede" required="" v-model="datos.sede">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombress">Ubicación</label>
-                            <input type="text" class="form-control" placeholder="Ej. SOTANO 1" required="" v-model="datos.ubicacion">
-                        </div>
-                        
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="nro">Numero</label>
+                                    <input class="form-control" type="text" id="nro" required v-model="fields.nro">
+                                </div>
+    
+                                <div class="form-group col-md-6">
+                                    <label for="sede_id">Sede</label>
+                                    <select name="sede_id" id="sede_id" class="browser-default custom-select form-control" v-model="fields.sede_id">
+                                        <option>Seleccione una Sede</option>
+                                        <option v-for="sede in sedes" :key="sede.name + sede.id" :value="sede.id">{{sede.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger"  @click.prevent="cerrarModal" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" @click.prevent="crear" v-if="btnCrear">Crear</button>
-                        <button type="submit" class="btn btn-primary" @click.prevent="editar" v-if="btnEditar">Editar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" @click="closeModal">Cerrar</button>
+
+                        <button type="submit" class="btn btn-primary" @click.prevent="create" v-if="isCreated" >
+                            <span v-if="isLoading">Guardando..</span>
+                            <span v-if="!isLoading">Crear</span>
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" v-if="isEdit" @click.prevent="update">
+                            <span v-if="isLoading">Actualizando...</span>
+                            <span v-if="!isLoading">Actualizar</span>
+                        </button>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
         <!-- Modal ver detalles -->
-        <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
@@ -116,7 +130,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </main>
                     
 </template>
@@ -129,105 +143,138 @@ export default {
     },
     data(){
         return {
-            items:[],
-            info: [],
-            datos: {numero:'', sede:'OLGUIN', ubicacion:''},
-            titulo:'',
-            btnCrear:false,
-            btnEditar:false,
-            id:''
+            fields: {
+                nro: '',
+                sede_id: ''
+            },
+            sedes: [],
+            title: '',
+            id: 0,
+            estacionamientos: [],
+            isEdit: false,
+            isCreated: false,
+            isLoading: false
         }
     },
     mounted(){
-        this.mostrarItems();
+        this.getEstacionamiento();
     },
-    methods:{
+    methods: {
+        validateFields() {
+            if(this.fields.nro === "") {
+                this.$swal.fire({
+                    'icon': 'warning',
+                    'title': 'Oops...',
+                    'text': 'El campo numero es requerido'
+                });
+                return false;
+            }
 
-        crear(){
-            axios.post('api/estacionamiento', this.datos).then(response=>{
-                this.items.push(response.data);
-                //this.getUser()
-                $('#modalForm').modal('hide');
-                this.$swal.fire(
-                    'Estacionamiento creado correctamente!',
-                    '',
-                    'success'
-                )
-                
-                //swal("Felicidades!", "Estacionamiento creado correctamente!", "success");
-            }).catch(function (error) {
-                console.log(error);
-            });
-        
+            if(this.fields.sede_id === "") {
+                this.$swal.fire({
+                    'icon': 'warning',
+                    'title': 'Oops...',
+                    'text': 'El campo sede es requerido'
+                });
+                return false;
+            }
+
+            return true;
         },
-        editar(){
-            console.log(this.id);
-            axios.put('/api/estacionamiento/'+this.id, this.datos).then(response=>{
-                this.items = [].concat(response.data);          
-                this.id='';
-                //this.getUser()
-                $('#modalForm').modal('hide');
-                this.$swal.fire(
-                    'Estacionamiento editado correctamente!',
-                    '',
-                    'success'
-                )
-                //swal("Felicidades!", "Usuario editado correctamente!", "success");
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        borrar(id){
-            if(confirm("¿Confirma eliminar el registro?")){
-                this.axios.delete(`/api/estacionamiento/${id}`).then(response=>{
-                    this.items = [].concat(response.data);
-                }).catch(error=>{
-                    console.log(error)
+        async getEstacionamiento() {
+            await axios.get('/api/estacionamiento')
+                .then((res) => {
+                    this.sedes = res.data.sedes;
+                    this.estacionamientos = res.data.estacionamientos;
                 })
+                .catch((err) => {
+                    console.log(err)
+                })
+
+            await $('#dt-estacionamiento').DataTable();
+        },
+        openModalCreate() {
+            this.isEdit = false;
+            this.isCreated = true;
+            this.title = "Crear Estacionamiento"
+            this.reset();
+
+            $("#modalEstacionamiento").modal("show")
+        },
+        closeModal() {
+            $("#modalEstacionamiento").modal("hide")
+        },
+        async create() {
+            let errors = this.validateFields();
+
+            if(errors) {
+                this.isLoading = true;
+
+                axios.post('/api/estacionamiento', this.fields)
+                    .then((res) => {
+                        $("#modalEstacionamiento").modal("hide")
+
+                        this.getEstacionamiento()
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
             }
         },
-        abrirModalCrear(){
-            this.datos.numero = ''; 
-            this.datos.ubicacion = '';
-            this.titulo=' Crear estacionamiento'
-            this.btnCrear=true
-            this.btnEditar=false
-            $('#modalForm').modal('show')
+        editModal(estacionamiento) {
+            this.title = "Editar Estacionamiento " + estacionamiento.numero;
+
+            this.isCreated = false;
+            this.isEdit = true;
+
+            this.id = estacionamiento.id;
+            this.fields.nro = estacionamiento.numero;
+            this.fields.sede_id = estacionamiento.sede_id;
+
+            $("#modalEstacionamiento").modal("show")
         },
-        abrirModalEditar(datos){
-            this.datos= {numero: datos.numero, sede: datos.sede, ubicacion: datos.ubicacion}
-            this.titulo=' Editar estacionamiento'
-            this.btnCrear=false
-            this.btnEditar=true
-            this.id=datos.id
-            $('#modalForm').modal('show');
-        },
-        async mostrarItems(){
-            await this.axios.get('/api/estacionamiento')
-                    .then(response=>{
-                        this.items = response.data
+        async update() {
+            let errors = this.validateFields();
+
+            if(errors) {
+                this.isLoading = true;
+
+                axios.put('/api/estacionamiento/' + this.id, this.fields)
+                    .then((res) => {
+                        this.getEstacionamiento()
+                        $("#modalEstacionamiento").modal("hide")
                     })
-                    .catch(error=>{
-                        console.log(error);
-                        this.items =[]
+                    .catch((err) => {
+                        console.log(err)
                     })
-                    $('#dt-estacionamiento').DataTable();        
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            }
         },
-        // getTable(){
-        //     $('#dt-basic-example').dataTable({})
-        // },
-        
-        cerrarModal(){
-            $('#modalForm').modal('hide');
+        reset() {
+            this.fields.nro = "";
+            this.fields.sede_id = "";
         },
-        dateFormat(date){
-            let dt = new Date(date);
-            let year  = dt.getFullYear();
-            let month = (dt.getMonth() + 1).toString().padStart(2, "0");
-            let day   = dt.getDate().toString().padStart(2, "0");
-            return day +"-"+ month+"-"+ year
+        async deleteElem(id) {
+            this.$swal.fire({
+                icon: 'warning',
+                title: 'Eliminacion de Registro',
+                text: '¿Estas seguro de eliminar este registro?'
+            })
+            .then((res) => {
+                if(res.isConfirmed) {
+                    axios.delete('/api/estacionamiento/' + id)
+                    .then((res) => {
+                        this.getEstacionamiento()
+                    })
+                }
+            })
         }
-    }
+    },
 }
 
 </script>
