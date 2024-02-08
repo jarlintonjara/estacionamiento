@@ -336,12 +336,108 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalFormDashboard">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"> <i class="fa fa-user-plus"></i>  Crear programacion</h5>
+                            <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" v-if="user && user.role_id === 1">
+                                        <label for="Usuario">Usuario</label>
+                                        <v-select class="vue-select2" name="select2" :options="usersFilter"
+                                            v-model="datos.user_id" :reduce="label => label.code">
+                                        </v-select>
+                                    </div>
+
+                                    <div class="form-group col-md-6" v-if="user && user.role_id === 2 || user.role_id === 3">
+                                        <label for="Usuario">Usuario</label>
+                                        <select id="Usuario" class="browser-default custom-select" disabled v-model="datos.user_id">
+                                            <option :value="user.id" :key="user.id + user.nombre">{{ user.nombre + ' ' + user.apellido }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="Estacionamiento">Estacionamiento</label>
+                                        
+                                        <input type="text" id="Estacionamiento" class="form-control" placeholder="Ej. SOTANO 1" required="" v-model="numero" :disabled="true">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="Fecha">Fecha de programación</label>
+                                        <!-- <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                            placeholder="Fecha" v-model="datos.fecha"> -->
+
+                                        <date-range-picker v-model="pickerDates" :locale-data="locale">
+                                            <template v-slot:input="pickerDates" style="min-width: 350px;">{{
+                                                pickerDates.startDate | date }} - {{ pickerDates.endDate | date
+                                                }} <i class="fa fa-calendar"></i></template>
+                                        </date-range-picker>
+                                    </div>
+                                    <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="bordered"
+                                                id="option-bordered" v-model="allDay" @click="onChange('D')">
+                                            <label class="custom-control-label" for="option-bordered">Todo el día</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small" v-model="morning" @click="onChange('M')">
+                                            <label class="custom-control-label" for="option-small">Mañana</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small2" v-model="afternoon" @click="onChange('T')">
+                                            <label class="custom-control-label" for="option-small2">Tarde</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_inicio">Hora Inicio</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
+                                            :disabled="true" placeholder="Hora inicio" v-model="datos.hora_inicio">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_fin">Hora Fin</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control"
+                                            :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="Observaciones">Observaciones</label>
+                                        <textarea id="Observaciones" class="form-control"
+                                            v-model="datos.observacion"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
+                                    data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary" @click.prevent="crear">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
     
             <div class="modal fade" id="modalForm">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title"> <i class="fa fa-paper-plane"></i> Solicitud por Email</h5>
+                            <h5 class="modal-title"> <i class="fa fa-user-plus"></i> Crear programacion</h5>
                             <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
                                 aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -351,8 +447,8 @@
                             <div class="modal-body">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="Propietario">Propietario:</label>
-                                        <input type="text" id="Propietario" class="form-control" placeholder="" required="" v-model="propietario" :disabled="true">
+                                        <label for="usuario">Usuario:</label>
+                                        <input type="text" id="usuario" class="form-control" placeholder="" required="" v-model="usuario" :disabled="true">
             
                                     </div>
                                     <div class="form-group col-md-6">
@@ -419,7 +515,9 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
                                     data-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary" @click.prevent="sendEmail">Enviar</button>
+                                <button type="submit" class="btn btn-primary" @click.prevent="crear">Crear</button>
+
+                                <!-- <button type="submit" class="btn btn-primary" @click.prevent="sendEmail">Enviar</button> -->
                             </div>
                         </form>
                     </div>
@@ -431,15 +529,34 @@
 <script>
 
 import Spinner from './Spinner.vue';
+import DateRangePicker from 'vue2-daterange-picker'
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
 
 export default {
     components: {
-        Spinner
+        Spinner,
+        DateRangePicker
     },
     data() {
         let date = new Date();
         date.setDate(date.getDate() + 1);
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate());
         return{
+            pickerDates: {
+                startDate,
+                endDate
+            },
+            locale: {
+                format: 'mm/dd/yyyy',
+                separator: ' - ',
+                applyLabel: 'Aplicar',
+                cancelLabel: 'Cancel',
+                daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
+
+            },
             curr_sede: 0,
             item1:true,
             item2: false,
@@ -459,8 +576,8 @@ export default {
                 estacionamiento_id: '',
                 user_id: '',
                 fecha: date,
-                fecha_inicio: '',
-                fecha_fin: '',
+                fecha_inicio: startDate,
+                fecha_fin: endDate,
                 hora_inicio: '',
                 hora_fin: '',
                 turno: '',
@@ -468,6 +585,7 @@ export default {
                 created_by: ''
             },
             propietario: "",
+            usuario: "",
             numero: "",
             fecha: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
             report: {
@@ -486,6 +604,11 @@ export default {
     },
     mounted(){
         this.init();
+    },
+    filters: {
+        date(date) {
+            return new Intl.DateTimeFormat("en-US").format(date);
+        }
     },
     methods:{
         async getDataDashboard(filters = false, sede_id = this.user.sede_id) {
@@ -617,17 +740,23 @@ export default {
             }
         },
         abrirModal(item) {
+            console.log(this.user)
+            console.log(item)
+
             this.datos.estacionamiento_id = item.id;
             this.datos.user_id = this.user.id;
             this.datos.hora_inicio = "";
             this.datos.hora_fin = "";
             this.datos.turno = "";
             this.propietario = item.nombre + " " + item.apellido;
+            this.usuario = `${this.user.nombre} ${this.user.apellido}`;
             this.numero = item.numero;
             this.allDay = false;
             this.morning = false;
             this.afternoon = false;
-            $('#modalForm').modal('show')
+            // $('#modalForm').modal('show')
+            $('#modalFormDashboard').modal('show')
+            
         },
         exportExcel(){
             axios.get('/api/export').then((res)=>{
@@ -635,10 +764,41 @@ export default {
             }); 
         },
         cerrarModal() {
-            $('#modalForm').modal('hide');
+            $('#modalFormDashboard').modal('hide')
+            // $('#modalForm').modal('hide');
         },
         changeSede(e) {
             this.getDataDashboard(true, e.target.value);
+        },
+        async crear() {
+            this.datos.fecha_inicio = this.pickerDates.startDate;
+            this.datos.fecha_fin = this.pickerDates.endDate;
+
+            if(!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin ){
+                this.$swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Completa los campos requeridos!',
+                });
+                return false;
+            } else {
+                await axios.post('api/programacion', this.datos).then(response=>{
+                    if(response.data.isSuccess == false){
+                        this.$swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message,
+                        })
+                    }  else {
+                        $('#modalFormDashboard').modal('hide')
+
+                        this.$router.push({
+                            name: 'programacion'
+                        })
+                    }
+                })
+            }
+
         }
     }
 }

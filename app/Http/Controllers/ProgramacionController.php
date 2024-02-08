@@ -139,6 +139,8 @@ class ProgramacionController extends Controller
 
         $period = new CarbonPeriod($start_date, '1 day', $end_date);
 
+        // return response()->json(['status' => true, 'data' => 'hola']);
+
         // Rango fecha semana actual
         $date = Carbon::parse($request->fecha_inicio);
 
@@ -161,7 +163,7 @@ class ProgramacionController extends Controller
         if($total_curr_sum_week > 3) {
             return response()->json([
                 'isSuccess' => false,
-                'message' => "Superaste las 3 reservas en la semana",
+                'message' => "Superaste las 3 en la semana",
                 'total_schedules_week_db' => $total_db_sum_week,
                 'schedules' => $schedules_week,
                 'total_schedules_week_curr' => $total_curr_sum_week,
