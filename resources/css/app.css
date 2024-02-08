@@ -1,0 +1,9 @@
+.back-login{
+    /* background: url("/admin/img/parking9.jpg"); */
+    background: url("/images/bg_derco.jpeg");
+    /* background: url("") */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    height: 100vh;
+}
