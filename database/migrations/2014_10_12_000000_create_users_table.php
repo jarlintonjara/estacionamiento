@@ -28,6 +28,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default('1');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('curr_sede_id');
             $table->rememberToken();
             $table->timestamps();
         });

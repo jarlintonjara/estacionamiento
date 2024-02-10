@@ -6,6 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Sede;
+use App\Models\SettingModel;
+use App\Models\User;
+use App\Models\RoleModel;
+use App\Models\UsersSedes;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,50 +19,56 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
     static  $roles = [
         'Admin',
         'Usuario',
         'Propietario'
     ];
 
+    static $sedes = [
+        [
+            'name' => 'MORRO',
+            'email' => 'morro@gmail.com'
+        ]
+    ];
+
     public function run()
     {        
-        $sedes = [
-            [
-                'name' => 'MORRO',
-                'email' => 'morro@gmail.com'
-            ],
-            [
-                'name' => 'OILLO',
-                'email' => 'oillo@gmail.com'
-            ]
-        ];
-
-        foreach($sedes as $sede) {
-            $sede = \App\Models\Sede::create([
+        
+        foreach(self::$sedes as $sede) {
+            $sede = Sede::create([
                 'name' => $sede['name'],
                 'email' => $sede['email']
             ]);
 
-            \App\Models\SettingModel::insert([
+            SettingModel::insert([
                 'sede_id' => $sede->id,
                 'email' => $sede->email
             ]);
         }
 
-        \App\Models\User::insert([
+        $curr_sede = Sede::where('name', 'MORRO')->first();
+
+        $user =  User::create([
             'nombre' => 'Fredy',
             'apellido' => 'Cumpa',
             'cargo' => 'Gerente',
             'role_id' => 1,
-            'sede_id' => \App\Models\Sede::where('name', 'MORRO')->first()->id,
+            'sede_id' => $curr_sede->id,
+            'curr_sede_id' => $curr_sede->id,
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'created_at' => date('Y-m-d H:i:s')
-            ]);
+        ]);
+
+        UsersSedes::insert([
+            'user_id' => $user->id,
+            'sede_id' => $curr_sede->id,
+        ]);
 
         foreach (self::$roles as $role) {
-            \App\Models\RoleModel::insert([
+            RoleModel::insert([
                 'nombre' => $role,
                 'description' => $role,
                 'created_at' => date('Y-m-d H:i:s')

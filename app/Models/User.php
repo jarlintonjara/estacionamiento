@@ -32,7 +32,8 @@ class User extends Authenticatable
         'estado',
         'email',
         'password',
-        'propietario'
+        'propietario',
+        'curr_sede_id'
     ];
 
     /**
