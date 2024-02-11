@@ -68,4 +68,8 @@ class User extends Authenticatable
     public function sede() {
         return $this->hasOne(Sede::class, 'id', 'sede_id');
     }
+
+    public function multisedes() {
+        return $this->hasMany(UsersSedes::class, 'user_id');
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\UsersSedes;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -38,15 +39,6 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
-        // $user = User::create([
-        //     'nombre' => 'estiven',
-        //     'apellido' => 'mayhuay',
-        //     'perfil' => 1,
-        //     'documento' => '75203680',
-        //     'email' => 'estiven@gmail.com',
-        //     'password' => Hash::make('N78D99FC')
-        // ]);
-
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required']
@@ -83,6 +75,14 @@ class AuthController extends Controller
             $user_id = $token_data->tokenable_id;
             $data = User::find($user_id);
             $data['sede'] = $data->sede;
+            $multisedes = UsersSedes::where('user_id', $data->id)->get();
+
+            foreach($multisedes as $multisede) {
+                $multisede = $multisede->sede;
+            }
+
+            $data['multisedes'] = $multisedes;
+
             return response()->json($data, 200);
         }
         return response()->json("inautente", 401);

@@ -23,6 +23,10 @@ Vue.config.productionTip = false;
 Vue.component('v-select', vSelect)
 import 'vue-select/dist/vue-select.css';
 
+import vMultiselect from 'vue-multiselect';
+Vue.component('v-multiselect', vMultiselect);
+import 'vue-multiselect/dist/vue-multiselect.min.css';
+
 Vue.use(VueAxios, axios); 
 
 Vue.use(VueSweetalert2);

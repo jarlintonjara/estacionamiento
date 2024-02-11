@@ -156,8 +156,6 @@ class HomeController extends Controller
         }
     }
 
-
-
     function emailProgramacionSemanal(Request $request)
     {
         try {
@@ -193,5 +191,17 @@ class HomeController extends Controller
         } catch (Exception $ex) {
             return ["success" => false, "message" => "Error en el envio", "error" => $ex->getMessage()];
         }
+    }
+
+    public function changeSede(Request $request) {
+        $sedeId = $request->curr_sede_id;
+        $userId = $request->user;
+
+        $userFound = User::find($userId);
+
+        $userFound->curr_sede_id = $sedeId;
+        $userFound->save();
+
+        return response()->json($userFound);
     }
 }

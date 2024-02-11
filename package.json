@@ -34,6 +34,7 @@
         "moment": "^2.29.1",
         "select2": "^4.1.0-rc.0",
         "vue-axios": "^3.4.1",
+        "vue-multiselect": "^2.1.8",
         "vue-router": "^3.5.2",
         "vue-select": "^3.18.3",
         "vue-select2": "^0.2.6",

@@ -33,7 +33,7 @@ export default {
     },
     data(){
         return {
-            user: null
+            user: null,
         }
     },
     mounted(){
@@ -45,7 +45,7 @@ export default {
             await axios.get('api/getSession/'+ token).then((res)=>{
                 this.user = res.data;
             })
-        }
+        },
     }
 }
 </script>

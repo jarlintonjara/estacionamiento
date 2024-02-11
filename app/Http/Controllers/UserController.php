@@ -7,13 +7,14 @@ use App\Models\RoleModel;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Sede;
+use App\Models\UsersSedes;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
+     *  
      * @return void
      */
     public function __construct()
@@ -31,9 +32,9 @@ class UserController extends Controller
         $users = User::where('status', 1)->orderBy('apellido', 'ASC')->get();
         $sedes = Sede::where('deleted_at', null)->get();
         foreach ($users as $user) {
-            if($user->parking_id){
+            if ($user->parking_id) {
                 $user["parking"] = $user->parking;
-            }else{
+            } else {
                 $user["parking"] = [
                     "numero" => "",
                     "sede" => ""
@@ -41,6 +42,12 @@ class UserController extends Controller
             }
             $user["role"] = $user->role;
             $user["sede"] = $user->sede;
+
+            foreach ($user->multisedes as $multisede) {
+                $multisede['name'] = $multisede->sede->name;
+            }
+
+            $user["multisedes"] = $user->multisedes;
         }
 
         $roles = RoleModel::where('status', 1)->get();
@@ -72,10 +79,37 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->post();
-        $data['password'] = Hash::make($request->password);
 
-        $user = User::create($data);
-        
+
+        $user = User::create([
+            'nombre' => $data['nombre'],
+            'apellido' => $data['apellido'],
+            'documento' => $data['documento'],
+            'email' => $data['email'],
+            'role_id' => $data['role_id'],
+            'parking_id' => $data['parking_id'],
+            'cargo' => $data['cargo'],
+            'area' => $data['area'],
+            'sede_id' => $data['multisede'][0]['sede_id'],
+            'password' => Hash::make($data['password']),
+            'telefono' => $data['telefono'],
+            'curr_sede_id' => $data['multisede'][0]['sede_id']
+        ]);
+
+        /* 
+            --------------- Start --------------------
+            Guardando las sedes del usuario, un usuario puede tener mas de 1 sede
+        */
+
+        foreach ($data['multisede'] as $multisede) {
+            UsersSedes::create([
+                'user_id' => $user->id,
+                'sede_id' => $multisede['sede_id']
+            ]);
+        }
+
+        /* ------------- End ---------------- */
+
         if ($user->parking_id) {
             $user["parking"] = $user->parking;
         } else {
@@ -101,16 +135,42 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        // $data = $request->post();
-        // $request['password'] = Hash::make($request->password);
 
-        if ( $request->parking_id === 'Seleccione un estacionamiento') {
+        $user->nombre = $request->nombre;
+        $user->apellido = $request->apellido;
+        $user->documento = $request->documento;
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
+        $user->parking_id = $request->parking_id;
+        $user->cargo = $request->cargo;
+        $user->area = $request->area;
+        $user->telefono = $request->telefono;
+        $user->save();
+
+        /*
+            ---------------Start----------------
+            Eliminar las sedes existentes a las que pertenece el usuario e ingresar los nuevos 
+        */
+
+        UsersSedes::where('user_id', $user->id)->delete();
+
+        foreach($request->multisede as $sede) {
+            UsersSedes::create([
+                'user_id' => $user->id,
+                'sede_id' => $sede['sede_id']
+            ]);
+        }
+
+        /*
+            ---------------End----------------
+        */
+
+        if ($request->parking_id === 'Seleccione un estacionamiento') {
             $request['parking_id'] = 0;
         } else {
             $request['parking_id'] = $request->parking_id;
         }
 
-        $user->update($request->all());
         $data = User::all();
         return response()->json($data);
     }

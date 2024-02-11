@@ -1,110 +1,112 @@
+const Home = () => import("./components/Home.vue");
+const Login = () => import("./components/Login.vue");
+const RecoverPassword = () => import("./components/RecoverPassword.vue");
+const ResetPassword = () => import("./components/ResetPassword.vue");
+const Register = () => import("./components/Register.vue");
+const Dashboard = () => import("./components/Dashboard.vue");
+const Layout = () => import("./components/Layout.vue");
+const NotFound = () => import("./components/NotFound.vue");
+const Rol = () => import("./components/rol/Index.vue");
+const Settings = () => import("./components/settings/Index.vue");
+const Usuario = () => import("./components/usuario/index.vue");
+const Sede = () => import("./components/sedes/index.vue");
+const Perfil = () => import("./components/usuario/Perfil.vue");
+const Estacionamiento = () => import("./components/estacionamiento/Index.vue");
+const Programacion = () => import("./components/programacion/Index.vue");
 
-const Home = () => import('./components/Home.vue');
-const Login = () => import('./components/Login.vue');
-const RecoverPassword = () => import('./components/RecoverPassword.vue');
-const ResetPassword = () => import('./components/ResetPassword.vue');
-const Register = () => import('./components/Register.vue');
-const Dashboard = () => import('./components/Dashboard.vue');
-const Layout = () => import('./components/Layout.vue');
-const NotFound = () => import('./components/NotFound.vue');
-const Rol = () => import('./components/rol/Index.vue');
-const Settings = () => import('./components/settings/Index.vue');
-const Usuario = () => import('./components/usuario/index.vue');
-const Sede = () => import('./components/sedes/index.vue');
-const Perfil = () => import('./components/usuario/Perfil.vue');
-const Estacionamiento = () => import('./components/estacionamiento/Index.vue');
-const Programacion = () => import('./components/programacion/Index.vue');
-
-export default{
-    mode: 'history',
+export default {
+    mode: "history",
     routes: [
         {
-            path: '*',
-            component: NotFound
+            path: "*",
+            component: NotFound,
         },
         {
-            path: '/',
+            path: "/",
             component: Home,
-            name: "Home"
+            name: "Home",
         },
         {
-            path: '/register',
-            component: Register
+            path: "/register",
+            component: Register,
         },
         {
-            path: '/login',
+            path: "/login",
             component: Login,
-            name: 'Login'
+            name: "Login",
         },
         {
-            path: '/recover-password',
+            path: "/recover-password",
             component: RecoverPassword,
-            name: 'RecoverPassword'
+            name: "RecoverPassword",
         },
         {
-            path: '/reset-password',
+            path: "/reset-password",
             component: ResetPassword,
-            name: 'ResetPassword'
+            name: "ResetPassword",
         },
         {
-            path: '/layout',
+            path: "/layout",
             component: Layout,
-            name: 'Layout',
+            name: "Layout",
             beforeEnter: (to, form, next) => {
-                const token = localStorage.getItem('access_token');
+                const token = localStorage.getItem("access_token");
                 if (token) {
-                    axios.get('api/getSession/'+ token).then((res)=>{
-                        next()
-                    }).catch((error) => {
-                        return next({ name: 'Login'})
-                    })
-                } else { 
-                    return next({ name: 'Login'})
+                    axios
+                        .get("api/getSession/" + token)
+                        .then((res) => {
+                            localStorage.setItem('curr_user', JSON.stringify(res.data))
+                            next();
+                        })
+                        .catch((error) => {
+                            return next({ name: "Login" });
+                        });
+                } else {
+                    return next({ name: "Login" });
                 }
-               
             },
             children: [
-               {
+                {
                     path: "/dashboard",
                     name: "dashboard",
                     component: Dashboard,
                 },
                 {
-                    path: '/usuarios',
+                    path: "/usuarios",
                     component: Usuario,
-                    name: 'usuario'
+                    name: "usuario",
                 },
                 {
-                    path: '/sedes',
+                    path: "/sedes",
                     component: Sede,
-                    name: 'sedes'
+                    name: "sedes",
                 },
                 {
-                    path: '/estacionamiento',
+                    path: "/estacionamiento",
                     component: Estacionamiento,
-                    name: 'estacionamiento'
+                    name: "estacionamiento",
                 },
                 {
-                    path: '/programacion',
+                    path: "/programacion",
                     component: Programacion,
-                    name: 'programacion'
+                    name: "programacion",
                 },
                 {
-                    path: '/rol',
+                    path: "/rol",
                     component: Rol,
-                    name: 'rol'
+                    name: "rol",
                 },
                 {
-                    path: '/perfil',
+                    path: "/perfil",
                     component: Perfil,
-                    name: 'perfil'
+                    name: "perfil",
                 },
                 {
-                    path: '/settings',
+                    path: "/settings",
                     component: Settings,
-                    name: 'settings'
+                    name: "settings",
                 },
             ],
         },
-    ]
-}
+    ],
+};

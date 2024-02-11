@@ -1,17 +1,20 @@
 <template>
     <header class="page-header" role="banner">
         <div class="hidden-md-down dropdown-icon-menu position-relative">
-            <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-hidden" title="Hide Navigation">
+            <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-hidden"
+                title="Hide Navigation">
                 <i class="ni ni-menu"></i>
             </a>
             <ul>
                 <li>
-                    <a href="#" class="btn js-waves-off" data-action="toggle" data-class="nav-function-minify" title="Minify Navigation">
+                    <a href="#" class="btn js-waves-off" data-action="toggle" data-class="nav-function-minify"
+                        title="Minify Navigation">
                         <i class="ni ni-minify-nav"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="btn js-waves-off" data-action="toggle" data-class="nav-function-fixed" title="Lock Navigation">
+                    <a href="#" class="btn js-waves-off" data-action="toggle" data-class="nav-function-fixed"
+                        title="Lock Navigation">
                         <i class="ni ni-lock-nav"></i>
                     </a>
                 </li>
@@ -24,20 +27,29 @@
             </a>
         </div>
         <div class="search">
-            <form class="app-forms hidden-xs-down" role="search" action="https://smartadmin.lodev09.com/page_search.php" autocomplete="off">
+            <form class="app-forms hidden-xs-down" role="search" action="https://smartadmin.lodev09.com/page_search.php"
+                autocomplete="off">
                 <input type="text" id="search-field" placeholder="Buscar" class="form-control" tabindex="1">
-                <a href="#" onclick="return false;" class="btn-danger btn-search-close js-waves-off d-none" data-action="toggle" data-class="mobile-search-on">
+                <a href="#" onclick="return false;" class="btn-danger btn-search-close js-waves-off d-none"
+                    data-action="toggle" data-class="mobile-search-on">
                     <i class="fal fa-times"></i>
                 </a>
             </form>
         </div>
         <div class="ml-auto d-flex">
             <!-- app user menu -->
-            <div>
-                <a href="#" data-toggle="dropdown" title="Usuario" class="header-icon d-flex align-items-center justify-content-center ml-2">
-                    <i class="fas fa-user"></i> {{ user.nombre }}
+            <div class="d-flex align-items-center gap-3 justify-content-center">
+                <div>                    
+                    <select name="multiSede" id="multiSede" class="form-select fw-bold" @change="changeSede" v-model="user.curr_sede_id"  :disabled="user.multisedes.length == 1">
+                        <option v-for="multisede in user.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">SEDE {{ multisede.sede.name }}</option>
+                    </select>
+                </div>
 
-                </a>
+                <div data-toggle="dropdown" title="Usuario"
+                class="header-icon d-flex align-items-center justify-content-center ml-2">
+                    <i class="fas fa-user"></i> 
+                    <span>{{ user.nombre }}</span>
+                </div>
                 <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
                     <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                         <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
@@ -50,10 +62,10 @@
                         </div>
                     </div>
 
-                        
+
                     <div class="dropdown-divider m-0"></div>
                     <router-link :to="{ name: 'perfil', query: { ps: user } }" class="dropdown-item fw-500 pt-3 pb-3">
-                       <span data-i18n="drpdwn.page-logout">Perfil</span> 
+                        <span data-i18n="drpdwn.page-logout">Perfil</span>
                     </router-link>
 
                     <div class="dropdown-divider m-0"></div>
@@ -66,29 +78,44 @@
     </header>
 </template>
 <script>
+
+
 export default {
     name: "Navbar",
-    props:['session'],
-    data(){
+    props: ['session'],
+    data() {
         return {
             user: {
-                nombre : ""
+                nombre: "",
+                multisedes: [],
+                sede: []
             }
         }
     },
-    watch:{
-        session(val){
+    watch: {
+        session(val) {
             this.user = val
         }
     },
-    methods:{
-        async logout(){
+    methods: {
+        async logout() {
             const token = localStorage.getItem('access_token');
             const access_token = token ? token : "";
-            await axios.post('/api/logout', { access_token : access_token }).then(()=>{
+            await axios.post('/api/logout', { access_token: access_token }).then(() => {
                 localStorage.removeItem("access_token");
-                this.$router.push({ name: "Login"})
+                this.$router.push({ name: "Login" })
             })
+        },
+        async changeSede(e) {
+            await axios.post('/api/change-sede', {
+                            curr_sede_id: e.target.value,
+                            user: this.user.id
+                        })
+                        .then((res) => {
+                            if(res.status) {
+                                window.location.reload()
+                            }
+                        })
         }
     }
 }

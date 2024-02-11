@@ -186,13 +186,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Navbar",
   props: ['session'],
   data: function data() {
     return {
       user: {
-        nombre: ""
+        nombre: "",
+        multisedes: [],
+        sede: []
       }
     };
   },
@@ -230,6 +244,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee);
+      }))();
+    },
+    changeSede: function changeSede(e) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/api/change-sede', {
+                  curr_sede_id: e.target.value,
+                  user: _this2.user.id
+                }).then(function (res) {
+                  if (res.status) {
+                    window.location.reload();
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
       }))();
     }
   }
@@ -309,7 +349,6 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     session: function session(val) {
       this.user = val;
-      console.log(this.user);
     }
   },
   data: function data() {
@@ -1390,65 +1429,134 @@ var render = function () {
       _vm._m(2),
       _vm._v(" "),
       _c("div", { staticClass: "ml-auto d-flex" }, [
-        _c("div", [
-          _c(
-            "a",
-            {
-              staticClass:
-                "header-icon d-flex align-items-center justify-content-center ml-2",
-              attrs: { href: "#", "data-toggle": "dropdown", title: "Usuario" },
-            },
-            [
-              _c("i", { staticClass: "fas fa-user" }),
-              _vm._v(" " + _vm._s(_vm.user.nombre) + "\n\n            "),
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "dropdown-menu dropdown-menu-animated dropdown-lg" },
-            [
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown-divider m-0" }),
-              _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex align-items-center gap-3 justify-content-center",
+          },
+          [
+            _c("div", [
               _c(
-                "router-link",
+                "select",
                 {
-                  staticClass: "dropdown-item fw-500 pt-3 pb-3",
-                  attrs: { to: { name: "perfil", query: { ps: _vm.user } } },
-                },
-                [
-                  _c("span", { attrs: { "data-i18n": "drpdwn.page-logout" } }, [
-                    _vm._v("Perfil"),
-                  ]),
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown-divider m-0" }),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "dropdown-item fw-500 pt-3 pb-3",
-                  attrs: { href: "" },
-                  on: {
-                    click: function ($event) {
-                      $event.preventDefault()
-                      return _vm.logout.apply(null, arguments)
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.curr_sede_id,
+                      expression: "user.curr_sede_id",
                     },
+                  ],
+                  staticClass: "form-select fw-bold",
+                  attrs: {
+                    name: "multiSede",
+                    id: "multiSede",
+                    disabled: _vm.user.multisedes.length == 1,
+                  },
+                  on: {
+                    change: [
+                      function ($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function (o) {
+                            return o.selected
+                          })
+                          .map(function (o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.user,
+                          "curr_sede_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                      _vm.changeSede,
+                    ],
                   },
                 },
-                [
-                  _c("span", { attrs: { "data-i18n": "drpdwn.page-logout" } }, [
-                    _vm._v("Logout"),
-                  ]),
-                ]
+                _vm._l(_vm.user.multisedes, function (multisede) {
+                  return _c(
+                    "option",
+                    {
+                      key: multisede.sede_id,
+                      domProps: { value: multisede.sede_id },
+                    },
+                    [_vm._v("SEDE " + _vm._s(multisede.sede.name))]
+                  )
+                }),
+                0
               ),
-            ],
-            1
-          ),
-        ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "header-icon d-flex align-items-center justify-content-center ml-2",
+                attrs: { "data-toggle": "dropdown", title: "Usuario" },
+              },
+              [
+                _c("i", { staticClass: "fas fa-user" }),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.user.nombre))]),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "dropdown-menu dropdown-menu-animated dropdown-lg",
+              },
+              [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "dropdown-divider m-0" }),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "dropdown-item fw-500 pt-3 pb-3",
+                    attrs: { to: { name: "perfil", query: { ps: _vm.user } } },
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { "data-i18n": "drpdwn.page-logout" } },
+                      [_vm._v("Perfil")]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "dropdown-divider m-0" }),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "dropdown-item fw-500 pt-3 pb-3",
+                    attrs: { href: "" },
+                    on: {
+                      click: function ($event) {
+                        $event.preventDefault()
+                        return _vm.logout.apply(null, arguments)
+                      },
+                    },
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { "data-i18n": "drpdwn.page-logout" } },
+                      [_vm._v("Logout")]
+                    ),
+                  ]
+                ),
+              ],
+              1
+            ),
+          ]
+        ),
       ]),
     ]
   )

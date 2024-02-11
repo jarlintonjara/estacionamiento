@@ -37,6 +37,7 @@ Route::get('getSession/{token}', [AuthController::class, 'getSession']);
 
 //Route::resource('estacionamiento', EstacionamientoController::class)->only(['index']);
 Route::get('dashboard', [HomeController::class, 'index']);
+Route::post('change-sede', [HomeController::class, 'changeSede']);
 Route::post('sendProgrammingLink', [EventController::class, 'sendProgrammingLink']);
 Route::post('emailProgramacionSemanal', [HomeController::class, 'emailProgramacionSemanal']);
 Route::resource('programacion', ProgramacionController::class);
