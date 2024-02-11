@@ -1,4 +1,5 @@
 <template>
+
     <main id="js-page-content" role="main" class="page-content">
 
         <div class="content">
@@ -10,7 +11,7 @@
             <div class="col-lg-12">
                 <div id="panel-4" class="panel">
                     <div class="panel-hdr">
-                        <h2 style="text-align: center; font-size: 1.125rem;"><b>{{ title }} </b></h2>
+                        <h2 style="text-align: center; font-size: 1.125rem;"><b>{{title}} </b></h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse"
                                 data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -93,14 +94,14 @@
                     </div>
                 </div>
             </div>
-
+    
         </div>
-
+        
         <div class="modal fade" id="modalForm">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"> <i class="fa fa-user-plus"></i> {{ titulo }}</h5>
+                        <h5 class="modal-title"> <i class="fa fa-user-plus"></i> {{titulo}}</h5>
                         <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -118,10 +119,8 @@
 
                                 <div class="form-group col-md-6" v-if="session.role_id === 2 || session.role_id === 3">
                                     <label for="Usuario">Usuario</label>
-                                    <select id="Usuario" class="browser-default custom-select" disabled
-                                        v-model="datos.user_id">
-                                        <option :value="session.id" :key="session.id + session.nombre">{{ session.nombre + '
-                                        ' + session.apellido }}</option>
+                                    <select id="Usuario" class="browser-default custom-select" disabled v-model="datos.user_id">
+                                        <option :value="session.id" :key="session.id + session.nombre">{{ session.nombre + ' ' + session.apellido }}</option>
                                     </select>
                                 </div>
 
@@ -129,8 +128,8 @@
                                     <label for="Estacionamiento">Estacionamiento</label>
                                     <select id="Estacionamiento" class="browser-default custom-select"
                                         v-model="datos.estacionamiento_id">
-                                        <option v-for="parking in parkingsFilter" :key="parking.numero" :value="parking.id">
-                                            {{ parking.numero }}</option>
+                                        <option v-for="parking in parkingsFilter" :key="parking.numero"
+                                            :value="parking.id">{{ parking.numero }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -144,7 +143,7 @@
                                     <date-range-picker v-if="!btnEditar" v-model="pickerDates" :locale-data="locale">
                                         <template v-slot:input="pickerDates" style="min-width: 350px;">{{
                                             pickerDates.startDate | date }} - {{ pickerDates.endDate | date
-    }} <i class="fa fa-calendar"></i></template>
+                                            }} <i class="fa fa-calendar"></i></template>
                                     </date-range-picker>
                                 </div>
                                 <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
@@ -154,13 +153,13 @@
                                         <label class="custom-control-label" for="option-bordered">Todo el día</label>
                                     </div>
                                     <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                        <input type="checkbox" class="custom-control-input" name="small" id="option-small"
-                                            v-model="morning" @click="onChange('M')">
+                                        <input type="checkbox" class="custom-control-input" name="small"
+                                            id="option-small" v-model="morning" @click="onChange('M')">
                                         <label class="custom-control-label" for="option-small">Mañana</label>
                                     </div>
                                     <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                        <input type="checkbox" class="custom-control-input" name="small" id="option-small2"
-                                            v-model="afternoon" @click="onChange('T')">
+                                        <input type="checkbox" class="custom-control-input" name="small"
+                                            id="option-small2" v-model="afternoon" @click="onChange('T')">
                                         <label class="custom-control-label" for="option-small2">Tarde</label>
                                     </div>
                                 </div>
@@ -200,6 +199,7 @@
             </div>
         </div>
     </main>
+
 </template>
 <script>
 import DateRangePicker from 'vue2-daterange-picker'
@@ -230,50 +230,50 @@ export default {
             },
 
             firstDay: 0,
-            users: [],
+            users:[],
             session: {},
-            parkings: [],
+            parkings:[],
             usersFilter: [],
             parkingsFilter: [],
-            schedules: [],
-            schedulesFilter: [],
-            nextSchedules: [],
-            nextSchedulesFilter: [],
+            schedules:[],
+            schedulesFilter:[],
+            nextSchedules:[],
+            nextSchedulesFilter:[],
             allDay: false,
             morning: false,
             afternoon: false,
             disabled: false,
             info: [],
             datos: {
-                estacionamiento_id: '',
-                user_id: '',
-                fecha: '',
+                estacionamiento_id:'',
+                user_id:'',
+                fecha:'',
                 fecha_inicio: startDate,
                 fecha_fin: endDate,
-                hora_inicio: '',
+                hora_inicio:'',
                 hora_fin: '',
                 turno: '',
                 observacion: '',
-                created_by: ''
+                created_by : ''
             },
-            titulo: '',
-            title: "SEMANA ACTUAL",
-            btnCrear: false,
-            btnEditar: false,
+            titulo:'',
+            title:"SEMANA ACTUAL",
+            btnCrear:false,
+            btnEditar:false,
             isLoading: false,
-            id: '',
+            id:'',
             showTable: true,
             showTable2: false
         }
     },
-    created: async function () {
-        const token = localStorage.getItem('access_token');
-        await axios.get('api/getSession/' + token).then((res) => {
+    created: async function(){
+       const token = localStorage.getItem('access_token');
+        await axios.get('api/getSession/'+ token).then((res)=>{
             this.session = res.data;
             this.datos.created_by = this.session.id;
         })
     },
-    mounted: async function () {
+    mounted: async function(){
         await this.init();
     },
     filters: {
@@ -281,35 +281,35 @@ export default {
             return new Intl.DateTimeFormat("en-US").format(date);
         }
     },
-    methods: {
-        async init() {
+    methods:{
+        async init(){
             this.isLoading = true;
 
             await this.axios.get('/api/programacion')
-                .then(response => {
+                .then(response=> {                    
                     this.users = response.data.users;
                     this.parkings = response.data.parkings;
                     this.schedules = response.data.schedules;
                     this.nextSchedules = response.data.nextSchedules;
 
                 })
-                .catch(error => {
+                .catch(error=>{
                     console.log(error);
-                    this.schedules = []
+                    this.schedules =[]
                 })
                 .finally(() => this.isLoading = false)
+                
+                $('#td-schedule').DataTable().destroy();
+                $('#td-schedule2').DataTable().destroy();
+                await this.validarRole();
 
-            $('#td-schedule').DataTable().destroy();
-            $('#td-schedule2').DataTable().destroy();
-            await this.validarRole();
+                this.$tablaGlobal('#td-schedule');
+                this.$tablaGlobal('#td-schedule2');
 
-            this.$tablaGlobal('#td-schedule');
-            this.$tablaGlobal('#td-schedule2');
-
-            this.datos.user_id = this.session.id;
+                this.datos.user_id = this.session.id;
         },
-        validarCampos() {
-            if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
+        validarCampos(){
+            if(!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin ){
                 this.$swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -319,41 +319,41 @@ export default {
             }
             return true;
         },
-        validarRole() {
+        validarRole(){
             let self = this;
-            return new Promise(function (resolve, reject) {
+            return new Promise(function(resolve, reject) {
                 self.parkingsFilter = [];
                 self.usersFilter = [];
                 self.schedulesFilter = [];
                 self.nextSchedulesFilter = [];
 
-                if (self.session.role_id === 1) {
+                if(self.session.role_id === 1){
                     self.usersFilter = self.users;
-                    self.usersFilter = self.usersFilter.map(e => { return { code: e.id, label: e.nombre + " " + e.apellido } })
+                    self.usersFilter = self.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
                     self.parkingsFilter = self.parkings;
                     self.schedulesFilter = self.schedules;
                     self.nextSchedulesFilter = self.nextSchedules;
                     resolve();
-                } else if (self.session.role_id == 3 || self.session.role_id == 2) {
+                }else if(self.session.role_id == 3 || self.session.role_id == 2){
                     self.usersFilter = self.users;
-                    self.usersFilter = self.usersFilter.map(e => { return { code: e.id, label: e.nombre + " " + e.apellido } })
+                    self.usersFilter = self.usersFilter.map(e => { return { code : e.id, label: e.nombre + " " + e.apellido } })
                     self.parkingsFilter = [].concat(self.parkings.filter(p => p.sede_id == self.session.sede_id));
                     self.schedulesFilter = [].concat(self.schedules.filter(s => s.sede.id == self.session.sede_id && s.user_id == self.session.id));
                     self.nextSchedulesFilter = [].concat(self.nextSchedules.filter(e => e.created_by == self.session.id));
                     self.datos.estacionamiento_id = self.session.parking_id;
                     self.datos.user_id = self.session.id;
                     resolve();
-                } else {
+                } else{
                     resolve();
                 }
             });
         },
-        showT(id) {
-            if (id == 1) {
+        showT(id){
+            if(id == 1){
                 this.showTable = true;
                 this.showTable2 = false;
                 this.title = "SEMANA ACTUAL";
-            } else {
+            }else{
                 this.showTable = false;
                 this.showTable2 = true;
                 this.title = "SEMANA SIGUIENTE";
@@ -363,7 +363,7 @@ export default {
             this.$tablaGlobal('#td-schedule');
             this.$tablaGlobal('#td-schedule2');
         },
-        onChange(param) {
+        onChange(param){
             this.disabled = false;
             switch (param) {
                 case "D":
@@ -405,16 +405,16 @@ export default {
                     break;
             }
         },
-        async crear() {
+        async crear(){
             let valid = await this.validarCampos();
             let resp = false;
             this.datos.fecha_inicio = this.pickerDates.startDate;
             this.datos.fecha_fin = this.pickerDates.endDate;
-            if (valid) {
-                await axios.post('api/programacion', this.datos).then(response => {
-                    console.log(response.data)
+            if(valid){
+                await axios.post('api/programacion', this.datos).then(response=>{
+                    console.log(response.data) 
                     // return;
-                    if (response.data.isSuccess == false) {
+                    if(response.data.isSuccess == false){
                         this.$swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -437,7 +437,7 @@ export default {
                     console.log(error);
                 });
 
-                if (resp) {
+                if(resp){
                     $('#td-schedule').DataTable().destroy();
                     $('#td-schedule2').DataTable().destroy();
                     await this.validarRole();
@@ -446,23 +446,23 @@ export default {
                 }
             }
         },
-        async editar() {
+        async editar(){
             let valid = await this.validarCampos();
-            if (valid) {
+            if(valid){
                 let resp = false;
-                await axios.put('/api/programacion/' + this.id, this.datos).then(response => {
-                    if (response.data.isSuccess == false) {
+                await axios.put('/api/programacion/'+this.id, this.datos).then(response=>{
+                    if(response.data.isSuccess == false){
 
                         this.$swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: response.data.message,
                         })
-                    } else {
+                    }else{
                         resp = true;
                         this.schedules = [].concat(response.data.schedules);
                         this.nextSchedules = [].concat(response.data.nextSchedules);
-                        this.id = '';
+                        this.id='';
                         $('#modalForm').modal('hide');
                         this.$swal.fire(
                             'Programación editado correctamente!',
@@ -474,7 +474,7 @@ export default {
                 }).catch(function (error) {
                     console.log(error);
                 });
-                if (resp) {
+                if(resp){
                     $('#td-schedule').DataTable().destroy();
                     $('#td-schedule2').DataTable().destroy();
                     await this.validarRole();
@@ -483,7 +483,7 @@ export default {
                 }
             }
         },
-        borrar(id) {
+        borrar(id){
             let self = this;
             // this.$swal.fire({
             //     title: 'Seguro de eliminar?',
@@ -497,17 +497,17 @@ export default {
             //     if (result.isConfirmed) {
             //     }
             // })
-            if (confirm("¿Confirma eliminar el registro?")) {
+            if(confirm("¿Confirma eliminar el registro?")){
                 self.axios.delete(`/api/programacion/${id}`).then(response => {
                     let id = response.data.id;
                     self.schedulesFilter = [].concat(self.schedulesFilter.filter(e => e.id !== id));
-                    self.nextSchedulesFilter = [].concat(self.nextSchedulesFilter.filter(e => e.id !== id));
+                    self.nextSchedulesFilter =  [].concat(self.nextSchedulesFilter.filter(e => e.id !== id));
                     self.$swal.fire(
                         'Eliminado!',
                         '',
                         'success'
                     );
-                }).catch(error => {
+                }).catch(error=>{
                     console.log(error)
                 })
             }
@@ -532,12 +532,12 @@ export default {
             this.datos.hora_inicio = '';
             this.datos.hora_fin = '';
             this.datos.observacion = '';
-            this.titulo = 'Crear programacion';
-            this.btnCrear = true;
-            this.btnEditar = false;
+            this.titulo='Crear programacion';
+            this.btnCrear=true;
+            this.btnEditar=false;
             $('#modalForm').modal('show')
         },
-        abrirModalEditar(datos) {
+        abrirModalEditar(datos){
             this.allDay = false;
             this.partialDay = false;
             this.disabled = false;
@@ -548,14 +548,14 @@ export default {
             this.datos.hora_fin = datos.hora_fin;
             this.datos.turno = datos.turno;
             this.datos.observacion = datos.observacion;
-            this.titulo = ' Editar Programación'
-            this.btnCrear = false
-            this.btnEditar = true
-            this.id = datos.id;
+            this.titulo=' Editar Programación'
+            this.btnCrear=false
+            this.btnEditar=true
+            this.id=datos.id;
             this.onChange(this.datos.turno);
             $('#modalForm').modal('show')
         },
-        cerrarModal() {
+        cerrarModal(){
             $('#modalForm').modal('hide');
         }
     }
