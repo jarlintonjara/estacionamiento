@@ -266,6 +266,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  //you need to import the CSS manually
 
@@ -277,9 +288,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Spinner: _Spinner_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
-    var startDate = new Date();
-    var endDate = new Date();
-    endDate.setDate(endDate.getDate());
+    var date = new Date();
+    var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    var endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0); // endDate.setDate(endDate.getDate());
+
     return {
       pickerDates: {
         startDate: startDate,
@@ -290,8 +302,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         separator: ' - ',
         applyLabel: 'Aplicar',
         cancelLabel: 'Cancel',
-        daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
+        daysOfWeek: ['Lun', 'Mar', 'Mier', 'Jue', 'Vie'],
+        monthNames: ['Febrero']
       },
       firstDay: 0,
       users: [],
@@ -780,6 +792,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     cerrarModal: function cerrarModal() {
       $('#modalForm').modal('hide');
+    },
+    dateFormat: function dateFormat(classes, date) {
+      if (!classes.disabled) {
+        classes.disabled = date.getTime() < new Date();
+      }
     }
   }
 });
@@ -2153,6 +2170,99 @@ var render = function () {
             _c("form", [
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "form-row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group col-md-6" },
+                    [
+                      _c(
+                        "label",
+                        { staticClass: "d-block", attrs: { for: "Fecha" } },
+                        [_vm._v("Fecha de programación")]
+                      ),
+                      _vm._v(" "),
+                      _vm.btnEditar
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.datos.fecha,
+                                expression: "datos.fecha",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "date",
+                              id: "pickerProgramacion",
+                              placeholder: "Fecha",
+                            },
+                            domProps: { value: _vm.datos.fecha },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.datos,
+                                  "fecha",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.btnEditar
+                        ? _c("date-range-picker", {
+                            attrs: {
+                              "locale-data": _vm.locale,
+                              min: _vm.pickerDates.startDate,
+                              max: _vm.pickerDates.endDate,
+                              "date-format": _vm.dateFormat,
+                            },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "input",
+                                  fn: function (pickerDates) {
+                                    return [
+                                      _vm._v(
+                                        "\n                                        " +
+                                          _vm._s(
+                                            _vm._f("date")(
+                                              pickerDates.startDate
+                                            )
+                                          ) +
+                                          " - " +
+                                          _vm._s(
+                                            _vm._f("date")(pickerDates.endDate)
+                                          ) +
+                                          "\n                                        "
+                                      ),
+                                      _c("i", {
+                                        staticClass: "fa fa-calendar",
+                                      }),
+                                    ]
+                                  },
+                                },
+                              ],
+                              null,
+                              false,
+                              2670077829
+                            ),
+                            model: {
+                              value: _vm.pickerDates,
+                              callback: function ($$v) {
+                                _vm.pickerDates = $$v
+                              },
+                              expression: "pickerDates",
+                            },
+                          })
+                        : _vm._e(),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
                   _vm.session.role_id === 1
                     ? _c(
                         "div",
@@ -2244,7 +2354,9 @@ var render = function () {
                         ),
                       ])
                     : _vm._e(),
-                  _vm._v(" "),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-row" }, [
                   _c("div", { staticClass: "form-group col-md-6" }, [
                     _c("label", { attrs: { for: "Estacionamiento" } }, [
                       _vm._v("Estacionamiento"),
@@ -2296,91 +2408,6 @@ var render = function () {
                       0
                     ),
                   ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group col-md-4" },
-                    [
-                      _c("label", { attrs: { for: "Fecha" } }, [
-                        _vm._v("Fecha de programación"),
-                      ]),
-                      _vm._v(" "),
-                      _vm.btnEditar
-                        ? _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.datos.fecha,
-                                expression: "datos.fecha",
-                              },
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "date",
-                              id: "pickerProgramacion",
-                              placeholder: "Fecha",
-                            },
-                            domProps: { value: _vm.datos.fecha },
-                            on: {
-                              input: function ($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.datos,
-                                  "fecha",
-                                  $event.target.value
-                                )
-                              },
-                            },
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      !_vm.btnEditar
-                        ? _c("date-range-picker", {
-                            attrs: { "locale-data": _vm.locale },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "input",
-                                  fn: function (pickerDates) {
-                                    return [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("date")(pickerDates.startDate)
-                                        ) +
-                                          " - " +
-                                          _vm._s(
-                                            _vm._f("date")(pickerDates.endDate)
-                                          ) +
-                                          " "
-                                      ),
-                                      _c("i", {
-                                        staticClass: "fa fa-calendar",
-                                      }),
-                                    ]
-                                  },
-                                },
-                              ],
-                              null,
-                              false,
-                              3777879630
-                            ),
-                            model: {
-                              value: _vm.pickerDates,
-                              callback: function ($$v) {
-                                _vm.pickerDates = $$v
-                              },
-                              expression: "pickerDates",
-                            },
-                          })
-                        : _vm._e(),
-                    ],
-                    1
-                  ),
                   _vm._v(" "),
                   _c(
                     "div",

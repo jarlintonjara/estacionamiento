@@ -111,6 +111,28 @@
                     <form>
                         <div class="modal-body">
                             <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="Fecha" class="d-block">Fecha de programación</label>
+                                    <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                        placeholder="Fecha" v-model="datos.fecha">
+
+                                    <date-range-picker 
+                                        v-if="!btnEditar"
+                                        v-model="pickerDates"
+                                        :locale-data="locale"
+                                        :min="pickerDates.startDate"
+                                        :max="pickerDates.endDate"
+                                        :date-format="dateFormat"
+                                    >
+                                        <template v-slot:input="pickerDates">
+                                            {{
+                                                pickerDates.startDate | date }} - {{ pickerDates.endDate | date
+                                            }}
+                                            <i class="fa fa-calendar"></i>
+                                        </template>
+                                    </date-range-picker>
+                                </div>
+
                                 <div class="form-group col-md-6" v-if="session.role_id === 1">
                                     <label for="Usuario">Usuario</label>
                                     <v-select class="vue-select2" name="select2" :options="usersFilter"
@@ -124,7 +146,9 @@
                                         <option :value="session.id" :key="session.id + session.nombre">{{ session.nombre + ' ' + session.apellido }}</option>
                                     </select>
                                 </div>
+                            </div>
 
+                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="Estacionamiento">Estacionamiento</label>
                                     <select id="Estacionamiento" class="browser-default custom-select"
@@ -133,20 +157,7 @@
                                             :value="parking.id">{{ parking.numero }}</option>
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="Fecha">Fecha de programación</label>
-                                    <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
-                                        placeholder="Fecha" v-model="datos.fecha">
-
-                                    <date-range-picker v-if="!btnEditar" v-model="pickerDates" :locale-data="locale">
-                                        <template v-slot:input="pickerDates" style="min-width: 350px;">{{
-                                            pickerDates.startDate | date }} - {{ pickerDates.endDate | date
-                                            }} <i class="fa fa-calendar"></i></template>
-                                    </date-range-picker>
-                                </div>
                                 <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
                                     <div class="custom-control custom-checkbox d-inline-flex mr-3">
                                         <input type="checkbox" class="custom-control-input" name="bordered"
@@ -213,9 +224,10 @@ export default {
     name: "Programacion",
     components: { DateRangePicker, Spinner },
     data() {
-        const startDate = new Date();
-        const endDate = new Date();
-        endDate.setDate(endDate.getDate());
+        const date = new Date();
+        const startDate = new Date(date.getFullYear(), date.getMonth( ), 1);
+        const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        // endDate.setDate(endDate.getDate());
         return {
             pickerDates: {
                 startDate,
@@ -226,9 +238,8 @@ export default {
                 separator: ' - ',
                 applyLabel: 'Aplicar',
                 cancelLabel: 'Cancel',
-                daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre', 'Noviembre', 'Diciembre']
-
+                daysOfWeek: ['Lun', 'Mar', 'Mier', 'Jue', 'Vie'],
+                monthNames: ['Febrero']
             },
 
             firstDay: 0,
@@ -559,6 +570,11 @@ export default {
         },
         cerrarModal(){
             $('#modalForm').modal('hide');
+        },
+        dateFormat(classes, date) {
+            if(!classes.disabled) {
+                classes.disabled = date.getTime()  < new Date()
+            }
         }
     }
 }
