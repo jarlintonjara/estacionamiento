@@ -41,7 +41,7 @@
             <div class="d-flex align-items-center gap-3 justify-content-center">
                 <div>                    
                     <select name="multiSede" id="multiSede" class="form-select fw-bold" @change="changeSede" v-model="user.curr_sede_id"  :disabled="user.multisedes.length == 1">
-                        <option v-for="multisede in user.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">SEDE {{ multisede.sede.name }}</option>
+                        <option  v-for="multisede in user.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">SEDE {{ multisede.sede.name }}</option>
                     </select>
                 </div>
 
@@ -85,17 +85,19 @@ export default {
     props: ['session'],
     data() {
         return {
+            test: 2,
             user: {
                 nombre: "",
                 multisedes: [],
-                sede: []
+                sede: [],
+                curr_sede_id: 0
             }
         }
     },
     watch: {
         session(val) {
             this.user = val
-        }
+    }
     },
     methods: {
         async logout() {

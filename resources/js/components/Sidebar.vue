@@ -34,8 +34,8 @@
                         <router-link tag="li" v-if="user.role_id == 1" to="/estacionamiento" active-class="active">
                             <a>Estacionamiento</a>
                         </router-link>
-                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3 || user.role_id == 2" to="/programacion" active-class="active">
-                            <a >Programación</a>
+                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3 || user.role_id == 2" to="/reservas" active-class="active">
+                            <a >Reservas</a>
                         </router-link>
                         <router-link tag="li" v-if="user.role_id == 1" to="/rol" active-class="active">
                             <a >Rol</a>

@@ -5664,9 +5664,9 @@ var Programacion = function Programacion() {
       component: Estacionamiento,
       name: "estacionamiento"
     }, {
-      path: "/programacion",
+      path: "/reservas",
       component: Programacion,
-      name: "programacion"
+      name: "reservas"
     }, {
       path: "/rol",
       component: Rol,

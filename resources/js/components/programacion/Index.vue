@@ -5,7 +5,7 @@
         <div class="content">
             <div class="subheader">
                 <h1 class="subheader-title">
-                    <i class='subheader-icon fal fa-chart-area'></i> PROGRAMACIÓN DE ESTACIONAMIENTOS
+                    <i class='subheader-icon fal fa-chart-area'></i> RESERVA DE ESTACIONAMIENTOS
                 </h1>
             </div>
             <div class="col-lg-12">
@@ -97,6 +97,7 @@
     
         </div>
         
+        <!-- Reservation Modal -->
         <div class="modal fade" id="modalForm">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -198,6 +199,7 @@
                 </div>
             </div>
         </div>
+        <!-- End Reservation Modal -->
     </main>
 
 </template>
@@ -532,7 +534,7 @@ export default {
             this.datos.hora_inicio = '';
             this.datos.hora_fin = '';
             this.datos.observacion = '';
-            this.titulo='Crear programacion';
+            this.titulo='Crear Reserva';
             this.btnCrear=true;
             this.btnEditar=false;
             $('#modalForm').modal('show')
@@ -548,7 +550,7 @@ export default {
             this.datos.hora_fin = datos.hora_fin;
             this.datos.turno = datos.turno;
             this.datos.observacion = datos.observacion;
-            this.titulo=' Editar Programación'
+            this.titulo=' Editar Reserva'
             this.btnCrear=false
             this.btnEditar=true
             this.id=datos.id;

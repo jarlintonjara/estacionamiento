@@ -264,6 +264,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
  //you need to import the CSS manually
 
@@ -745,7 +747,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this5.datos.hora_inicio = '';
                 _this5.datos.hora_fin = '';
                 _this5.datos.observacion = '';
-                _this5.titulo = 'Crear programacion';
+                _this5.titulo = 'Crear Reserva';
                 _this5.btnCrear = true;
                 _this5.btnEditar = false;
                 $('#modalForm').modal('show');
@@ -769,7 +771,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.datos.hora_fin = datos.hora_fin;
       this.datos.turno = datos.turno;
       this.datos.observacion = datos.observacion;
-      this.titulo = ' Editar Programación';
+      this.titulo = ' Editar Reserva';
       this.btnCrear = false;
       this.btnEditar = true;
       this.id = datos.id;
@@ -2761,7 +2763,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "subheader" }, [
       _c("h1", { staticClass: "subheader-title" }, [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
-        _vm._v(" PROGRAMACIÓN DE ESTACIONAMIENTOS\n            "),
+        _vm._v(" RESERVA DE ESTACIONAMIENTOS\n            "),
       ]),
     ])
   },

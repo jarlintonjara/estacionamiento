@@ -135,6 +135,25 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        $sedes = [];
+
+        /*
+            ---------------Start----------------
+            Eliminar las sedes existentes a las que pertenece el usuario e ingresar los nuevos 
+        */
+
+        UsersSedes::where('user_id', $user->id)->delete();
+
+        foreach($request->multisede as $sede) {
+            array_push($sedes, UsersSedes::create([
+                'user_id' => $user->id,
+                'sede_id' => $sede['sede_id']
+            ]));
+        }
+
+        /*
+            ---------------End----------------
+        */
 
         $user->nombre = $request->nombre;
         $user->apellido = $request->apellido;
@@ -145,25 +164,8 @@ class UserController extends Controller
         $user->cargo = $request->cargo;
         $user->area = $request->area;
         $user->telefono = $request->telefono;
-        $user->save();
-
-        /*
-            ---------------Start----------------
-            Eliminar las sedes existentes a las que pertenece el usuario e ingresar los nuevos 
-        */
-
-        UsersSedes::where('user_id', $user->id)->delete();
-
-        foreach($request->multisede as $sede) {
-            UsersSedes::create([
-                'user_id' => $user->id,
-                'sede_id' => $sede['sede_id']
-            ]);
-        }
-
-        /*
-            ---------------End----------------
-        */
+        $user->curr_sede_id = $sedes[0]['sede_id'];
+        $user->update();
 
         if ($request->parking_id === 'Seleccione un estacionamiento') {
             $request['parking_id'] = 0;

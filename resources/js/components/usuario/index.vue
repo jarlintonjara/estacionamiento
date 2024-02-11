@@ -206,6 +206,7 @@ export default {
             parkings: [],
             parkingsFilter: [],
             datos: {
+                id: "",
                 nombre: "",
                 apellido: "",
                 documento: "",
@@ -231,7 +232,6 @@ export default {
     },
     mounted: function () {
         this.mostrarusers();
-        console.log(this.session)
     },
     methods: {
         validarCampos() {
@@ -278,7 +278,8 @@ export default {
                     .then((response) => {
                         $("#modalForm").modal("hide");
                         this.$swal.fire("Usuario editado correctamente!", "", "success");
-                        this.mostrarusers();
+                        if(this.session.id == this.datos.id) return window.location.reload();
+                        else this.mostrarusers();
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -328,6 +329,7 @@ export default {
             this.parkingsFilter = [];
 
             this.datos = {
+                id: datos.id,
                 nombre: datos.nombre,
                 apellido: datos.apellido,
                 documento: datos.documento,

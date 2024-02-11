@@ -236,6 +236,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       parkings: [],
       parkingsFilter: [],
       datos: {
+        id: "",
         nombre: "",
         apellido: "",
         documento: "",
@@ -261,7 +262,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.mostrarusers();
-    console.log(this.session);
   },
   methods: {
     validarCampos: function validarCampos() {
@@ -336,7 +336,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                     _this2.$swal.fire("Usuario editado correctamente!", "", "success");
 
-                    _this2.mostrarusers();
+                    if (_this2.session.id == _this2.datos.id) return window.location.reload();else _this2.mostrarusers();
                   })["catch"](function (error) {
                     console.log(error);
                   })["finally"](function () {
@@ -396,6 +396,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.parkingsFilter = [];
       this.datos = {
+        id: datos.id,
         nombre: datos.nombre,
         apellido: datos.apellido,
         documento: datos.documento,

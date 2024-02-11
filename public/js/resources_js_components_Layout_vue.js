@@ -203,10 +203,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: ['session'],
   data: function data() {
     return {
+      test: 2,
       user: {
         nombre: "",
         multisedes: [],
-        sede: []
+        sede: [],
+        curr_sede_id: 0
       }
     };
   },
@@ -1814,11 +1816,11 @@ var render = function () {
                       {
                         attrs: {
                           tag: "li",
-                          to: "/programacion",
+                          to: "/reservas",
                           "active-class": "active",
                         },
                       },
-                      [_c("a", [_vm._v("Programación")])]
+                      [_c("a", [_vm._v("Reservas")])]
                     )
                   : _vm._e(),
                 _vm._v(" "),
