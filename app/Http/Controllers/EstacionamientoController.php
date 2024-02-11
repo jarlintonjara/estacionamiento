@@ -23,9 +23,10 @@ class EstacionamientoController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $estacionamientos = EstacionamientoModel::where('deleted_at', null)->get();
+        $curr_sede_id = $request->query('curr_sede_id');
+        $estacionamientos = EstacionamientoModel::where('deleted_at', null)->where('sede_id', $curr_sede_id)->get();
         $sedes = Sede::where('deleted_at', null)->get();
 
         foreach($estacionamientos as $row) {
@@ -57,6 +58,7 @@ class EstacionamientoController extends Controller
      */
     public function store(Request $request)
     {
+
         $estacionamiento = EstacionamientoModel::create([
             'numero' => $request->nro,
             'sede_id' => $request->sede_id
