@@ -27,6 +27,9 @@ import vMultiselect from 'vue-multiselect';
 Vue.component('v-multiselect', vMultiselect);
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
+import vDatepicker from 'vuejs-datepicker';
+Vue.component('v-datepicker', vDatepicker);
+
 Vue.use(VueAxios, axios); 
 
 Vue.use(VueSweetalert2);

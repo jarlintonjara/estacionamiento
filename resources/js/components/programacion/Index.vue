@@ -112,25 +112,18 @@
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="Fecha" class="d-block">Fecha de programación</label>
+                                    <label for="Fecha" class="d-block">Fecha de reserva</label>
                                     <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
                                         placeholder="Fecha" v-model="datos.fecha">
 
-                                    <date-range-picker 
-                                        v-if="!btnEditar"
-                                        v-model="pickerDates"
-                                        :locale-data="locale"
-                                        :min="pickerDates.startDate"
-                                        :max="pickerDates.endDate"
-                                        :date-format="dateFormat"
+                                    <v-datepicker
+                                        :disabled-dates="disabledCustomDates"
+                                        :language="es"
+                                        @selected="verifyAvailableParking"
+                                        id="datePicker"
+                                        placeholder="Seleccionar Fecha"
                                     >
-                                        <template v-slot:input="pickerDates">
-                                            {{
-                                                pickerDates.startDate | date }} - {{ pickerDates.endDate | date
-                                            }}
-                                            <i class="fa fa-calendar"></i>
-                                        </template>
-                                    </date-range-picker>
+                                    </v-datepicker>
                                 </div>
 
                                 <div class="form-group col-md-6" v-if="session.role_id === 1">
@@ -157,7 +150,9 @@
                                             :value="parking.id">{{ parking.numero }}</option>
                                     </select>
                                 </div>
+                            </div>
 
+                            <div class="form-row">
                                 <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
                                     <div class="custom-control custom-checkbox d-inline-flex mr-3">
                                         <input type="checkbox" class="custom-control-input" name="bordered"
@@ -175,10 +170,7 @@
                                         <label class="custom-control-label" for="option-small2">Tarde</label>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                </div>
-                                <div class="form-group col-md-3">
-                                </div>
+
                                 <div class="form-group col-md-3">
                                     <label for="hora_inicio">Hora Inicio</label>
                                     <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
@@ -214,21 +206,78 @@
     </main>
 
 </template>
+
+<style>
+    #datePicker {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .vdp-datepicker .prev,
+    .vdp-datepicker .next { 
+        display: none;
+    }
+
+    .vdp-datepicker__calendar header span.day__month_btn,
+    .vdp-datepicker__calendar header span.month__year_btn {
+        display: block;
+        width: 100%;
+    }
+</style>
+
 <script>
 import DateRangePicker from 'vue2-daterange-picker'
-import Spinner from '../Spinner.vue';
 //you need to import the CSS manually
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
 
+import {es} from 'vuejs-datepicker/dist/locale';
+
+const getVerifyDate = () => {
+    let curr_date = new Date();
+    let num_day = curr_date.getDay();
+
+    if(num_day == 0) curr_date.setDate(curr_date.getDate() + 1);
+    
+    if(num_day == 6) curr_date.setDate(curr_date.getDate() + 2);
+
+    let curr_date_tomorrow = new Date(curr_date);
+    curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1)
+
+    return {
+        'start_date': curr_date,
+        'end_date': curr_date_tomorrow
+    };
+}
+
+const main_date = getVerifyDate();
+
 export default {
     name: "Programacion",
-    components: { DateRangePicker, Spinner },
+    components: { DateRangePicker },
     data() {
         const date = new Date();
         const startDate = new Date(date.getFullYear(), date.getMonth( ), 1);
         const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        // endDate.setDate(endDate.getDate());
+        endDate.setDate(endDate.getDate());
+
         return {
+            es: es,
+            disabledCustomDates: {
+                customPredictor: function(date) {
+                    return date.getDate() != main_date.start_date.getDate()  && date.getDate() != main_date.end_date.getDate()
+                }
+            },
             pickerDates: {
                 startDate,
                 endDate
@@ -280,7 +329,7 @@ export default {
         }
     },
     created: async function(){
-       const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         await axios.get('api/getSession/'+ token).then((res)=>{
             this.session = res.data;
             this.datos.created_by = this.session.id;
@@ -571,10 +620,22 @@ export default {
         cerrarModal(){
             $('#modalForm').modal('hide');
         },
-        dateFormat(classes, date) {
-            if(!classes.disabled) {
-                classes.disabled = date.getTime()  < new Date()
-            }
+        verifyAvailableParking(date) {
+
+            return;
+            // Si mi fecha actual es domingo lo adelante al lunes
+            if(curr_date.getDay() == 0) curr_date.setDate(curr_date.getDate() + 1)
+            
+            // Si mi fecha actual es sabado lo adelante al lunes
+            if(curr_date.getDay() == 6) curr_date.setDate(curr_date.getDate() + 2)
+            
+            let curr_date_tomorrow = new Date(curr_date);
+            curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1)
+            
+            if(date > curr_date_tomorrow) return this.$swal.fire({
+                icon: 'warning',
+                title: 'Solo puede hacer reservaciones Hoy y Mañana'
+            })
         }
     }
 }
