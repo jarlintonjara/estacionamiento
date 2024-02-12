@@ -366,6 +366,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -667,21 +690,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     abrirModal: function abrirModal(item) {
-      console.log(this.user);
-      console.log(item);
-      this.datos.estacionamiento_id = item.id;
-      this.datos.user_id = this.user.id;
-      this.datos.hora_inicio = "";
-      this.datos.hora_fin = "";
-      this.datos.turno = "";
-      this.propietario = item.nombre + " " + item.apellido;
-      this.usuario = "".concat(this.user.nombre, " ").concat(this.user.apellido);
-      this.numero = item.numero;
-      this.allDay = false;
-      this.morning = false;
-      this.afternoon = false; // $('#modalForm').modal('show')
+      // console.log(this.user)
+      // console.log(item)
+      console.log(item); // this.datos.estacionamiento_id = item.id;
+      // this.datos.user_id = this.user.id;
+      // this.datos.hora_inicio = "";
+      // this.datos.hora_fin = "";
+      // this.datos.turno = "";
+      // this.propietario = item.nombre + " " + item.apellido;
+      // this.usuario = `${this.user.nombre} ${this.user.apellido}`;
+      // this.numero = item.numero;
+      // this.allDay = false;
+      // this.morning = false;
+      // this.afternoon = false;
+      // $('#modalForm').modal('show')
 
-      $('#modalFormDashboard').modal('show');
+      $('#modalReserva').modal('show');
     },
     exportExcel: function exportExcel() {
       axios.get('/api/export').then(function (res) {
@@ -1837,20 +1861,6 @@ var render = function () {
           ? _c("div", { staticClass: "row d-flex gap-4 mb-5" }, [
               _c(
                 "div",
-                {
-                  staticClass: "bg-success-400 col-12 col-lg-3 rounded-lg p-3",
-                },
-                [
-                  _c("h5", { staticStyle: { "font-weight": "bold" } }, [
-                    _vm._v("Usuarios"),
-                  ]),
-                  _vm._v(" "),
-                  _c("h3", [_vm._v(_vm._s(_vm.report.totalUsers))]),
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
                 { staticClass: "bg-warning-400 col-12 col-lg-3 ronded-lg p-3" },
                 [
                   _c("h5", { staticStyle: { "font-weight": "bold" } }, [
@@ -2303,6 +2313,26 @@ var render = function () {
                               _c("td", [_vm._v(_vm._s(pmd.sede_name))]),
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(pmd.sede_email))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-primary",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.abrirModal(pmd)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                                Reservar\n                                            "
+                                    ),
+                                  ]
+                                ),
+                              ]),
                             ])
                           }),
                           0
@@ -2446,6 +2476,8 @@ var render = function () {
           ]
         ),
       ]),
+      _vm._v(" "),
+      _vm._m(15),
     ]
   )
 }
@@ -2609,6 +2641,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Sede")]),
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acciones")]),
       ]),
     ])
   },
@@ -2727,6 +2761,64 @@ var staticRenderFns = [
         _c("th"),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "modalReserva",
+          "aria-hidden": "true",
+          "aria-labelledby": "modalReservaLabel",
+          tabindex: "-1",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h1",
+                {
+                  staticClass: "modal-title fs-5",
+                  attrs: { id: "modalReservaLabel" },
+                },
+                [_vm._v("Reserva")]
+              ),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "btn-close",
+                attrs: {
+                  type: "button",
+                  "data-bs-dismiss": "modal",
+                  "aria-label": "Close",
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _vm._v(
+                "\n                Se estan modificando este modal\n            "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c("button", { staticClass: "btn btn-danger" }, [
+                _vm._v("Cancelar"),
+              ]),
+              _vm._v(" "),
+              _c("button", { staticClass: "btn btn-primary" }, [
+                _vm._v("Crear"),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]
+    )
   },
 ]
 render._withStripped = true

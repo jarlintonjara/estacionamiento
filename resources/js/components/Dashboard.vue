@@ -9,10 +9,10 @@
             
             <!-- Total Usuarios, Estacionamientos y Programaciones -->
             <div class="row d-flex gap-4 mb-5" v-if="user && user.role_id == 1">
-                <div class="bg-success-400 col-12 col-lg-3 rounded-lg p-3">
+                <!-- <div class="bg-success-400 col-12 col-lg-3 rounded-lg p-3">
                     <h5 style="font-weight: bold">Usuarios</h5>
                     <h3>{{ report.totalUsers }}</h3>
-                </div>
+                </div> -->
     
                 <div class="bg-warning-400 col-12 col-lg-3 ronded-lg p-3">
                     <h5 style="font-weight: bold">Estacionamientos</h5>
@@ -138,7 +138,6 @@
                 </div>
             </div>
     
-    
             <div class="row" id="hoy" style="display:none;">
                 <div class="col-lg-12 p-0">
                     <div id="panel-4" class="panel">
@@ -213,6 +212,7 @@
                                             <th>Número</th>
                                             <th>Sede</th>
                                             <th>Email</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -220,6 +220,11 @@
                                             <td>{{ pmd.numero }}</td>
                                             <td>{{ pmd.sede_name }}</td>
                                             <td>{{ pmd.sede_email }}</td>
+                                            <td>
+                                                <button type="button" @click="abrirModal(pmd)" class="btn btn-primary">
+                                                    Reservar
+                                                </button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -325,6 +330,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalReserva" aria-hidden="true" aria-labelledby="modalReservaLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalReservaLabel">Reserva</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Se estan modificando este modal
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger">Cancelar</button>
+                    <button class="btn btn-primary">Crear</button>
+                </div>
                 </div>
             </div>
         </div>
@@ -553,22 +576,22 @@ export default {
             }
         },
         abrirModal(item) {
-            console.log(this.user)
+            // console.log(this.user)
+            // console.log(item)
             console.log(item)
-
-            this.datos.estacionamiento_id = item.id;
-            this.datos.user_id = this.user.id;
-            this.datos.hora_inicio = "";
-            this.datos.hora_fin = "";
-            this.datos.turno = "";
-            this.propietario = item.nombre + " " + item.apellido;
-            this.usuario = `${this.user.nombre} ${this.user.apellido}`;
-            this.numero = item.numero;
-            this.allDay = false;
-            this.morning = false;
-            this.afternoon = false;
+            // this.datos.estacionamiento_id = item.id;
+            // this.datos.user_id = this.user.id;
+            // this.datos.hora_inicio = "";
+            // this.datos.hora_fin = "";
+            // this.datos.turno = "";
+            // this.propietario = item.nombre + " " + item.apellido;
+            // this.usuario = `${this.user.nombre} ${this.user.apellido}`;
+            // this.numero = item.numero;
+            // this.allDay = false;
+            // this.morning = false;
+            // this.afternoon = false;
             // $('#modalForm').modal('show')
-            $('#modalFormDashboard').modal('show')
+            $('#modalReserva').modal('show')
             
         },
         exportExcel(){
