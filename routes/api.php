@@ -40,10 +40,14 @@ Route::get('dashboard', [HomeController::class, 'index']);
 Route::post('change-sede', [HomeController::class, 'changeSede']);
 Route::post('sendProgrammingLink', [EventController::class, 'sendProgrammingLink']);
 Route::post('emailProgramacionSemanal', [HomeController::class, 'emailProgramacionSemanal']);
-Route::resource('programacion', ProgramacionController::class);
 Route::resource('estacionamiento', EstacionamientoController::class);
 Route::resource('setting', SettingController::class);
 Route::resource('usuario', UserController::class);
 Route::match(['put', 'patch'], 'updateProfile/{usuario}', [UserController::class, 'updateProfile']);
 Route::resource('rol', RoleController::class);
 Route::resource('sede', SedeController::class);
+
+// RESERVAS
+Route::resource('programacion', ProgramacionController::class);
+Route::post('validar-disponibilidad-reservas-fecha', [ProgramacionController::class, 'getParkingByDate']);
+Route::post('multisedes-usuario', [ProgramacionController::class, 'getSedesByUser']);

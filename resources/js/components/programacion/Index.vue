@@ -110,89 +110,128 @@
                     </div>
                     <form>
                         <div class="modal-body">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="Fecha" class="d-block">Fecha de reserva</label>
-                                    <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
-                                        placeholder="Fecha" v-model="datos.fecha">
+                            <!-- Paso 1 -->
+                            <div class="content_pass_one py-4">
+                                <div class="form-row">
+                                    <!-- Fecha Reserva -->
+                                    <div class="form-group col-md-6">
+                                        <label for="Fecha" class="d-block">Fecha de reserva</label>
+                                        <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                            placeholder="Fecha" v-model="datos.fecha">
 
-                                    <v-datepicker
-                                        :disabled-dates="disabledCustomDates"
-                                        :language="es"
-                                        @selected="verifyAvailableParking"
-                                        id="datePicker"
-                                        placeholder="Seleccionar Fecha"
-                                    >
-                                    </v-datepicker>
-                                </div>
-
-                                <div class="form-group col-md-6" v-if="session.role_id === 1">
-                                    <label for="Usuario">Usuario</label>
-                                    <v-select class="vue-select2" name="select2" :options="usersFilter"
-                                        v-model="datos.user_id" :reduce="label => label.code">
-                                    </v-select>
-                                </div>
-
-                                <div class="form-group col-md-6" v-if="session.role_id === 2 || session.role_id === 3">
-                                    <label for="Usuario">Usuario</label>
-                                    <select id="Usuario" class="browser-default custom-select" disabled v-model="datos.user_id">
-                                        <option :value="session.id" :key="session.id + session.nombre">{{ session.nombre + ' ' + session.apellido }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="Estacionamiento">Estacionamiento</label>
-                                    <select id="Estacionamiento" class="browser-default custom-select"
-                                        v-model="datos.estacionamiento_id">
-                                        <option v-for="parking in parkingsFilter" :key="parking.numero"
-                                            :value="parking.id">{{ parking.numero }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
-                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                        <input type="checkbox" class="custom-control-input" name="bordered"
-                                            id="option-bordered" v-model="allDay" @click="onChange('D')">
-                                        <label class="custom-control-label" for="option-bordered">Todo el día</label>
+                                        <v-datepicker
+                                            :disabled-dates="disabledCustomDates"
+                                            :language="es"
+                                            @selected="verifyAvailableParking"
+                                            id="datePicker"
+                                            placeholder="Seleccionar Fecha"
+                                        >
+                                        </v-datepicker>
                                     </div>
-                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                        <input type="checkbox" class="custom-control-input" name="small"
-                                            id="option-small" v-model="morning" @click="onChange('M')">
-                                        <label class="custom-control-label" for="option-small">Mañana</label>
+
+                                    <!-- Usuario Admin -->
+                                    <div class="form-group col-md-6" v-if="session && session.role_id == 1">
+                                        <label for="Usuario">Usuario</label>
+                                        <v-select
+                                            class="vue-select2"
+                                            name="select2"
+                                            :options="usersFilter"
+                                            v-model="datos.user_id"
+                                            :reduce="label => label.code"
+                                            @input="changeUser"
+                                        >
+                                        </v-select>
                                     </div>
-                                    <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                        <input type="checkbox" class="custom-control-input" name="small"
-                                            id="option-small2" v-model="afternoon" @click="onChange('T')">
-                                        <label class="custom-control-label" for="option-small2">Tarde</label>
+
+                                    <!-- Usuario Normal -->
+                                    <div class="form-group col-md-6" v-if="session && session.role_id != 1">
+                                        <label for="Usuario">Usuario</label>
+                                        <select id="Usuario" class="browser-default custom-select" disabled v-model="datos.user_id">
+                                            <option :value="session.id" :key="session.id + session.nombre">{{ session.nombre + ' ' + session.apellido }}</option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label for="hora_inicio">Hora Inicio</label>
-                                    <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
-                                        :disabled="true" placeholder="Hora inicio" v-model="datos.hora_inicio">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="hora_fin">Hora Fin</label>
-                                    <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control"
-                                        :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" v-if="isSearchSedes">
+                                        <span class="w-100" v-if="isSearchSedes">Cargando Sedes...</span>
+                                    </div>
+
+                                    <!-- Sedes -->
+                                    <div class="form-group col-md-6 d-none" id="contentSedes">
+                                        <label for="Sedes">Sedes</label>
+                                        <select name="Sedes" id="Sedes" class="browser-default custom-select" @change="changeSede">
+                                            <option>Selecciona una sede</option>
+                                            <option v-for="multisede in user.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">{{ multisede.sede_name }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="Observaciones">Observaciones</label>
-                                    <textarea id="Observaciones" class="form-control"
-                                        v-model="datos.observacion"></textarea>
+
+                            <!-- Paso 2 -->
+                            <div class="content_pass_two d-none py-4">
+                                <!-- Estacionamientos Disponibles -->
+                                <div class="form-row mb-4">
+                                    <div class="form-group col-md-6" id="contentEstacionamientos">
+                                        <label for="Estacionamiento">Estacionamiento Disponibles</label>
+                                        <select id="Estacionamiento" class="browser-default custom-select"
+                                            v-model="datos.estacionamiento_id">
+                                            <option v-for="parking in parkingsFilter" :key="parking.numero"
+                                                :value="parking.id">{{ parking.numero }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Fechas De Estacionamiento -->
+                                <div class="form-row">
+                                    <div class="frame-wrap bg-faded col-md-6" style="text-align: center; margin: auto;">
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="bordered"
+                                                id="option-bordered" v-model="allDay" @click="onChange('D')">
+                                            <label class="custom-control-label" for="option-bordered">Todo el día</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small" v-model="morning" @click="onChange('M')">
+                                            <label class="custom-control-label" for="option-small">Mañana</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small2" v-model="afternoon" @click="onChange('T')">
+                                            <label class="custom-control-label" for="option-small2">Tarde</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_inicio">Hora Inicio</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
+                                            :disabled="true" placeholder="Hora inicio" v-model="datos.hora_inicio">
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_fin">Hora Fin</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control"
+                                            :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
+                                    </div>
+                                </div>
+
+                                <div class="form-row ">
+                                    <div class="form-group col-md-12">
+                                        <label for="Observaciones">Observaciones</label>
+                                        <textarea id="Observaciones" class="form-control"
+                                            v-model="datos.observacion"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Footer Modal -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
+                            <button type="button" class="btn btn-danger" @click.prevent="cerrarModal" v-if="btnClose"
                                 data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-danger" @click.prevent="back" v-if="btnBack">Volver</button>
+                            <button type="button" class="btn btn-primary" @click.prevent="buscar" v-if="isBtnSearch">Buscar
+                            </button>
                             <button type="submit" class="btn btn-primary" @click.prevent="crear"
                                 v-if="btnCrear">Crear</button>
                             <button type="submit" class="btn btn-primary" @click.prevent="editar"
@@ -278,6 +317,7 @@ export default {
                     return date.getDate() != main_date.start_date.getDate()  && date.getDate() != main_date.end_date.getDate()
                 }
             },
+            startDate,
             pickerDates: {
                 startDate,
                 endDate
@@ -306,6 +346,13 @@ export default {
             afternoon: false,
             disabled: false,
             info: [],
+            isSearchSedes: false,
+            isBtnSearch: false,
+            user: {
+                multisedes: [],
+                date: '',
+                sede_id: 0
+            },
             datos: {
                 estacionamiento_id:'',
                 user_id:'',
@@ -316,12 +363,15 @@ export default {
                 hora_fin: '',
                 turno: '',
                 observacion: '',
-                created_by : ''
+                created_by : '',
+                multisedes: []
             },
             titulo:'',
             title:"SEMANA ACTUAL",
             btnCrear:false,
             btnEditar:false,
+            btnClose: false,
+            btnBack: false,
             isLoading: false,
             id:'',
             showTable: true,
@@ -508,6 +558,29 @@ export default {
                 }
             }
         },
+        buscar: async function(){
+            await axios.post('/api/validar-disponibilidad-reservas-fecha', this.user)
+            .then((res) => {
+                console.log(res)
+
+                $(".content_pass_one").addClass('d-none')
+                $(".content_pass_two").removeClass('d-none')
+
+                this.btnCrear = true;
+                this.btnClose = false;
+                this.btnBack = true;
+                this.isBtnSearch = false;
+            })
+        },
+        back: function(){
+            $(".content_pass_one").removeClass('d-none')
+            $(".content_pass_two").addClass('d-none')
+
+            this.btnCrear = false;
+            this.btnBack = false;
+            this.btnClose = true;
+            this.isBtnSearch = true;
+        },
         async editar(){
             let valid = await this.validarCampos();
             if(valid){
@@ -595,7 +668,9 @@ export default {
             this.datos.hora_fin = '';
             this.datos.observacion = '';
             this.titulo='Crear Reserva';
-            this.btnCrear=true;
+            this.btnCrear=false;
+            this.btnClose=true;
+            this.isBtnSearch=true;
             this.btnEditar=false;
             $('#modalForm').modal('show')
         },
@@ -620,22 +695,31 @@ export default {
         cerrarModal(){
             $('#modalForm').modal('hide');
         },
-        verifyAvailableParking(date) {
+        async verifyAvailableParking(date) {
+            this.isSearchSedes = true;
+            $("#contentSedes").addClass('d-none');
 
-            return;
-            // Si mi fecha actual es domingo lo adelante al lunes
-            if(curr_date.getDay() == 0) curr_date.setDate(curr_date.getDate() + 1)
-            
-            // Si mi fecha actual es sabado lo adelante al lunes
-            if(curr_date.getDay() == 6) curr_date.setDate(curr_date.getDate() + 2)
-            
-            let curr_date_tomorrow = new Date(curr_date);
-            curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1)
-            
-            if(date > curr_date_tomorrow) return this.$swal.fire({
-                icon: 'warning',
-                title: 'Solo puede hacer reservaciones Hoy y Mañana'
-            })
+            // Esta funcion valida si el usuario en la fecha indicada tiene estacionamientos disponibles
+            await axios.post('/api/multisedes-usuario', {
+                            user_id: this.datos.user_id
+                        })
+                        .then((res) => {
+                            $("#contentSedes").removeClass('d-none');
+                            this.user.date = date;
+                            this.user.multisedes = res.data.user.multisedes;
+
+                            console.log(res.data)
+                        })
+                        .catch((err) => console.log(err))
+                        .finally(() => {
+                            this.isSearchSedes = false;
+                        })
+        },
+        changeUser(value){
+            this.verifyAvailableParking(this.startDate)
+        },
+        changeSede: function(e){
+            this.user.sede_id = e.target.value
         }
     }
 }

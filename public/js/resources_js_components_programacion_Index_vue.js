@@ -273,6 +273,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //you need to import the CSS manually
 
 
@@ -309,6 +348,7 @@ var main_date = getVerifyDate();
           return date.getDate() != main_date.start_date.getDate() && date.getDate() != main_date.end_date.getDate();
         }
       },
+      startDate: startDate,
       pickerDates: {
         startDate: startDate,
         endDate: endDate
@@ -336,6 +376,13 @@ var main_date = getVerifyDate();
       afternoon: false,
       disabled: false,
       info: [],
+      isSearchSedes: false,
+      isBtnSearch: false,
+      user: {
+        multisedes: [],
+        date: '',
+        sede_id: 0
+      },
       datos: {
         estacionamiento_id: '',
         user_id: '',
@@ -346,12 +393,15 @@ var main_date = getVerifyDate();
         hora_fin: '',
         turno: '',
         observacion: '',
-        created_by: ''
+        created_by: '',
+        multisedes: []
       },
       titulo: '',
       title: "SEMANA ACTUAL",
       btnCrear: false,
       btnEditar: false,
+      btnClose: false,
+      btnBack: false,
       isLoading: false,
       id: '',
       showTable: true,
@@ -652,43 +702,84 @@ var main_date = getVerifyDate();
         }, _callee4);
       }))();
     },
-    editar: function editar() {
-      var _this4 = this;
+    buscar: function () {
+      var _buscar = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var _this4 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var valid, resp;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return _this4.validarCampos();
+                return axios.post('/api/validar-disponibilidad-reservas-fecha', this.user).then(function (res) {
+                  console.log(res);
+                  $(".content_pass_one").addClass('d-none');
+                  $(".content_pass_two").removeClass('d-none');
+                  _this4.btnCrear = true;
+                  _this4.btnClose = false;
+                  _this4.btnBack = true;
+                  _this4.isBtnSearch = false;
+                });
 
               case 2:
-                valid = _context5.sent;
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function buscar() {
+        return _buscar.apply(this, arguments);
+      }
+
+      return buscar;
+    }(),
+    back: function back() {
+      $(".content_pass_one").removeClass('d-none');
+      $(".content_pass_two").addClass('d-none');
+      this.btnCrear = false;
+      this.btnBack = false;
+      this.btnClose = true;
+      this.isBtnSearch = true;
+    },
+    editar: function editar() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
+        var valid, resp;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this5.validarCampos();
+
+              case 2:
+                valid = _context6.sent;
 
                 if (!valid) {
-                  _context5.next = 14;
+                  _context6.next = 14;
                   break;
                 }
 
                 resp = false;
-                _context5.next = 7;
-                return axios.put('/api/programacion/' + _this4.id, _this4.datos).then(function (response) {
+                _context6.next = 7;
+                return axios.put('/api/programacion/' + _this5.id, _this5.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
-                    _this4.$swal.fire({
+                    _this5.$swal.fire({
                       icon: 'error',
                       title: 'Oops...',
                       text: response.data.message
                     });
                   } else {
                     resp = true;
-                    _this4.schedules = [].concat(response.data.schedules);
-                    _this4.nextSchedules = [].concat(response.data.nextSchedules);
-                    _this4.id = '';
+                    _this5.schedules = [].concat(response.data.schedules);
+                    _this5.nextSchedules = [].concat(response.data.nextSchedules);
+                    _this5.id = '';
                     $('#modalForm').modal('hide');
 
-                    _this4.$swal.fire('Programación editado correctamente!', '', 'success');
+                    _this5.$swal.fire('Programación editado correctamente!', '', 'success');
                   }
                 })["catch"](function (error) {
                   console.log(error);
@@ -696,26 +787,26 @@ var main_date = getVerifyDate();
 
               case 7:
                 if (!resp) {
-                  _context5.next = 14;
+                  _context6.next = 14;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context5.next = 12;
-                return _this4.validarRole();
+                _context6.next = 12;
+                return _this5.validarRole();
 
               case 12:
-                _this4.$tablaGlobal('#td-schedule');
+                _this5.$tablaGlobal('#td-schedule');
 
-                _this4.$tablaGlobal('#td-schedule2');
+                _this5.$tablaGlobal('#td-schedule2');
 
               case 14:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5);
+        }, _callee6);
       }))();
     },
     borrar: function borrar(id) {
@@ -748,44 +839,46 @@ var main_date = getVerifyDate();
       }
     },
     abrirModalCrear: function abrirModalCrear() {
-      var _this5 = this;
+      var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
         var startDate, endDate;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 startDate = new Date();
                 endDate = new Date();
                 endDate.setDate(endDate.getDate());
-                _this5.pickerDates = {
+                _this6.pickerDates = {
                   startDate: startDate,
                   endDate: endDate
                 };
-                _this5.allDay = false;
-                _this5.morning = false;
-                _this5.afternoon = false;
-                _this5.disabled = false;
-                _this5.datos.estacionamiento_id = _this5.parkingsFilter.length == 1 ? _this5.parkingsFilter[0].id : ''; // this.datos.user_id = '';
+                _this6.allDay = false;
+                _this6.morning = false;
+                _this6.afternoon = false;
+                _this6.disabled = false;
+                _this6.datos.estacionamiento_id = _this6.parkingsFilter.length == 1 ? _this6.parkingsFilter[0].id : ''; // this.datos.user_id = '';
 
-                _this5.datos.fecha = '';
-                _this5.datos.fecha_inicio = '';
-                _this5.datos.fecha_fin = '';
-                _this5.datos.hora_inicio = '';
-                _this5.datos.hora_fin = '';
-                _this5.datos.observacion = '';
-                _this5.titulo = 'Crear Reserva';
-                _this5.btnCrear = true;
-                _this5.btnEditar = false;
+                _this6.datos.fecha = '';
+                _this6.datos.fecha_inicio = '';
+                _this6.datos.fecha_fin = '';
+                _this6.datos.hora_inicio = '';
+                _this6.datos.hora_fin = '';
+                _this6.datos.observacion = '';
+                _this6.titulo = 'Crear Reserva';
+                _this6.btnCrear = false;
+                _this6.btnClose = true;
+                _this6.isBtnSearch = true;
+                _this6.btnEditar = false;
                 $('#modalForm').modal('show');
 
-              case 19:
+              case 21:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6);
+        }, _callee7);
       }))();
     },
     abrirModalEditar: function abrirModalEditar(datos) {
@@ -810,17 +903,43 @@ var main_date = getVerifyDate();
       $('#modalForm').modal('hide');
     },
     verifyAvailableParking: function verifyAvailableParking(date) {
-      return; // Si mi fecha actual es domingo lo adelante al lunes
+      var _this7 = this;
 
-      if (curr_date.getDay() == 0) curr_date.setDate(curr_date.getDate() + 1); // Si mi fecha actual es sabado lo adelante al lunes
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _this7.isSearchSedes = true;
+                $("#contentSedes").addClass('d-none'); // Esta funcion valida si el usuario en la fecha indicada tiene estacionamientos disponibles
 
-      if (curr_date.getDay() == 6) curr_date.setDate(curr_date.getDate() + 2);
-      var curr_date_tomorrow = new Date(curr_date);
-      curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
-      if (date > curr_date_tomorrow) return this.$swal.fire({
-        icon: 'warning',
-        title: 'Solo puede hacer reservaciones Hoy y Mañana'
-      });
+                _context8.next = 4;
+                return axios.post('/api/multisedes-usuario', {
+                  user_id: _this7.datos.user_id
+                }).then(function (res) {
+                  $("#contentSedes").removeClass('d-none');
+                  _this7.user.date = date;
+                  _this7.user.multisedes = res.data.user.multisedes;
+                  console.log(res.data);
+                })["catch"](function (err) {
+                  return console.log(err);
+                })["finally"](function () {
+                  _this7.isSearchSedes = false;
+                });
+
+              case 4:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }))();
+    },
+    changeUser: function changeUser(value) {
+      this.verifyAvailableParking(this.startDate);
+    },
+    changeSede: function changeSede(e) {
+      this.user.sede_id = e.target.value;
     }
   }
 });
@@ -2074,97 +2193,219 @@ var render = function () {
             _vm._v(" "),
             _c("form", [
               _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "form-row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group col-md-6" },
-                    [
-                      _c(
-                        "label",
-                        { staticClass: "d-block", attrs: { for: "Fecha" } },
-                        [_vm._v("Fecha de reserva")]
-                      ),
-                      _vm._v(" "),
-                      _vm.btnEditar
-                        ? _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.datos.fecha,
-                                expression: "datos.fecha",
+                _c("div", { staticClass: "content_pass_one py-4" }, [
+                  _c("div", { staticClass: "form-row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group col-md-6" },
+                      [
+                        _c(
+                          "label",
+                          { staticClass: "d-block", attrs: { for: "Fecha" } },
+                          [_vm._v("Fecha de reserva")]
+                        ),
+                        _vm._v(" "),
+                        _vm.btnEditar
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.datos.fecha,
+                                  expression: "datos.fecha",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "date",
+                                id: "pickerProgramacion",
+                                placeholder: "Fecha",
                               },
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "date",
-                              id: "pickerProgramacion",
-                              placeholder: "Fecha",
-                            },
-                            domProps: { value: _vm.datos.fecha },
-                            on: {
-                              input: function ($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.datos,
-                                  "fecha",
-                                  $event.target.value
-                                )
+                              domProps: { value: _vm.datos.fecha },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.datos,
+                                    "fecha",
+                                    $event.target.value
+                                  )
+                                },
                               },
-                            },
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("v-datepicker", {
-                        attrs: {
-                          "disabled-dates": _vm.disabledCustomDates,
-                          language: _vm.es,
-                          id: "datePicker",
-                          placeholder: "Seleccionar Fecha",
-                        },
-                        on: { selected: _vm.verifyAvailableParking },
-                      }),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm.session.role_id === 1
-                    ? _c(
-                        "div",
-                        { staticClass: "form-group col-md-6" },
-                        [
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("v-datepicker", {
+                          attrs: {
+                            "disabled-dates": _vm.disabledCustomDates,
+                            language: _vm.es,
+                            id: "datePicker",
+                            placeholder: "Seleccionar Fecha",
+                          },
+                          on: { selected: _vm.verifyAvailableParking },
+                        }),
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm.session && _vm.session.role_id == 1
+                      ? _c(
+                          "div",
+                          { staticClass: "form-group col-md-6" },
+                          [
+                            _c("label", { attrs: { for: "Usuario" } }, [
+                              _vm._v("Usuario"),
+                            ]),
+                            _vm._v(" "),
+                            _c("v-select", {
+                              staticClass: "vue-select2",
+                              attrs: {
+                                name: "select2",
+                                options: _vm.usersFilter,
+                                reduce: function (label) {
+                                  return label.code
+                                },
+                              },
+                              on: { input: _vm.changeUser },
+                              model: {
+                                value: _vm.datos.user_id,
+                                callback: function ($$v) {
+                                  _vm.$set(_vm.datos, "user_id", $$v)
+                                },
+                                expression: "datos.user_id",
+                              },
+                            }),
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.session && _vm.session.role_id != 1
+                      ? _c("div", { staticClass: "form-group col-md-6" }, [
                           _c("label", { attrs: { for: "Usuario" } }, [
                             _vm._v("Usuario"),
                           ]),
                           _vm._v(" "),
-                          _c("v-select", {
-                            staticClass: "vue-select2",
-                            attrs: {
-                              name: "select2",
-                              options: _vm.usersFilter,
-                              reduce: function (label) {
-                                return label.code
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.datos.user_id,
+                                  expression: "datos.user_id",
+                                },
+                              ],
+                              staticClass: "browser-default custom-select",
+                              attrs: { id: "Usuario", disabled: "" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.datos,
+                                    "user_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
                               },
                             },
-                            model: {
-                              value: _vm.datos.user_id,
-                              callback: function ($$v) {
-                                _vm.$set(_vm.datos, "user_id", $$v)
-                              },
-                              expression: "datos.user_id",
-                            },
-                          }),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
+                            [
+                              _c(
+                                "option",
+                                {
+                                  key: _vm.session.id + _vm.session.nombre,
+                                  domProps: { value: _vm.session.id },
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.session.nombre +
+                                        " " +
+                                        _vm.session.apellido
+                                    )
+                                  ),
+                                ]
+                              ),
+                            ]
+                          ),
+                        ])
+                      : _vm._e(),
+                  ]),
                   _vm._v(" "),
-                  _vm.session.role_id === 2 || _vm.session.role_id === 3
-                    ? _c("div", { staticClass: "form-group col-md-6" }, [
-                        _c("label", { attrs: { for: "Usuario" } }, [
-                          _vm._v("Usuario"),
+                  _c("div", { staticClass: "form-row" }, [
+                    _vm.isSearchSedes
+                      ? _c("div", { staticClass: "form-group col-md-6" }, [
+                          _vm.isSearchSedes
+                            ? _c("span", { staticClass: "w-100" }, [
+                                _vm._v("Cargando Sedes..."),
+                              ])
+                            : _vm._e(),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group col-md-6 d-none",
+                        attrs: { id: "contentSedes" },
+                      },
+                      [
+                        _c("label", { attrs: { for: "Sedes" } }, [
+                          _vm._v("Sedes"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "browser-default custom-select",
+                            attrs: { name: "Sedes", id: "Sedes" },
+                            on: { change: _vm.changeSede },
+                          },
+                          [
+                            _c("option", [_vm._v("Selecciona una sede")]),
+                            _vm._v(" "),
+                            _vm._l(_vm.user.multisedes, function (multisede) {
+                              return _c(
+                                "option",
+                                {
+                                  key: multisede.sede_id,
+                                  domProps: { value: multisede.sede_id },
+                                },
+                                [_vm._v(_vm._s(multisede.sede_name))]
+                              )
+                            }),
+                          ],
+                          2
+                        ),
+                      ]
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "content_pass_two d-none py-4" }, [
+                  _c("div", { staticClass: "form-row mb-4" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group col-md-6",
+                        attrs: { id: "contentEstacionamientos" },
+                      },
+                      [
+                        _c("label", { attrs: { for: "Estacionamiento" } }, [
+                          _vm._v("Estacionamiento Disponibles"),
                         ]),
                         _vm._v(" "),
                         _c(
@@ -2174,12 +2415,12 @@ var render = function () {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.datos.user_id,
-                                expression: "datos.user_id",
+                                value: _vm.datos.estacionamiento_id,
+                                expression: "datos.estacionamiento_id",
                               },
                             ],
                             staticClass: "browser-default custom-select",
-                            attrs: { id: "Usuario", disabled: "" },
+                            attrs: { id: "Estacionamiento" },
                             on: {
                               change: function ($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -2192,7 +2433,7 @@ var render = function () {
                                   })
                                 _vm.$set(
                                   _vm.datos,
-                                  "user_id",
+                                  "estacionamiento_id",
                                   $event.target.multiple
                                     ? $$selectedVal
                                     : $$selectedVal[0]
@@ -2200,411 +2441,389 @@ var render = function () {
                               },
                             },
                           },
-                          [
-                            _c(
+                          _vm._l(_vm.parkingsFilter, function (parking) {
+                            return _c(
                               "option",
                               {
-                                key: _vm.session.id + _vm.session.nombre,
-                                domProps: { value: _vm.session.id },
+                                key: parking.numero,
+                                domProps: { value: parking.id },
                               },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.session.nombre +
-                                      " " +
-                                      _vm.session.apellido
-                                  )
-                                ),
-                              ]
+                              [_vm._v(_vm._s(parking.numero))]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "frame-wrap bg-faded col-md-6",
+                        staticStyle: { "text-align": "center", margin: "auto" },
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-checkbox d-inline-flex mr-3",
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.allDay,
+                                  expression: "allDay",
+                                },
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                name: "bordered",
+                                id: "option-bordered",
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.allDay)
+                                  ? _vm._i(_vm.allDay, null) > -1
+                                  : _vm.allDay,
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.onChange("D")
+                                },
+                                change: function ($event) {
+                                  var $$a = _vm.allDay,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.allDay = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.allDay = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.allDay = $$c
+                                  }
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "option-bordered" },
+                              },
+                              [_vm._v("Todo el día")]
                             ),
                           ]
                         ),
-                      ])
-                    : _vm._e(),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-row" }, [
-                  _c("div", { staticClass: "form-group col-md-6" }, [
-                    _c("label", { attrs: { for: "Estacionamiento" } }, [
-                      _vm._v("Estacionamiento"),
-                    ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-checkbox d-inline-flex mr-3",
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.morning,
+                                  expression: "morning",
+                                },
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                name: "small",
+                                id: "option-small",
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.morning)
+                                  ? _vm._i(_vm.morning, null) > -1
+                                  : _vm.morning,
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.onChange("M")
+                                },
+                                change: function ($event) {
+                                  var $$a = _vm.morning,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.morning = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.morning = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.morning = $$c
+                                  }
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "option-small" },
+                              },
+                              [_vm._v("Mañana")]
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-checkbox d-inline-flex mr-3",
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.afternoon,
+                                  expression: "afternoon",
+                                },
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "checkbox",
+                                name: "small",
+                                id: "option-small2",
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.afternoon)
+                                  ? _vm._i(_vm.afternoon, null) > -1
+                                  : _vm.afternoon,
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.onChange("T")
+                                },
+                                change: function ($event) {
+                                  var $$a = _vm.afternoon,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.afternoon = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.afternoon = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.afternoon = $$c
+                                  }
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "option-small2" },
+                              },
+                              [_vm._v("Tarde")]
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c(
-                      "select",
-                      {
+                    _c("div", { staticClass: "form-group col-md-3" }, [
+                      _c("label", { attrs: { for: "hora_inicio" } }, [
+                        _vm._v("Hora Inicio"),
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.datos.estacionamiento_id,
-                            expression: "datos.estacionamiento_id",
+                            value: _vm.datos.hora_inicio,
+                            expression: "datos.hora_inicio",
                           },
                         ],
-                        staticClass: "browser-default custom-select",
-                        attrs: { id: "Estacionamiento" },
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "time",
+                          min: "06:00",
+                          max: "18:00",
+                          id: "hora_inicio",
+                          disabled: true,
+                          placeholder: "Hora inicio",
+                        },
+                        domProps: { value: _vm.datos.hora_inicio },
                         on: {
-                          change: function ($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function (o) {
-                                return o.selected
-                              })
-                              .map(function (o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
                             _vm.$set(
                               _vm.datos,
-                              "estacionamiento_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                              "hora_inicio",
+                              $event.target.value
                             )
                           },
                         },
-                      },
-                      _vm._l(_vm.parkingsFilter, function (parking) {
-                        return _c(
-                          "option",
-                          {
-                            key: parking.numero,
-                            domProps: { value: parking.id },
-                          },
-                          [_vm._v(_vm._s(parking.numero))]
-                        )
                       }),
-                      0
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-row" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "frame-wrap bg-faded col-md-8",
-                      staticStyle: { "text-align": "center", margin: "auto" },
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "custom-control custom-checkbox d-inline-flex mr-3",
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.allDay,
-                                expression: "allDay",
-                              },
-                            ],
-                            staticClass: "custom-control-input",
-                            attrs: {
-                              type: "checkbox",
-                              name: "bordered",
-                              id: "option-bordered",
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.allDay)
-                                ? _vm._i(_vm.allDay, null) > -1
-                                : _vm.allDay,
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.onChange("D")
-                              },
-                              change: function ($event) {
-                                var $$a = _vm.allDay,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 && (_vm.allDay = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.allDay = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.allDay = $$c
-                                }
-                              },
-                            },
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "label",
-                            {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "option-bordered" },
-                            },
-                            [_vm._v("Todo el día")]
-                          ),
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "custom-control custom-checkbox d-inline-flex mr-3",
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.morning,
-                                expression: "morning",
-                              },
-                            ],
-                            staticClass: "custom-control-input",
-                            attrs: {
-                              type: "checkbox",
-                              name: "small",
-                              id: "option-small",
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.morning)
-                                ? _vm._i(_vm.morning, null) > -1
-                                : _vm.morning,
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.onChange("M")
-                              },
-                              change: function ($event) {
-                                var $$a = _vm.morning,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 && (_vm.morning = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.morning = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.morning = $$c
-                                }
-                              },
-                            },
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "label",
-                            {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "option-small" },
-                            },
-                            [_vm._v("Mañana")]
-                          ),
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "custom-control custom-checkbox d-inline-flex mr-3",
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.afternoon,
-                                expression: "afternoon",
-                              },
-                            ],
-                            staticClass: "custom-control-input",
-                            attrs: {
-                              type: "checkbox",
-                              name: "small",
-                              id: "option-small2",
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.afternoon)
-                                ? _vm._i(_vm.afternoon, null) > -1
-                                : _vm.afternoon,
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.onChange("T")
-                              },
-                              change: function ($event) {
-                                var $$a = _vm.afternoon,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      (_vm.afternoon = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.afternoon = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.afternoon = $$c
-                                }
-                              },
-                            },
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "label",
-                            {
-                              staticClass: "custom-control-label",
-                              attrs: { for: "option-small2" },
-                            },
-                            [_vm._v("Tarde")]
-                          ),
-                        ]
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group col-md-3" }, [
-                    _c("label", { attrs: { for: "hora_inicio" } }, [
-                      _vm._v("Hora Inicio"),
                     ]),
                     _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.hora_inicio,
-                          expression: "datos.hora_inicio",
+                    _c("div", { staticClass: "form-group col-md-3" }, [
+                      _c("label", { attrs: { for: "hora_fin" } }, [
+                        _vm._v("Hora Fin"),
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.datos.hora_fin,
+                            expression: "datos.hora_fin",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "time",
+                          min: "06:00",
+                          max: "18:00",
+                          id: "hora_fin",
+                          disabled: true,
+                          placeholder: "Hora fin",
                         },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "time",
-                        min: "06:00",
-                        max: "18:00",
-                        id: "hora_inicio",
-                        disabled: true,
-                        placeholder: "Hora inicio",
-                      },
-                      domProps: { value: _vm.datos.hora_inicio },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.datos,
-                            "hora_inicio",
-                            $event.target.value
-                          )
+                        domProps: { value: _vm.datos.hora_fin },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.datos, "hora_fin", $event.target.value)
+                          },
                         },
-                      },
-                    }),
+                      }),
+                    ]),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group col-md-3" }, [
-                    _c("label", { attrs: { for: "hora_fin" } }, [
-                      _vm._v("Hora Fin"),
+                  _c("div", { staticClass: "form-row " }, [
+                    _c("div", { staticClass: "form-group col-md-12" }, [
+                      _c("label", { attrs: { for: "Observaciones" } }, [
+                        _vm._v("Observaciones"),
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.datos.observacion,
+                            expression: "datos.observacion",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "Observaciones" },
+                        domProps: { value: _vm.datos.observacion },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.datos,
+                              "observacion",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
                     ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.hora_fin,
-                          expression: "datos.hora_fin",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "time",
-                        min: "06:00",
-                        max: "18:00",
-                        id: "hora_fin",
-                        disabled: true,
-                        placeholder: "Hora fin",
-                      },
-                      domProps: { value: _vm.datos.hora_fin },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.datos, "hora_fin", $event.target.value)
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-row" }, [
-                  _c("div", { staticClass: "form-group col-md-12" }, [
-                    _c("label", { attrs: { for: "Observaciones" } }, [
-                      _vm._v("Observaciones"),
-                    ]),
-                    _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.datos.observacion,
-                          expression: "datos.observacion",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { id: "Observaciones" },
-                      domProps: { value: _vm.datos.observacion },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.datos,
-                            "observacion",
-                            $event.target.value
-                          )
-                        },
-                      },
-                    }),
                   ]),
                 ]),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-danger",
-                    attrs: { type: "button", "data-dismiss": "modal" },
-                    on: {
-                      click: function ($event) {
-                        $event.preventDefault()
-                        return _vm.cerrarModal.apply(null, arguments)
+                _vm.btnClose
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.cerrarModal.apply(null, arguments)
+                          },
+                        },
                       },
-                    },
-                  },
-                  [_vm._v("Cerrar")]
-                ),
+                      [_vm._v("Cerrar")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.btnBack
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.back.apply(null, arguments)
+                          },
+                        },
+                      },
+                      [_vm._v("Volver")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.isBtnSearch
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.buscar.apply(null, arguments)
+                          },
+                        },
+                      },
+                      [_vm._v("Buscar\n                        ")]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _vm.btnCrear
                   ? _c(

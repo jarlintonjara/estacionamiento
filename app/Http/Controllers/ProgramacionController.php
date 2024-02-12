@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class ProgramacionController extends Controller
 {
@@ -400,5 +401,48 @@ class ProgramacionController extends Controller
         Mail::to($user["email"])
             ->send($page);
         return view('requestEmail', ['message' => 'Se confirmo el estacionamiento numero '.$parking["numero"].' para el dia '.$fecha->format('d/m/Y').' de '.$payload["hora_inicio"].' a '.$payload["hora_fin"], 'error' => false]);
+    }
+
+    public function getSedesByUser(Request $request) {
+        $userId = $request->user_id;
+        $user = User::find($userId);
+        $user['multisedes'] = $user->multisedes;
+    
+        foreach($user->multisedes as $multisede) {
+            $multisede['sede_name'] = $multisede->sede->name;
+        }
+    
+        return response()->json([
+            'request' => $request->all(),
+            'user' => $user
+        ]);
+    }
+
+    public function getParkingByDate(Request $request) {
+        $sedeId = $request->sede_id;
+        $date = date('Y-m-d', strtotime($request->date));
+        $parkings = [];
+
+        $schedules = DB::table('estacionamiento as e')
+        ->select('e.*', 'p.fecha', 'p.turno')
+        ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
+        ->where('e.sede_id', $sedeId)
+        ->whereDate('p.fecha', $date)
+        ->get();
+
+        foreach($schedules as $schedule) {
+            if($schedule->turno == "M" || $schedule->turno == "T") {
+                array_push($parkings, [
+                    'numero' => $schedule->numero
+                ]);
+            }
+        }
+
+        return response()->json([
+            'sede_id' => $sedeId,
+            'date' => $date,
+            'schedules' => $schedules,
+            'parkings' => $parkings
+        ]);
     }
 }
