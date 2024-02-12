@@ -175,25 +175,30 @@ class ProgramacionController extends Controller
         //Validacion por fecha y estacionamiento
         foreach ($period as $dt) {
             $newDate = $dt->format("Y-m-d");
+            $day = "";
 
             $register = ProgramacionModel::where("estacionamiento_id", $request->estacionamiento_id)
             ->where('status',1)
             ->whereDate("fecha", $newDate)
             ->first();
+
+            if($request->turno == "M") $day = "Mañana";
+            else if ($request->turno == "T") $day = "Tarde";
+
             if ($register) {
                 if (($request->turno == "M" || $request->turno == "D") && $register->turno == "M") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "message" => "Estacionamiento ocupado el dia " . $newDate . " en el turno "  . $day,
                         "isSuccess" => false
                     ]);
                 } else if (($request->turno == "T" || $request->turno == "D") && $register->turno == "T") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "message" => "Estacionamiento ocupado el dia " . $newDate . " en el turno " . $day,
                         "isSuccess" => false
                     ]);
                 } else if ($register->turno == "D") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia " . $newDate,
+                        "message" => "Estacionamiento ocupado el dia " . $newDate . " en el turno " . $day,
                         "isSuccess" => false
                     ]);
                 }
@@ -420,21 +425,29 @@ class ProgramacionController extends Controller
 
     public function getParkingByDate(Request $request) {
         $sedeId = $request->sede_id;
-        $date = date('Y-m-d', strtotime($request->date));
-        $parkings = [];
+        $date = date('Y-m-d', strtotime($request->fecha));
 
-        $schedules = DB::table('estacionamiento as e')
-        ->select('e.*', 'p.fecha', 'p.turno')
-        ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
-        ->where('e.sede_id', $sedeId)
-        ->whereDate('p.fecha', $date)
-        ->get();
+        $parkings = EstacionamientoModel::where('deleted_at', null)->where('sede_id', $sedeId)->get();
+        $schedules = [];
 
-        foreach($schedules as $schedule) {
-            if($schedule->turno == "M" || $schedule->turno == "T") {
-                array_push($parkings, [
-                    'numero' => $schedule->numero
-                ]);
+        $available_parkings = [];
+
+        foreach($parkings as $parking) {
+            $schedules = DB::table('estacionamiento as e')
+            ->select('e.*', 'p.fecha', 'p.turno')
+            ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
+            ->where('e.sede_id', $sedeId)
+            ->whereDate('p.fecha', $date)
+            ->get();
+
+            if(count($schedules) > 0) {
+                foreach($schedules as $schedule) {
+                    if($schedule->turno == "M" || $schedule->turno == "T") {
+                        array_push($available_parkings, $parking);
+                    }
+                }
+            } else {
+                array_push($available_parkings, $parking);
             }
         }
 
@@ -442,7 +455,7 @@ class ProgramacionController extends Controller
             'sede_id' => $sedeId,
             'date' => $date,
             'schedules' => $schedules,
-            'parkings' => $parkings
+            'available_parkings' => $available_parkings
         ]);
     }
 }

@@ -22,7 +22,7 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <div class="panel-hdr">
-                                <button class="btn btn-success" @click="abrirModalCrear">Nuevo</button>
+                                <button class="btn btn-success" @click="abrirModalCrear" :disabled="isBtnDisableNew">Nuevo</button>
                                 <button style="margin-left: 68%;" class="btn btn-danger" @click="showT(1)">Semana
                                     Actual</button>
                                 <button style="margin-left: auto;" class="btn btn-danger" @click="showT(2)">Semana
@@ -161,8 +161,8 @@
                                     <div class="form-group col-md-6 d-none" id="contentSedes">
                                         <label for="Sedes">Sedes</label>
                                         <select name="Sedes" id="Sedes" class="browser-default custom-select" @change="changeSede">
-                                            <option>Selecciona una sede</option>
-                                            <option v-for="multisede in user.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">{{ multisede.sede_name }}</option>
+                                            <option value="">Selecciona una sede</option>
+                                            <option v-for="multisede in datos.multisedes" :key="multisede.sede_id" :value="multisede.sede_id">{{ multisede.sede_name }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@
                                         <label for="Estacionamiento">Estacionamiento Disponibles</label>
                                         <select id="Estacionamiento" class="browser-default custom-select"
                                             v-model="datos.estacionamiento_id">
-                                            <option v-for="parking in parkingsFilter" :key="parking.numero"
+                                            <option v-for="parking in available_parkings" :key="parking.numero"
                                                 :value="parking.id">{{ parking.numero }}</option>
                                         </select>
                                     </div>
@@ -230,7 +230,7 @@
                             <button type="button" class="btn btn-danger" @click.prevent="cerrarModal" v-if="btnClose"
                                 data-dismiss="modal">Cerrar</button>
                             <button type="button" class="btn btn-danger" @click.prevent="back" v-if="btnBack">Volver</button>
-                            <button type="button" class="btn btn-primary" @click.prevent="buscar" v-if="isBtnSearch">Buscar
+                            <button type="button" class="btn btn-primary" @click.prevent="buscar" v-if="isBtnSearch" :disabled="isBtnSearchDisabled">Buscar
                             </button>
                             <button type="submit" class="btn btn-primary" @click.prevent="crear"
                                 v-if="btnCrear">Crear</button>
@@ -341,6 +341,7 @@ export default {
             schedulesFilter:[],
             nextSchedules:[],
             nextSchedulesFilter:[],
+            available_parkings: [],
             allDay: false,
             morning: false,
             afternoon: false,
@@ -348,17 +349,14 @@ export default {
             info: [],
             isSearchSedes: false,
             isBtnSearch: false,
-            user: {
-                multisedes: [],
-                date: '',
-                sede_id: 0
-            },
+            isBtnSearchDisabled: true,
+            isBtnDisableNew: true,
             datos: {
                 estacionamiento_id:'',
                 user_id:'',
                 fecha:'',
-                fecha_inicio: startDate,
-                fecha_fin: endDate,
+                fecha_inicio: '',
+                fecha_fin: '',
                 hora_inicio:'',
                 hora_fin: '',
                 turno: '',
@@ -403,13 +401,15 @@ export default {
                     this.parkings = response.data.parkings;
                     this.schedules = response.data.schedules;
                     this.nextSchedules = response.data.nextSchedules;
-
                 })
                 .catch(error=>{
                     console.log(error);
                     this.schedules =[]
                 })
-                .finally(() => this.isLoading = false)
+                .finally(() => {
+                    this.isLoading = false;
+                    this.isBtnDisableNew = false;
+                })
                 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
@@ -520,8 +520,9 @@ export default {
         async crear(){
             let valid = await this.validarCampos();
             let resp = false;
-            this.datos.fecha_inicio = this.pickerDates.startDate;
-            this.datos.fecha_fin = this.pickerDates.endDate;
+            // this.datos.fecha_inicio = this.pickerDates.startDate;
+            // this.datos.fecha_fin = this.pickerDates.endDate;
+
             if(valid){
                 await axios.post('api/programacion', this.datos).then(response=>{
                     console.log(response.data) 
@@ -559,9 +560,11 @@ export default {
             }
         },
         buscar: async function(){
-            await axios.post('/api/validar-disponibilidad-reservas-fecha', this.user)
+            await axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos)
             .then((res) => {
-                console.log(res)
+                const {available_parkings} = res.data
+
+                this.available_parkings = available_parkings
 
                 $(".content_pass_one").addClass('d-none')
                 $(".content_pass_two").removeClass('d-none')
@@ -577,6 +580,7 @@ export default {
             $(".content_pass_two").addClass('d-none')
 
             this.btnCrear = false;
+            if(this.datos.sede_id == "") this.isBtnSearchDisabled = true;
             this.btnBack = false;
             this.btnClose = true;
             this.isBtnSearch = true;
@@ -672,6 +676,9 @@ export default {
             this.btnClose=true;
             this.isBtnSearch=true;
             this.btnEditar=false;
+
+            await this.changeUser(this.datos.user_id)
+
             $('#modalForm').modal('show')
         },
         abrirModalEditar(datos){
@@ -696,30 +703,37 @@ export default {
             $('#modalForm').modal('hide');
         },
         async verifyAvailableParking(date) {
+            this.datos.fecha = date;
+            this.datos.fecha_inicio = date;
+            this.datos.fecha_fin = date;
+        },
+        async changeUser(userId){
             this.isSearchSedes = true;
+            
             $("#contentSedes").addClass('d-none');
-
-            // Esta funcion valida si el usuario en la fecha indicada tiene estacionamientos disponibles
+            
             await axios.post('/api/multisedes-usuario', {
                             user_id: this.datos.user_id
                         })
                         .then((res) => {
+                            
                             $("#contentSedes").removeClass('d-none');
-                            this.user.date = date;
-                            this.user.multisedes = res.data.user.multisedes;
 
-                            console.log(res.data)
+                            this.datos.multisedes = res.data.user.multisedes;
+                            this.datos.user_id = userId;
                         })
                         .catch((err) => console.log(err))
                         .finally(() => {
                             this.isSearchSedes = false;
                         })
         },
-        changeUser(value){
-            this.verifyAvailableParking(this.startDate)
-        },
         changeSede: function(e){
-            this.user.sede_id = e.target.value
+            console.log(e.target.value)
+
+            if(e.target.value == "") this.isBtnSearchDisabled = true;
+
+            this.isBtnSearchDisabled = false;
+            this.datos.sede_id = e.target.value
         }
     }
 }

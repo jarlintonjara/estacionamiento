@@ -371,6 +371,7 @@ var main_date = getVerifyDate();
       schedulesFilter: [],
       nextSchedules: [],
       nextSchedulesFilter: [],
+      available_parkings: [],
       allDay: false,
       morning: false,
       afternoon: false,
@@ -378,17 +379,14 @@ var main_date = getVerifyDate();
       info: [],
       isSearchSedes: false,
       isBtnSearch: false,
-      user: {
-        multisedes: [],
-        date: '',
-        sede_id: 0
-      },
+      isBtnSearchDisabled: true,
+      isBtnDisableNew: true,
       datos: {
         estacionamiento_id: '',
         user_id: '',
         fecha: '',
-        fecha_inicio: startDate,
-        fecha_fin: endDate,
+        fecha_inicio: '',
+        fecha_fin: '',
         hora_inicio: '',
         hora_fin: '',
         turno: '',
@@ -486,7 +484,8 @@ var main_date = getVerifyDate();
                   console.log(error);
                   _this2.schedules = [];
                 })["finally"](function () {
-                  return _this2.isLoading = false;
+                  _this2.isLoading = false;
+                  _this2.isBtnDisableNew = false;
                 });
 
               case 3:
@@ -644,16 +643,15 @@ var main_date = getVerifyDate();
 
               case 2:
                 valid = _context4.sent;
-                resp = false;
-                _this3.datos.fecha_inicio = _this3.pickerDates.startDate;
-                _this3.datos.fecha_fin = _this3.pickerDates.endDate;
+                resp = false; // this.datos.fecha_inicio = this.pickerDates.startDate;
+                // this.datos.fecha_fin = this.pickerDates.endDate;
 
                 if (!valid) {
-                  _context4.next = 16;
+                  _context4.next = 14;
                   break;
                 }
 
-                _context4.next = 9;
+                _context4.next = 7;
                 return axios.post('api/programacion', _this3.datos).then(function (response) {
                   console.log(response.data); // return;
 
@@ -678,23 +676,23 @@ var main_date = getVerifyDate();
                   console.log(error);
                 });
 
-              case 9:
+              case 7:
                 if (!resp) {
-                  _context4.next = 16;
+                  _context4.next = 14;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context4.next = 14;
+                _context4.next = 12;
                 return _this3.validarRole();
 
-              case 14:
+              case 12:
                 _this3.$tablaGlobal('#td-schedule');
 
                 _this3.$tablaGlobal('#td-schedule2');
 
-              case 16:
+              case 14:
               case "end":
                 return _context4.stop();
             }
@@ -711,8 +709,9 @@ var main_date = getVerifyDate();
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return axios.post('/api/validar-disponibilidad-reservas-fecha', this.user).then(function (res) {
-                  console.log(res);
+                return axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos).then(function (res) {
+                  var available_parkings = res.data.available_parkings;
+                  _this4.available_parkings = available_parkings;
                   $(".content_pass_one").addClass('d-none');
                   $(".content_pass_two").removeClass('d-none');
                   _this4.btnCrear = true;
@@ -739,6 +738,7 @@ var main_date = getVerifyDate();
       $(".content_pass_one").removeClass('d-none');
       $(".content_pass_two").addClass('d-none');
       this.btnCrear = false;
+      if (this.datos.sede_id == "") this.isBtnSearchDisabled = true;
       this.btnBack = false;
       this.btnClose = true;
       this.isBtnSearch = true;
@@ -871,9 +871,13 @@ var main_date = getVerifyDate();
                 _this6.btnClose = true;
                 _this6.isBtnSearch = true;
                 _this6.btnEditar = false;
+                _context7.next = 22;
+                return _this6.changeUser(_this6.datos.user_id);
+
+              case 22:
                 $('#modalForm').modal('show');
 
-              case 21:
+              case 23:
               case "end":
                 return _context7.stop();
             }
@@ -910,24 +914,11 @@ var main_date = getVerifyDate();
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                _this7.isSearchSedes = true;
-                $("#contentSedes").addClass('d-none'); // Esta funcion valida si el usuario en la fecha indicada tiene estacionamientos disponibles
+                _this7.datos.fecha = date;
+                _this7.datos.fecha_inicio = date;
+                _this7.datos.fecha_fin = date;
 
-                _context8.next = 4;
-                return axios.post('/api/multisedes-usuario', {
-                  user_id: _this7.datos.user_id
-                }).then(function (res) {
-                  $("#contentSedes").removeClass('d-none');
-                  _this7.user.date = date;
-                  _this7.user.multisedes = res.data.user.multisedes;
-                  console.log(res.data);
-                })["catch"](function (err) {
-                  return console.log(err);
-                })["finally"](function () {
-                  _this7.isSearchSedes = false;
-                });
-
-              case 4:
+              case 3:
               case "end":
                 return _context8.stop();
             }
@@ -935,11 +926,42 @@ var main_date = getVerifyDate();
         }, _callee8);
       }))();
     },
-    changeUser: function changeUser(value) {
-      this.verifyAvailableParking(this.startDate);
+    changeUser: function changeUser(userId) {
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                _this8.isSearchSedes = true;
+                $("#contentSedes").addClass('d-none');
+                _context9.next = 4;
+                return axios.post('/api/multisedes-usuario', {
+                  user_id: _this8.datos.user_id
+                }).then(function (res) {
+                  $("#contentSedes").removeClass('d-none');
+                  _this8.datos.multisedes = res.data.user.multisedes;
+                  _this8.datos.user_id = userId;
+                })["catch"](function (err) {
+                  return console.log(err);
+                })["finally"](function () {
+                  _this8.isSearchSedes = false;
+                });
+
+              case 4:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }))();
     },
     changeSede: function changeSede(e) {
-      this.user.sede_id = e.target.value;
+      console.log(e.target.value);
+      if (e.target.value == "") this.isBtnSearchDisabled = true;
+      this.isBtnSearchDisabled = false;
+      this.datos.sede_id = e.target.value;
     }
   }
 });
@@ -1955,6 +1977,7 @@ var render = function () {
                     "button",
                     {
                       staticClass: "btn btn-success",
+                      attrs: { disabled: _vm.isBtnDisableNew },
                       on: { click: _vm.abrirModalCrear },
                     },
                     [_vm._v("Nuevo")]
@@ -2375,9 +2398,11 @@ var render = function () {
                             on: { change: _vm.changeSede },
                           },
                           [
-                            _c("option", [_vm._v("Selecciona una sede")]),
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Selecciona una sede"),
+                            ]),
                             _vm._v(" "),
-                            _vm._l(_vm.user.multisedes, function (multisede) {
+                            _vm._l(_vm.datos.multisedes, function (multisede) {
                               return _c(
                                 "option",
                                 {
@@ -2441,7 +2466,7 @@ var render = function () {
                               },
                             },
                           },
-                          _vm._l(_vm.parkingsFilter, function (parking) {
+                          _vm._l(_vm.available_parkings, function (parking) {
                             return _c(
                               "option",
                               {
@@ -2813,7 +2838,10 @@ var render = function () {
                       "button",
                       {
                         staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
+                        attrs: {
+                          type: "button",
+                          disabled: _vm.isBtnSearchDisabled,
+                        },
                         on: {
                           click: function ($event) {
                             $event.preventDefault()
