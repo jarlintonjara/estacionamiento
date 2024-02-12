@@ -268,6 +268,11 @@ class ProgramacionController extends Controller
             $schedule["user"] = $schedule->user;
             $schedule["parking"] = $schedule->parking;
         }
+
+        // Enviar correo
+        $user = User::find($request->user_id);
+        $this->sendEmail($user->email);
+
         return response()->json([
             "isSuccess" => true,
             "schedules" => $schedulesFilter,
@@ -461,5 +466,16 @@ class ProgramacionController extends Controller
             'schedules' => $schedules,
             'available_parkings' => $available_parkings
         ]);
+    }
+
+    public function sendEmail($email) {
+        $destinatario = $email;
+        $asunto = "Prueba Inchcape";
+        $mensaje = "Este es un correo de prueba";
+
+
+        Mail::raw($mensaje, function($message) use ($destinatario, $asunto){
+            $message->to($destinatario)->subject($asunto);
+        });
     }
 }
