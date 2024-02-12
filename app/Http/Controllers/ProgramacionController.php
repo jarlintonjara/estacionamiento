@@ -451,6 +451,10 @@ class ProgramacionController extends Controller
             }
         }
 
+        $coleccion = collect($available_parkings);
+
+        $available_parkings = $coleccion->unique()->values()->all();
+
         return response()->json([
             'sede_id' => $sedeId,
             'date' => $date,

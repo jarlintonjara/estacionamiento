@@ -728,9 +728,11 @@ export default {
                         })
         },
         changeSede: function(e){
-            console.log(e.target.value)
+            console.log(e.target.value.length)
 
-            if(e.target.value == "") this.isBtnSearchDisabled = true;
+            if(e.target.value.length == 0) {
+                this.isBtnSearchDisabled = true;
+            }
 
             this.isBtnSearchDisabled = false;
             this.datos.sede_id = e.target.value
