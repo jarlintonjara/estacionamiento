@@ -53,7 +53,7 @@ class ProgramacionController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('deleted_at', null)->get();
         $schedules = ProgramacionModel::select('*')
             ->where('status',1)
@@ -437,14 +437,14 @@ class ProgramacionController extends Controller
 
         $available_parkings = [];
 
-        foreach($parkings as $parking) {
-            $schedules = DB::table('estacionamiento as e')
-            ->select('e.*', 'p.fecha', 'p.turno')
-            ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
-            ->where('e.sede_id', $sedeId)
-            ->whereDate('p.fecha', $date)
-            ->get();
+        $schedules = DB::table('estacionamiento as e')
+        ->select('e.*', 'p.fecha', 'p.turno')
+        ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
+        ->where('e.sede_id', $sedeId)
+        ->whereDate('p.fecha', $date)
+        ->get();
 
+        foreach($parkings as $parking) {
             if(count($schedules) > 0) {
                 foreach($schedules as $schedule) {
                     if($schedule->turno == "M" || $schedule->turno == "T") {

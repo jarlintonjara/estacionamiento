@@ -485,8 +485,9 @@ var main_date = getVerifyDate();
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                console.log(' ----------- cargandos reservas ----------- ');
                 _this3.isLoading = true;
-                _context3.next = 3;
+                _context3.next = 4;
                 return _this3.axios.get('/api/programacion').then(function (response) {
                   _this3.users = response.data.users;
                   _this3.parkings = response.data.parkings;
@@ -500,20 +501,20 @@ var main_date = getVerifyDate();
                   _this3.isBtnDisableNew = false;
                 });
 
-              case 3:
+              case 4:
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context3.next = 7;
+                _context3.next = 8;
                 return _this3.validarRole();
 
-              case 7:
+              case 8:
                 _this3.$tablaGlobal('#td-schedule');
 
                 _this3.$tablaGlobal('#td-schedule2');
 
                 _this3.datos.user_id = _this3.session.id;
 
-              case 10:
+              case 11:
               case "end":
                 return _context3.stop();
             }
@@ -988,7 +989,7 @@ var main_date = getVerifyDate();
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                console.log(' ---------- change user ----------- ');
+                console.log(' ---------- change user v2 ----------- ');
                 console.log(this.datos);
                 this.isSearchSedes = true; // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
 
@@ -996,7 +997,7 @@ var main_date = getVerifyDate();
                 $("#contentSedes").addClass('d-none');
                 _context9.next = 7;
                 return axios.post('/api/multisedes-usuario', {
-                  user_id: this.datos.user_id
+                  user_id: userId
                 }).then(function (res) {
                   $("#contentSedes").removeClass('d-none');
                   _this8.datos.multisedes = res.data.user.multisedes;
