@@ -883,7 +883,7 @@ var main_date = getVerifyDate();
                 this.titulo = "Crer Reserva";
                 this.datos.sede_id = this.session.curr_sede_id;
                 _context7.next = 8;
-                return this.changeUser(this.datos.user_id);
+                return this.changeUser(this.session.id);
 
               case 8:
                 $('#modalForm').modal('show'); // const startDate = new Date();
@@ -990,8 +990,8 @@ var main_date = getVerifyDate();
             switch (_context9.prev = _context9.next) {
               case 0:
                 console.log(' ---------- change user v2 ----------- ');
-                console.log(this.datos);
-                this.isSearchSedes = true; // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
+                this.isSearchSedes = true;
+                console.log(userId); // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
 
                 if (this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined) this.isBtnSearchDisabled = false;
                 $("#contentSedes").addClass('d-none');

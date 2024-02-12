@@ -687,7 +687,7 @@ export default {
             this.titulo = "Crer Reserva"
             this.datos.sede_id = this.session.curr_sede_id;
 
-            await this.changeUser(this.datos.user_id);
+            await this.changeUser(this.session.id);
 
             $('#modalForm').modal('show');
 
@@ -766,9 +766,9 @@ export default {
         changeUser: async function (userId) {
             console.log(' ---------- change user v2 ----------- ');
 
-            console.log(this.datos)
-
             this.isSearchSedes = true;
+
+            console.log(userId)
 
             // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
             if(this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined)  this.isBtnSearchDisabled = false;
