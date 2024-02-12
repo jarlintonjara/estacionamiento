@@ -447,7 +447,7 @@ class ProgramacionController extends Controller
 
             if(count($schedules) > 0) {
                 foreach($schedules as $schedule) {
-                    if($schedule->turno == "M" || $schedule->turno == "T") {
+                    if($schedule->turno == "M" || $schedule->turno == "T" || $schedule->turno == "D") {
                         array_push($available_parkings, $parking);
                     }
                 }
