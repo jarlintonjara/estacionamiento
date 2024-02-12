@@ -51,12 +51,14 @@ class ProgramacionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $userId = $request->query('user_id');
         $users = User::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('deleted_at', null)->get();
         $schedules = ProgramacionModel::select('*')
             ->where('status',1)
+            ->where('user_id', '=', $userId)
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->fecha)->format('W');
@@ -66,12 +68,18 @@ class ProgramacionController extends Controller
         $week = Carbon::now()->weekOfYear;
         $schedulesFilter = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)])? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [] ;
 
+        $test = [];
+
         foreach ($schedulesFilter as $schedule) {
-            $newDate = Carbon::parse($schedule->fecha);
-            $schedule["dia"] = self::DAYS[$newDate->dayOfWeekIso]." ". $newDate->day." de ". self::MONTHS[$newDate->month];
-            $schedule["user"] = $schedule->user;
-            $schedule["parking"] = $schedule->parking;
-            $schedule["sede"] = $schedule->parking->sede;
+            if($schedule->parking->sede->id == $schedule->user->curr_sede_id) {
+                array_push($test, $schedule);
+
+                $newDate = Carbon::parse($schedule->fecha);
+                $schedule["dia"] = self::DAYS[$newDate->dayOfWeekIso]." ". $newDate->day." de ". self::MONTHS[$newDate->month];
+                $schedule["user"] = $schedule->user;
+                $schedule["parking"] = $schedule->parking;
+                $schedule["sede"] = $schedule->parking->sede;
+            }
         }
 
         //Programaciones de la semana siguiente

@@ -413,26 +413,25 @@ var main_date = getVerifyDate();
   },
   created: function () {
     var _created = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var _this = this;
-
-      var token;
+      var curr_user;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              token = localStorage.getItem('access_token');
-              _context.next = 3;
-              return axios.get('api/getSession/' + token).then(function (res) {
-                _this.session = res.data;
-                _this.datos.created_by = _this.session.id;
-              });
+              curr_user = localStorage.getItem("curr_user");
+              this.session = JSON.parse(curr_user);
+              this.datos.created_by = this.session.id; // const token = localStorage.getItem('access_token');
+              // await axios.get('api/getSession/' + token).then((res) => {
+              //     this.session = res.data;
+              //     this.datos.created_by = this.session.id;
+              // })
 
             case 3:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, this);
     }));
 
     function created() {
@@ -443,7 +442,7 @@ var main_date = getVerifyDate();
   }(),
   mounted: function () {
     var _mounted = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      var _this2 = this;
+      var _this = this;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
@@ -454,7 +453,7 @@ var main_date = getVerifyDate();
 
             case 2:
               this.$refs.refModal.addEventListener('hidden.bs.modal', function (event) {
-                _this2.cerrarModal();
+                _this.cerrarModal();
               });
 
             case 3:
@@ -477,51 +476,58 @@ var main_date = getVerifyDate();
     }
   },
   methods: {
-    init: function init() {
-      var _this3 = this;
+    init: function () {
+      var _init = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log(' ----------- cargandos reservas ----------- ');
-                _this3.isLoading = true;
-                _context3.next = 4;
-                return _this3.axios.get('/api/programacion').then(function (response) {
-                  _this3.users = response.data.users;
-                  _this3.parkings = response.data.parkings;
-                  _this3.schedules = response.data.schedules;
-                  _this3.nextSchedules = response.data.nextSchedules;
+                console.log(' ----------- cargando reservas ----------- ');
+                this.isLoading = true;
+                console.log('session user id');
+                console.log(this.session.id);
+                _context3.next = 6;
+                return this.axios.get("/api/programacion?user_id=".concat(this.session.id)).then(function (response) {
+                  _this2.users = response.data.users;
+                  _this2.parkings = response.data.parkings;
+                  _this2.schedules = response.data.schedules;
+                  _this2.nextSchedules = response.data.nextSchedules;
+                  console.log(response.data.schedules);
                 })["catch"](function (error) {
                   console.log(error);
-                  _this3.schedules = [];
+                  _this2.schedules = [];
                 })["finally"](function () {
-                  _this3.isLoading = false;
-                  _this3.isBtnDisableNew = false;
+                  _this2.isLoading = false;
+                  _this2.isBtnDisableNew = false;
                 });
 
-              case 4:
+              case 6:
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context3.next = 8;
-                return _this3.validarRole();
+                _context3.next = 10;
+                return this.validarRole();
 
-              case 8:
-                _this3.$tablaGlobal('#td-schedule');
+              case 10:
+                this.$tablaGlobal('#td-schedule');
+                this.$tablaGlobal('#td-schedule2');
+                this.datos.user_id = this.session.id;
 
-                _this3.$tablaGlobal('#td-schedule2');
-
-                _this3.datos.user_id = _this3.session.id;
-
-              case 11:
+              case 13:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
-      }))();
-    },
+        }, _callee3, this);
+      }));
+
+      function init() {
+        return _init.apply(this, arguments);
+      }
+
+      return init;
+    }(),
     validarCampos: function validarCampos() {
       if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
         this.$swal.fire({
@@ -643,7 +649,7 @@ var main_date = getVerifyDate();
       }
     },
     crear: function crear() {
-      var _this4 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var valid, resp;
@@ -652,7 +658,7 @@ var main_date = getVerifyDate();
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _this4.validarCampos();
+                return _this3.validarCampos();
 
               case 2:
                 valid = _context4.sent;
@@ -665,25 +671,25 @@ var main_date = getVerifyDate();
                 }
 
                 _context4.next = 7;
-                return axios.post('api/programacion', _this4.datos).then(function (response) {
+                return axios.post('api/programacion', _this3.datos).then(function (response) {
                   console.log(response.data); // return;
 
                   // return;
                   if (response.data.isSuccess == false) {
-                    _this4.$swal.fire({
+                    _this3.$swal.fire({
                       icon: 'error',
                       title: 'Oops...',
                       text: response.data.message
                     });
                   } else {
                     resp = true;
-                    _this4.schedules = [].concat(response.data.schedules);
-                    _this4.nextSchedules = [].concat(response.data.nextSchedules);
+                    _this3.schedules = [].concat(response.data.schedules);
+                    _this3.nextSchedules = [].concat(response.data.nextSchedules);
                     $('#modalForm').modal('hide');
 
-                    _this4.$swal.fire('Programación creada!', '', 'success');
+                    _this3.$swal.fire('Programación creada!', '', 'success');
 
-                    _this4.init();
+                    _this3.init();
                   }
                 })["catch"](function (error) {
                   console.log(error);
@@ -698,12 +704,12 @@ var main_date = getVerifyDate();
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
                 _context4.next = 12;
-                return _this4.validarRole();
+                return _this3.validarRole();
 
               case 12:
-                _this4.$tablaGlobal('#td-schedule');
+                _this3.$tablaGlobal('#td-schedule');
 
-                _this4.$tablaGlobal('#td-schedule2');
+                _this3.$tablaGlobal('#td-schedule2');
 
               case 14:
               case "end":
@@ -715,7 +721,7 @@ var main_date = getVerifyDate();
     },
     buscar: function () {
       var _buscar = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        var _this5 = this;
+        var _this4 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
@@ -739,17 +745,17 @@ var main_date = getVerifyDate();
                 _context5.next = 6;
                 return axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos).then(function (res) {
                   var available_parkings = res.data.available_parkings;
-                  _this5.available_parkings = available_parkings;
+                  _this4.available_parkings = available_parkings;
                   $(".content_pass_one").addClass('d-none');
                   $(".content_pass_two").removeClass('d-none');
-                  _this5.btnCrear = true;
-                  _this5.btnClose = false;
-                  _this5.btnBack = true;
-                  _this5.isBtnSearch = false;
+                  _this4.btnCrear = true;
+                  _this4.btnClose = false;
+                  _this4.btnBack = true;
+                  _this4.isBtnSearch = false;
                 })["catch"](function (err) {
                   console.log(err);
                 })["finally"](function () {
-                  _this5.isLoadingBtnSearch = false;
+                  _this4.isLoadingBtnSearch = false;
                 });
 
               case 6:
@@ -776,7 +782,7 @@ var main_date = getVerifyDate();
       this.isBtnSearch = true;
     },
     editar: function editar() {
-      var _this6 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
         var valid, resp;
@@ -785,7 +791,7 @@ var main_date = getVerifyDate();
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return _this6.validarCampos();
+                return _this5.validarCampos();
 
               case 2:
                 valid = _context6.sent;
@@ -797,21 +803,21 @@ var main_date = getVerifyDate();
 
                 resp = false;
                 _context6.next = 7;
-                return axios.put('/api/programacion/' + _this6.id, _this6.datos).then(function (response) {
+                return axios.put('/api/programacion/' + _this5.id, _this5.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
-                    _this6.$swal.fire({
+                    _this5.$swal.fire({
                       icon: 'error',
                       title: 'Oops...',
                       text: response.data.message
                     });
                   } else {
                     resp = true;
-                    _this6.schedules = [].concat(response.data.schedules);
-                    _this6.nextSchedules = [].concat(response.data.nextSchedules);
-                    _this6.id = '';
+                    _this5.schedules = [].concat(response.data.schedules);
+                    _this5.nextSchedules = [].concat(response.data.nextSchedules);
+                    _this5.id = '';
                     $('#modalForm').modal('hide');
 
-                    _this6.$swal.fire('Programación editado correctamente!', '', 'success');
+                    _this5.$swal.fire('Programación editado correctamente!', '', 'success');
                   }
                 })["catch"](function (error) {
                   console.log(error);
@@ -826,12 +832,12 @@ var main_date = getVerifyDate();
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
                 _context6.next = 12;
-                return _this6.validarRole();
+                return _this5.validarRole();
 
               case 12:
-                _this6.$tablaGlobal('#td-schedule');
+                _this5.$tablaGlobal('#td-schedule');
 
-                _this6.$tablaGlobal('#td-schedule2');
+                _this5.$tablaGlobal('#td-schedule2');
 
               case 14:
               case "end":
@@ -962,16 +968,16 @@ var main_date = getVerifyDate();
       this.btnCrear = false;
     },
     verifyAvailableParking: function verifyAvailableParking(date) {
-      var _this7 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                _this7.datos.fecha = date;
-                _this7.datos.fecha_inicio = date;
-                _this7.datos.fecha_fin = date;
+                _this6.datos.fecha = date;
+                _this6.datos.fecha_inicio = date;
+                _this6.datos.fecha_fin = date;
 
               case 3:
               case "end":
@@ -983,7 +989,7 @@ var main_date = getVerifyDate();
     },
     changeUser: function () {
       var _changeUser = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9(userId) {
-        var _this8 = this;
+        var _this7 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
           while (1) {
@@ -1000,13 +1006,13 @@ var main_date = getVerifyDate();
                   user_id: userId
                 }).then(function (res) {
                   $("#contentSedes").removeClass('d-none');
-                  _this8.datos.multisedes = res.data.user.multisedes;
-                  _this8.datos.user_id = userId;
+                  _this7.datos.multisedes = res.data.user.multisedes;
+                  _this7.datos.user_id = userId;
                 })["catch"](function (err) {
                   return console.log(err);
                 })["finally"](function () {
-                  _this8.isLoadingModalNuevo = false;
-                  _this8.isSearchSedes = false;
+                  _this7.isLoadingModalNuevo = false;
+                  _this7.isSearchSedes = false;
                 });
 
               case 7:
@@ -2060,7 +2066,7 @@ var render = function () {
                     "button",
                     {
                       staticClass: "btn btn-danger",
-                      staticStyle: { "margin-left": "68%" },
+                      staticStyle: { "margin-left": "auto" },
                       on: {
                         click: function ($event) {
                           return _vm.showT(1)
@@ -2073,7 +2079,7 @@ var render = function () {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-danger",
+                      staticClass: "btn btn-danger d-none",
                       staticStyle: { "margin-left": "auto" },
                       on: {
                         click: function ($event) {
@@ -2104,7 +2110,7 @@ var render = function () {
                           _vm._v(" "),
                           _c(
                             "tbody",
-                            _vm._l(_vm.schedulesFilter, function (schedule) {
+                            _vm._l(_vm.schedules, function (schedule) {
                               return _c("tr", { key: schedule.id }, [
                                 _c("td", [
                                   _vm._v(_vm._s(schedule.parking.numero)),

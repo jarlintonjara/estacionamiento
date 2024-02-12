@@ -27,10 +27,10 @@
                                         <span v-if="isLoadingModalNuevo">Cargando...</span>
                                     </button>
 
-                                <button style="margin-left: 68%;" class="btn btn-danger" @click="showT(1)">Semana
+                                <button style="margin-left: auto;" class="btn btn-danger" @click="showT(1)">Semana
                                     Actual</button>
 
-                                <button style="margin-left: auto;" class="btn btn-danger" @click="showT(2)">Semana
+                                <button style="margin-left: auto;" class="btn btn-danger d-none" @click="showT(2)">Semana
                                     Siguiente</button>
                             </div><br>
                             <div v-if="showTable">
@@ -47,7 +47,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="schedule in schedulesFilter" :key="schedule.id">
+                                        <tr v-for="schedule in schedules" :key="schedule.id">
                                             <td>{{ schedule.parking.numero }}</td>
                                             <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
                                             <td>{{ schedule.sede.name }}</td>
@@ -382,14 +382,19 @@ export default {
         }
     },
     created: async function () {
-        const token = localStorage.getItem('access_token');
-        await axios.get('api/getSession/' + token).then((res) => {
-            this.session = res.data;
-            this.datos.created_by = this.session.id;
-        })
+        const curr_user = localStorage.getItem("curr_user");
+        this.session = JSON.parse(curr_user);
+        this.datos.created_by = this.session.id;
+
+        // const token = localStorage.getItem('access_token');
+        // await axios.get('api/getSession/' + token).then((res) => {
+        //     this.session = res.data;
+        //     this.datos.created_by = this.session.id;
+        // })
     },
     mounted: async function () {
         await this.init();
+
         this.$refs.refModal.addEventListener('hidden.bs.modal', event  => {
             this.cerrarModal();
         });
@@ -400,17 +405,22 @@ export default {
         }
     },
     methods: {
-        async init() {
-            console.log(' ----------- cargandos reservas ----------- ');
+        init: async function () {
+            console.log(' ----------- cargando reservas ----------- ');
 
             this.isLoading = true;
 
-            await this.axios.get('/api/programacion')
+            console.log('session user id')
+            console.log(this.session.id)
+
+            await this.axios.get(`/api/programacion?user_id=${this.session.id}`)
                 .then(response => {
                     this.users = response.data.users;
                     this.parkings = response.data.parkings;
                     this.schedules = response.data.schedules;
                     this.nextSchedules = response.data.nextSchedules;
+
+                    console.log(response.data.schedules)
                 })
                 .catch(error => {
                     console.log(error);
@@ -423,6 +433,7 @@ export default {
 
             $('#td-schedule').DataTable().destroy();
             $('#td-schedule2').DataTable().destroy();
+
             await this.validarRole();
 
             this.$tablaGlobal('#td-schedule');
