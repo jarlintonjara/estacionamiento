@@ -436,7 +436,6 @@ class ProgramacionController extends Controller
         $schedules = [];
 
         $available_parkings = [];
-
         
         foreach($parkings as $parking) {
             $schedules = DB::table('estacionamiento as e')
@@ -445,7 +444,7 @@ class ProgramacionController extends Controller
             ->where('e.sede_id', $sedeId)
             ->whereDate('p.fecha', $date)
             ->get();
-            
+
             if(count($schedules) > 0) {
                 foreach($schedules as $schedule) {
                     if($schedule->turno == "M" || $schedule->turno == "T") {
