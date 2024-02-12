@@ -677,6 +677,12 @@ export default {
             this.isBtnSearch=true;
             this.btnEditar=false;
 
+            console.log(this.session)
+
+            if(this.session.role_id != 1) {
+                this.datos.user_id = this.session.user_id;
+            }
+
             await this.changeUser(this.datos.user_id)
 
             $('#modalForm').modal('show')

@@ -871,13 +871,19 @@ var main_date = getVerifyDate();
                 _this6.btnClose = true;
                 _this6.isBtnSearch = true;
                 _this6.btnEditar = false;
-                _context7.next = 22;
+                console.log(_this6.session);
+
+                if (_this6.session.role_id != 1) {
+                  _this6.datos.user_id = _this6.session.user_id;
+                }
+
+                _context7.next = 24;
                 return _this6.changeUser(_this6.datos.user_id);
 
-              case 22:
+              case 24:
                 $('#modalForm').modal('show');
 
-              case 23:
+              case 25:
               case "end":
                 return _context7.stop();
             }
