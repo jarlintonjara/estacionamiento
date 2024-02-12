@@ -8,7 +8,7 @@
             </div>
             
             <!-- Total Usuarios, Estacionamientos y Programaciones -->
-            <div class="row d-flex gap-4 mb-5" v-if="user.role_id == 1">
+            <div class="row d-flex gap-4 mb-5" v-if="user && user.role_id == 1">
                 <div class="bg-success-400 col-12 col-lg-3 rounded-lg p-3">
                     <h5 style="font-weight: bold">Usuarios</h5>
                     <h3>{{ report.totalUsers }}</h3>
@@ -406,7 +406,18 @@ export default {
             }
         }
     },
-    mounted(){
+    created: async function(){
+        const user_local = localStorage.getItem('curr_user');
+        
+        this.user = JSON.parse(user_local)
+
+        // const token = localStorage.getItem('access_token');
+        //     await axios.get('api/getSession/' + token).then((res) => {
+        //         this.user = res.data;
+        // });
+    },
+    mounted: function(){
+        console.log(this.user)
         this.init();
     },
     filters: {
@@ -415,19 +426,18 @@ export default {
         }
     },
     methods:{
-        async getDataDashboard(filters = false, sede_id = this.user.curr_sede_id) {
-
+        getDataDashboard: async function(filters = false, sede_id = this.user.curr_sede_id) {
             console.log(this.user)
             console.log({filters, sede_id})
-
+    
             this.isLoading = true;
-
+    
             await this.axios.get(`/api/dashboard?user_id=${this.user.id}&filters=${filters}&sede_id=${sede_id}`)
                     .then(response=> {                        
                         let report = response.data;
-
+    
                         console.log(report)
-
+    
                         this.sedes = report.sedes;
                         this.report.totalUsers = report.total_users;
                         this.report.totalParkings = report.total_parkings;
@@ -438,10 +448,10 @@ export default {
                         this.programacionma = report.programacionma;
                         this.estacionesma = report.estacionesma;
                         this.report.programacionManana = report.programacionManana;
-
+    
                         this.indices.totalHoy = Math.round((this.programacionhoy.length / (this.programacionhoy.length + this.estacioneshoy.length) ) * 100);
                         this.indices.totalManana = Math.round((this.programacionma.length / (this.programacionma.length + this.estacionesma.length) ) * 100);
-
+    
                         console.log(this.estacionesma)
                     })
                     .catch(error=>{
@@ -450,20 +460,15 @@ export default {
                     .finally(() => {
                         this.isLoading = false;
                     });
-
+    
                     $('#td-ocupadoshoy').DataTable();
                     $('#td-disponibleshoy').DataTable();
                     $('#td-ocupadosman').DataTable();
                     $('#td-disponiblesman').DataTable();
         },
-        async init() {
+        init: async function() {
             this.isLoading = true;
             
-            const token = localStorage.getItem('access_token');
-            await axios.get('api/getSession/' + token).then((res) => {
-                this.user = res.data;
-            });
-
             await this.getDataDashboard();
         },
         showitem(option){

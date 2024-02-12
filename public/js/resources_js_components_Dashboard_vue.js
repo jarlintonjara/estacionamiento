@@ -438,7 +438,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     };
   },
+  created: function () {
+    var _created = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var user_local;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              user_local = localStorage.getItem('curr_user');
+              this.user = JSON.parse(user_local); // const token = localStorage.getItem('access_token');
+              //     await axios.get('api/getSession/' + token).then((res) => {
+              //         this.user = res.data;
+              // });
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
   mounted: function mounted() {
+    console.log(this.user);
     this.init();
   },
   filters: {
@@ -447,26 +475,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
-    getDataDashboard: function getDataDashboard() {
-      var _arguments = arguments,
-          _this = this;
+    getDataDashboard: function () {
+      var _getDataDashboard = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var _this = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var filters, sede_id;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        var filters,
+            sede_id,
+            _args2 = arguments;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                filters = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : false;
-                sede_id = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : _this.user.curr_sede_id;
-                console.log(_this.user);
+                filters = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : false;
+                sede_id = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : this.user.curr_sede_id;
+                console.log(this.user);
                 console.log({
                   filters: filters,
                   sede_id: sede_id
                 });
-                _this.isLoading = true;
-                _context.next = 7;
-                return _this.axios.get("/api/dashboard?user_id=".concat(_this.user.id, "&filters=").concat(filters, "&sede_id=").concat(sede_id)).then(function (response) {
+                this.isLoading = true;
+                _context2.next = 7;
+                return this.axios.get("/api/dashboard?user_id=".concat(this.user.id, "&filters=").concat(filters, "&sede_id=").concat(sede_id)).then(function (response) {
                   var report = response.data;
                   console.log(report);
                   _this.sedes = report.sedes;
@@ -496,40 +525,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 11:
               case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    init: function init() {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var token;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _this2.isLoading = true;
-                token = localStorage.getItem('access_token');
-                _context2.next = 4;
-                return axios.get('api/getSession/' + token).then(function (res) {
-                  _this2.user = res.data;
-                });
-
-              case 4:
-                _context2.next = 6;
-                return _this2.getDataDashboard();
-
-              case 6:
-              case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
-      }))();
-    },
+        }, _callee2, this);
+      }));
+
+      function getDataDashboard() {
+        return _getDataDashboard.apply(this, arguments);
+      }
+
+      return getDataDashboard;
+    }(),
+    init: function () {
+      var _init = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.isLoading = true;
+                _context3.next = 3;
+                return this.getDataDashboard();
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function init() {
+        return _init.apply(this, arguments);
+      }
+
+      return init;
+    }(),
     showitem: function showitem(option) {
       var x = document.getElementById("hoy");
       var y = document.getElementById("manana");
@@ -543,37 +574,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     sendEmail: function sendEmail() {
-      var _this3 = this;
+      var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                if (!(!_this3.datos.estacionamiento_id || !_this3.datos.user_id || !_this3.datos.hora_inicio || !_this3.datos.hora_fin)) {
-                  _context3.next = 3;
+                if (!(!_this2.datos.estacionamiento_id || !_this2.datos.user_id || !_this2.datos.hora_inicio || !_this2.datos.hora_fin)) {
+                  _context4.next = 3;
                   break;
                 }
 
-                _this3.$swal.fire({
+                _this2.$swal.fire({
                   icon: 'error',
                   title: 'Oops...',
                   text: 'Completa los campos requeridos!'
                 });
 
-                return _context3.abrupt("return", false);
+                return _context4.abrupt("return", false);
 
               case 3:
-                _context3.next = 5;
+                _context4.next = 5;
                 return axios.post('/api/sendProgrammingLink', {
-                  'user': _this3.user,
-                  'programacion': _this3.datos
+                  'user': _this2.user,
+                  'programacion': _this2.datos
                 }).then(function (res) {
-                  _this3.$swal.fire('Solicitud enviada', '', 'success');
+                  _this2.$swal.fire('Solicitud enviada', '', 'success');
 
                   $('#modalForm').modal('hide');
                 })["catch"](function (error) {
-                  _this3.$swal.fire({
+                  _this2.$swal.fire({
                     icon: 'error',
                     title: 'Error de envio',
                     text: 'Ocurrio un error'
@@ -582,10 +613,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3);
+        }, _callee4);
       }))();
     },
     onChange: function onChange(param) {
@@ -664,34 +695,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.getDataDashboard(true, e.target.value);
     },
     crear: function crear() {
-      var _this4 = this;
+      var _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _this4.datos.fecha_inicio = _this4.pickerDates.startDate;
-                _this4.datos.fecha_fin = _this4.pickerDates.endDate;
+                _this3.datos.fecha_inicio = _this3.pickerDates.startDate;
+                _this3.datos.fecha_fin = _this3.pickerDates.endDate;
 
-                if (!(!_this4.datos.estacionamiento_id || !_this4.datos.hora_inicio || !_this4.datos.hora_fin)) {
-                  _context4.next = 7;
+                if (!(!_this3.datos.estacionamiento_id || !_this3.datos.hora_inicio || !_this3.datos.hora_fin)) {
+                  _context5.next = 7;
                   break;
                 }
 
-                _this4.$swal.fire({
+                _this3.$swal.fire({
                   icon: 'error',
                   title: 'Oops...',
                   text: 'Completa los campos requeridos!'
                 });
 
-                return _context4.abrupt("return", false);
+                return _context5.abrupt("return", false);
 
               case 7:
-                _context4.next = 9;
-                return axios.post('api/programacion', _this4.datos).then(function (response) {
+                _context5.next = 9;
+                return axios.post('api/programacion', _this3.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
-                    _this4.$swal.fire({
+                    _this3.$swal.fire({
                       icon: 'error',
                       title: 'Oops...',
                       text: response.data.message
@@ -699,7 +730,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   } else {
                     $('#modalFormDashboard').modal('hide');
 
-                    _this4.$router.push({
+                    _this3.$router.push({
                       name: 'programacion'
                     });
                   }
@@ -707,10 +738,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 9:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4);
+        }, _callee5);
       }))();
     }
   }
@@ -1802,7 +1833,7 @@ var render = function () {
       _c("div", { staticClass: "content" }, [
         _vm._m(0),
         _vm._v(" "),
-        _vm.user.role_id == 1
+        _vm.user && _vm.user.role_id == 1
           ? _c("div", { staticClass: "row d-flex gap-4 mb-5" }, [
               _c(
                 "div",
