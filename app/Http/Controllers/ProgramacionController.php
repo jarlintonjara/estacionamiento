@@ -437,14 +437,15 @@ class ProgramacionController extends Controller
 
         $available_parkings = [];
 
-        $schedules = DB::table('estacionamiento as e')
-        ->select('e.*', 'p.fecha', 'p.turno')
-        ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
-        ->where('e.sede_id', $sedeId)
-        ->whereDate('p.fecha', $date)
-        ->get();
-
+        
         foreach($parkings as $parking) {
+            $schedules = DB::table('estacionamiento as e')
+            ->select('e.*', 'p.fecha', 'p.turno')
+            ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
+            ->where('e.sede_id', $sedeId)
+            ->whereDate('p.fecha', $date)
+            ->get();
+            
             if(count($schedules) > 0) {
                 foreach($schedules as $schedule) {
                     if($schedule->turno == "M" || $schedule->turno == "T") {
