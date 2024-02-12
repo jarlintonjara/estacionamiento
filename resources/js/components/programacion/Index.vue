@@ -708,6 +708,9 @@ export default {
             this.datos.fecha_fin = date;
         },
         async changeUser(userId){
+
+            console.log(userId)
+
             this.isSearchSedes = true;
             
             $("#contentSedes").addClass('d-none');

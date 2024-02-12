@@ -934,9 +934,10 @@ var main_date = getVerifyDate();
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
+                console.log(userId);
                 _this8.isSearchSedes = true;
                 $("#contentSedes").addClass('d-none');
-                _context9.next = 4;
+                _context9.next = 5;
                 return axios.post('/api/multisedes-usuario', {
                   user_id: _this8.datos.user_id
                 }).then(function (res) {
@@ -949,7 +950,7 @@ var main_date = getVerifyDate();
                   _this8.isSearchSedes = false;
                 });
 
-              case 4:
+              case 5:
               case "end":
                 return _context9.stop();
             }
