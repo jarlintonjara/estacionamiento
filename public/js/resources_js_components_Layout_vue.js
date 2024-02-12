@@ -1766,7 +1766,7 @@ var render = function () {
                   [_c("a", [_vm._v("Inicio")])]
                 ),
                 _vm._v(" "),
-                _vm.user.role_id == 1
+                _vm.user.role_id == 1 || _vm.user.role_id == 3
                   ? _c(
                       "router-link",
                       {
@@ -1808,9 +1808,7 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.user.role_id == 1 ||
-                _vm.user.role_id == 3 ||
-                _vm.user.role_id == 2
+                _vm.user.role_id == 1 || _vm.user.role_id == 2
                   ? _c(
                       "router-link",
                       {

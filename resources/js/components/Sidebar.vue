@@ -25,7 +25,7 @@
                         <router-link tag="li" to="/dashboard" active-class="active">
                             <a >Inicio</a>
                         </router-link>
-                        <router-link tag="li" v-if="user.role_id == 1" to="/usuarios" active-class="active">
+                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3" to="/usuarios" active-class="active">
                             <a >Usuarios</a>
                         </router-link>
                         <router-link tag="li" v-if="user.role_id == 1" to="/sedes" active-class="active">
@@ -34,7 +34,7 @@
                         <router-link tag="li" v-if="user.role_id == 1" to="/estacionamiento" active-class="active">
                             <a>Estacionamiento</a>
                         </router-link>
-                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3 || user.role_id == 2" to="/reservas" active-class="active">
+                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 2" to="/reservas" active-class="active">
                             <a >Reservas</a>
                         </router-link>
                         <router-link tag="li" v-if="user.role_id == 1" to="/rol" active-class="active">

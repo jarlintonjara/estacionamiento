@@ -1,4 +1,4 @@
-<template>
+    <template>
     <main id="js-page-content" role="main" class="page-content">
         <div class="content">
             <div class="subheader">
@@ -6,18 +6,9 @@
                     <i class='subheader-icon fal fa-chart-area'></i> <span class='fw-300'>Dashboard</span>
                 </h1>
             </div>
-    
-            <!-- Sedes -->
-            <div class="row mb-4" v-if="user && user.role_id == 1">
-                <div class="d-flex d-flex-row my-4 outline-0 border-0 p-0">
-                    <select name="sedes" id="sedes" class="browser-default custom-select" style="width: 200px;" @change="changeSede" v-model="user.sede_id">
-                        <option v-for="sede in sedes" :key="sede.id+sede.name" :value="sede.id">{{sede.name }}</option>
-                    </select>
-                </div>
-            </div>
-
+            
             <!-- Total Usuarios, Estacionamientos y Programaciones -->
-            <div class="row d-flex gap-4 mb-5" v-if="user && user.role_id == 1">
+            <div class="row d-flex gap-4 mb-5" v-if="user.role_id == 1">
                 <div class="bg-success-400 col-12 col-lg-3 rounded-lg p-3">
                     <h5 style="font-weight: bold">Usuarios</h5>
                     <h3>{{ report.totalUsers }}</h3>
@@ -336,193 +327,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="modalFormDashboard">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"> <i class="fa fa-user-plus"></i>  Crear programacion</h5>
-                            <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form>
-                            <div class="modal-body">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6" v-if="user && user.role_id === 1">
-                                        <label for="Usuario">Usuario</label>
-                                        <v-select class="vue-select2" name="select2" :options="usersFilter"
-                                            v-model="datos.user_id" :reduce="label => label.code">
-                                        </v-select>
-                                    </div>
-
-                                    <div class="form-group col-md-6" v-if="user && user.role_id === 2 || user.role_id === 3">
-                                        <label for="Usuario">Usuario</label>
-                                        <select id="Usuario" class="browser-default custom-select" disabled v-model="datos.user_id">
-                                            <option :value="user.id" :key="user.id + user.nombre">{{ user.nombre + ' ' + user.apellido }}</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-md-6">
-                                        <label for="Estacionamiento">Estacionamiento</label>
-                                        
-                                        <input type="text" id="Estacionamiento" class="form-control" placeholder="Ej. SOTANO 1" required="" v-model="numero" :disabled="true">
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="Fecha">Fecha de programación</label>
-                                        <!-- <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
-                                            placeholder="Fecha" v-model="datos.fecha"> -->
-
-                                        <date-range-picker v-model="pickerDates" :locale-data="locale">
-                                            <template v-slot:input="pickerDates" style="min-width: 350px;">{{
-                                                pickerDates.startDate | date }} - {{ pickerDates.endDate | date
-                                                }} <i class="fa fa-calendar"></i></template>
-                                        </date-range-picker>
-                                    </div>
-                                    <div class="frame-wrap bg-faded col-md-8" style="text-align: center; margin: auto;">
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="bordered"
-                                                id="option-bordered" v-model="allDay" @click="onChange('D')">
-                                            <label class="custom-control-label" for="option-bordered">Todo el día</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="small"
-                                                id="option-small" v-model="morning" @click="onChange('M')">
-                                            <label class="custom-control-label" for="option-small">Mañana</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="small"
-                                                id="option-small2" v-model="afternoon" @click="onChange('T')">
-                                            <label class="custom-control-label" for="option-small2">Tarde</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="hora_inicio">Hora Inicio</label>
-                                        <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
-                                            :disabled="true" placeholder="Hora inicio" v-model="datos.hora_inicio">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="hora_fin">Hora Fin</label>
-                                        <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control"
-                                            :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="Observaciones">Observaciones</label>
-                                        <textarea id="Observaciones" class="form-control"
-                                            v-model="datos.observacion"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
-                                    data-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary" @click.prevent="crear">Crear</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="modal fade" id="modalForm">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"> <i class="fa fa-user-plus"></i> Crear programacion</h5>
-                            <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form>
-                            <div class="modal-body">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="usuario">Usuario:</label>
-                                        <input type="text" id="usuario" class="form-control" placeholder="" required="" v-model="usuario" :disabled="true">
-            
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="Estacionamiento">Estacionamiento:</label>
-                                        <input type="text" id="Estacionamiento" class="form-control" placeholder="Ej. SOTANO 1" required="" v-model="numero" :disabled="true">
-                                    </div>
-                                </div>
-    
-                                <div class="form-row mb-5">
-                                    <div class="form-group col-md-6">
-                                        <label for="Fecha">Fecha:</label>
-                                        <input type="text" id="Fecha" class="form-control" placeholder="" required="" v-model="fecha"
-                                            :disabled="true">
-                                    </div>
-                                </div>
-    
-                                <div class="form-row mb-2">
-                                    <!-- <div class="form-group col-md-4">
-                                        <label for="Fecha">Fecha de programación</label>
-                                        <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control" placeholder="Fecha"
-                                            v-model="datos.fecha">
-                                
-                                        <date-range-picker v-if="!btnEditar" v-model="pickerDates" :locale-data="locale">
-                                            <template v-slot:input="pickerDates" style="min-width: 350px;">{{
-                                                pickerDates.startDate | date }} - {{ pickerDates.endDate | date
-                                                }} <i class="fa fa-calendar"></i></template>
-                                        </date-range-picker>
-                                    </div> -->
-                                    <div class="frame-wrap bg-faded col-md-12">
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="bordered" id="option-bordered" v-model="allDay"
-                                                @click="onChange('D')">
-                                            <label class="custom-control-label" for="option-bordered">Todo el día</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="small" id="option-small" v-model="morning"
-                                                @click="onChange('M')">
-                                            <label class="custom-control-label" for="option-small">Mañana</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
-                                            <input type="checkbox" class="custom-control-input" name="small" id="option-small2" v-model="afternoon"
-                                                @click="onChange('T')">
-                                            <label class="custom-control-label" for="option-small2">Tarde</label>
-                                        </div>
-                                    </div>
-    
-                                    
-                                </div>
-    
-                                <div class="form-row">
-                                    <div class="form-group col-md-3">
-                                        <label for="hora_inicio">Hora Inicio:</label>
-                                        <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control" :disabled="true"
-                                            placeholder="Hora inicio" v-model="datos.hora_inicio">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="hora_fin">Hora Fin:</label>
-                                        <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control" :disabled="true"
-                                            placeholder="Hora fin" v-model="datos.hora_fin">
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" @click.prevent="cerrarModal"
-                                    data-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary" @click.prevent="crear">Crear</button>
-
-                                <!-- <button type="submit" class="btn btn-primary" @click.prevent="sendEmail">Enviar</button> -->
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 </template>
@@ -611,7 +415,11 @@ export default {
         }
     },
     methods:{
-        async getDataDashboard(filters = false, sede_id = this.user.sede_id) {
+        async getDataDashboard(filters = false, sede_id = this.user.curr_sede_id) {
+
+            console.log(this.user)
+            console.log({filters, sede_id})
+
             this.isLoading = true;
 
             await this.axios.get(`/api/dashboard?user_id=${this.user.id}&filters=${filters}&sede_id=${sede_id}`)
