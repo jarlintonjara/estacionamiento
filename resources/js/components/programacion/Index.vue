@@ -401,6 +401,8 @@ export default {
     },
     methods: {
         async init() {
+            console.log(' ----------- cargandos reservas ----------- ');
+
             this.isLoading = true;
 
             await this.axios.get('/api/programacion')
@@ -762,19 +764,19 @@ export default {
             this.datos.fecha_fin = date;
         },
         changeUser: async function (userId) {
-            console.log(' ---------- change user ----------- ');
+            console.log(' ---------- change user v2 ----------- ');
 
             console.log(this.datos)
 
             this.isSearchSedes = true;
-            
+
             // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
             if(this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined)  this.isBtnSearchDisabled = false;
 
             $("#contentSedes").addClass('d-none');
 
             await axios.post('/api/multisedes-usuario', {
-                user_id: this.datos.user_id
+                user_id: userId
             })
                 .then((res) => {
 
