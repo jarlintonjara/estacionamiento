@@ -53,12 +53,14 @@ class ProgramacionController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = $request->query('user_id');
+        $currUser = User::find($request->query('user_id'));
         $users = User::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('deleted_at', null)->get();
-        $schedules = ProgramacionModel::select('*')
+        $schedules = ProgramacionModel::select('programacion.*')
+            ->join('estacionamiento as e', 'programacion.estacionamiento_id', '=' , 'e.id')
             ->where('status',1)
-            ->where('user_id', '=', $userId)
+            ->where('user_id', '=', $currUser->id)
+            ->where('e.sede_id', '=', $currUser->curr_sede_id)
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->fecha)->format('W');
@@ -71,15 +73,12 @@ class ProgramacionController extends Controller
         $test = [];
 
         foreach ($schedulesFilter as $schedule) {
-            if($schedule->parking->sede->id == $schedule->user->curr_sede_id) {
-                array_push($test, $schedule);
-
                 $newDate = Carbon::parse($schedule->fecha);
                 $schedule["dia"] = self::DAYS[$newDate->dayOfWeekIso]." ". $newDate->day." de ". self::MONTHS[$newDate->month];
+                $schedule["dia"] = self::DAYS[$newDate->dayOfWeekIso] . " " . $newDate->day . " de " . self::MONTHS[$newDate->month];
                 $schedule["user"] = $schedule->user;
                 $schedule["parking"] = $schedule->parking;
                 $schedule["sede"] = $schedule->parking->sede;
-            }
         }
 
         //Programaciones de la semana siguiente
@@ -99,7 +98,8 @@ class ProgramacionController extends Controller
             "users" => $users,
             "schedules" => $schedulesFilter,
             "nextSchedules" => $nextSchedules,
-            "schedulesW" => $schedules
+            "schedulesW" => $schedules,
+            "test" => $test
         ]);
     }
 

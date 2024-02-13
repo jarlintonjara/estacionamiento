@@ -314,6 +314,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
  //you need to import the CSS manually
 
 
@@ -326,6 +331,10 @@ var getVerifyDate = function getVerifyDate() {
   if (num_day == 6) curr_date.setDate(curr_date.getDate() + 2);
   var curr_date_tomorrow = new Date(curr_date);
   curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+  console.log({
+    curr_date: curr_date,
+    curr_date_tomorrow: curr_date_tomorrow
+  });
   return {
     'start_date': curr_date,
     'end_date': curr_date_tomorrow
@@ -932,22 +941,33 @@ var main_date = getVerifyDate();
       return abrirModalCrear;
     }(),
     abrirModalEditar: function abrirModalEditar(datos) {
-      this.allDay = false;
-      this.partialDay = false;
-      this.disabled = false;
+      console.log(" ------------- abrir modal editar ------------- ");
+      console.log(this.datos); // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
+
+      this.datos.fecha = new Date(datos.fecha + "T00:00:00");
+      this.titulo = "Editar Reserva";
       this.datos.estacionamiento_id = datos.estacionamiento_id;
-      this.datos.user_id = datos.user_id;
-      this.datos.fecha = datos.fecha;
-      this.datos.hora_inicio = datos.hora_inicio;
-      this.datos.hora_fin = datos.hora_fin;
-      this.datos.turno = datos.turno;
-      this.datos.observacion = datos.observacion;
-      this.titulo = ' Editar Reserva';
-      this.btnCrear = false;
-      this.btnEditar = true;
-      this.id = datos.id;
-      this.onChange(this.datos.turno);
-      $('#modalForm').modal('show');
+      this.datos.sede_id = datos.sede_id;
+      this.isSearchSedes = false;
+      this.isBtnSearch = true;
+      this.btnClose = true;
+      $("#contentSedes").removeClass('d-none');
+      $("#modalForm").modal("show"); // this.allDay = false;
+      // this.partialDay = false;
+      // this.disabled = false;
+      // this.datos.estacionamiento_id = datos.estacionamiento_id;
+      // this.datos.user_id = datos.user_id;
+      // this.datos.fecha = datos.fecha;
+      // this.datos.hora_inicio = datos.hora_inicio;
+      // this.datos.hora_fin = datos.hora_fin;
+      // this.datos.turno = datos.turno;
+      // this.datos.observacion = datos.observacion;
+      // this.titulo = ' Editar Reserva'
+      // this.btnCrear = false
+      // this.btnEditar = true
+      // this.id = datos.id;
+      // this.onChange(this.datos.turno);
+      // $('#modalForm').modal('show')
     },
     cerrarModal: function cerrarModal() {
       console.log('--------------  cerrar modal --------------');
@@ -2316,32 +2336,11 @@ var render = function () {
                           _vm._v(" "),
                           _vm.btnEditar
                             ? _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.datos.fecha,
-                                    expression: "datos.fecha",
-                                  },
-                                ],
                                 staticClass: "form-control",
                                 attrs: {
                                   type: "date",
                                   id: "pickerProgramacion",
                                   placeholder: "Fecha",
-                                },
-                                domProps: { value: _vm.datos.fecha },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.datos,
-                                      "fecha",
-                                      $event.target.value
-                                    )
-                                  },
                                 },
                               })
                             : _vm._e(),
@@ -2354,6 +2353,13 @@ var render = function () {
                               placeholder: "Seleccionar Fecha",
                             },
                             on: { selected: _vm.verifyAvailableParking },
+                            model: {
+                              value: _vm.datos.fecha,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.datos, "fecha", $$v)
+                              },
+                              expression: "datos.fecha",
+                            },
                           }),
                         ],
                         1

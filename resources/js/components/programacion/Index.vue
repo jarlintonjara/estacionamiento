@@ -122,11 +122,16 @@
                                     <div class="form-group col-md-6">
                                         <label for="Fecha" class="d-block">Fecha de reserva</label>
                                         <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
-                                            placeholder="Fecha" v-model="datos.fecha">
+                                            placeholder="Fecha">
 
-                                        <v-datepicker :disabled-dates="disabledCustomDates" :language="es"
-                                            @selected="verifyAvailableParking" id="datePicker"
-                                            placeholder="Seleccionar Fecha">
+                                        <v-datepicker 
+                                            :disabled-dates="disabledCustomDates" 
+                                            :language="es"
+                                            @selected="verifyAvailableParking" 
+                                            id="datePicker"
+                                            placeholder="Seleccionar Fecha"
+                                            v-model="datos.fecha"
+                                        >
                                         </v-datepicker>
                                     </div>
 
@@ -293,7 +298,9 @@ const getVerifyDate = () => {
     if (num_day == 6) curr_date.setDate(curr_date.getDate() + 2);
 
     let curr_date_tomorrow = new Date(curr_date);
-    curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1)
+    curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+
+    console.log({curr_date, curr_date_tomorrow})
 
     return {
         'start_date': curr_date,
@@ -728,23 +735,41 @@ export default {
             // this.btnEditar = false;
 
         },
-        abrirModalEditar(datos) {
-            this.allDay = false;
-            this.partialDay = false;
-            this.disabled = false;
+        abrirModalEditar: function(datos) {
+            console.log(" ------------- abrir modal editar ------------- ");
+
+            console.log(this.datos)
+
+            // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
+            this.datos.fecha = new Date(datos.fecha + "T00:00:00"); 
+
+            this.titulo = "Editar Reserva";
             this.datos.estacionamiento_id = datos.estacionamiento_id;
-            this.datos.user_id = datos.user_id;
-            this.datos.fecha = datos.fecha;
-            this.datos.hora_inicio = datos.hora_inicio;
-            this.datos.hora_fin = datos.hora_fin;
-            this.datos.turno = datos.turno;
-            this.datos.observacion = datos.observacion;
-            this.titulo = ' Editar Reserva'
-            this.btnCrear = false
-            this.btnEditar = true
-            this.id = datos.id;
-            this.onChange(this.datos.turno);
-            $('#modalForm').modal('show')
+            this.datos.sede_id = datos.sede_id;
+            this.isSearchSedes = false;
+            this.isBtnSearch = true;
+            this.btnClose = true;
+
+            $("#contentSedes").removeClass('d-none');
+
+            $("#modalForm").modal("show");
+
+            // this.allDay = false;
+            // this.partialDay = false;
+            // this.disabled = false;
+            // this.datos.estacionamiento_id = datos.estacionamiento_id;
+            // this.datos.user_id = datos.user_id;
+            // this.datos.fecha = datos.fecha;
+            // this.datos.hora_inicio = datos.hora_inicio;
+            // this.datos.hora_fin = datos.hora_fin;
+            // this.datos.turno = datos.turno;
+            // this.datos.observacion = datos.observacion;
+            // this.titulo = ' Editar Reserva'
+            // this.btnCrear = false
+            // this.btnEditar = true
+            // this.id = datos.id;
+            // this.onChange(this.datos.turno);
+            // $('#modalForm').modal('show')
         },
         cerrarModal: function () {
             console.log('--------------  cerrar modal --------------');
