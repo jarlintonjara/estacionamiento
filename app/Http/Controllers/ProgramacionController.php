@@ -144,12 +144,12 @@ class ProgramacionController extends Controller
 
     public function store(Request $request)
     {
-        $start_date = Carbon::parse($request->fecha_inicio);
-        $end_date = Carbon::parse($request->fecha_fin);
+        $start_date = Carbon::parse(date('Y-m-d', strtotime($request->fecha_inicio)));
+        $end_date = Carbon::parse(date('Y-m-d', strtotime($request->fecha_fin)));
+
+        $request['fecha'] = date('Y-m-d', strtotime($request->fecha));
 
         $period = new CarbonPeriod($start_date, '1 day', $end_date);
-
-        // return response()->json(['status' => true, 'data' => 'hola']);
 
         // Rango fecha semana actual
         $date = Carbon::parse($request->fecha_inicio);
@@ -483,7 +483,7 @@ class ProgramacionController extends Controller
             'programacion' => $data
         ];
 
-        Mail::to($email)->send(new ProgramacionMail($settings));
+        // Mail::to($email)->send(new ProgramacionMail($settings));
 
         // Mail::to($mensaje, function($message) use ($destinatario, $asunto){
         //     $message->to($destinatario)->subject($asunto);

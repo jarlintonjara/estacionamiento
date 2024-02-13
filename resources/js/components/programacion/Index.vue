@@ -557,13 +557,15 @@ export default {
         async crear() {
             let valid = await this.validarCampos();
             let resp = false;
+
             // this.datos.fecha_inicio = this.pickerDates.startDate;
             // this.datos.fecha_fin = this.pickerDates.endDate;
+
+            console.log(this.datos)
 
             if (valid) {
                 await axios.post('api/programacion', this.datos).then(response => {
                     console.log(response.data)
-                    // return;
                     if (response.data.isSuccess == false) {
                         this.$swal.fire({
                             icon: 'error',
@@ -835,7 +837,8 @@ export default {
             this.btnCrear = false;
             this.btnEditar   = false;
         },
-        async verifyAvailableParking(date) {
+        verifyAvailableParking: async function(date) {            
+            console.log(date)
             this.datos.fecha = date;
             this.datos.fecha_inicio = date;
             this.datos.fecha_fin = date;

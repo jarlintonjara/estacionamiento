@@ -683,16 +683,17 @@ var main_date = getVerifyDate();
                 resp = false; // this.datos.fecha_inicio = this.pickerDates.startDate;
                 // this.datos.fecha_fin = this.pickerDates.endDate;
 
+                console.log(_this3.datos);
+
                 if (!valid) {
-                  _context4.next = 14;
+                  _context4.next = 15;
                   break;
                 }
 
-                _context4.next = 7;
+                _context4.next = 8;
                 return axios.post('api/programacion', _this3.datos).then(function (response) {
-                  console.log(response.data); // return;
+                  console.log(response.data);
 
-                  // return;
                   if (response.data.isSuccess == false) {
                     _this3.$swal.fire({
                       icon: 'error',
@@ -713,23 +714,23 @@ var main_date = getVerifyDate();
                   console.log(error);
                 });
 
-              case 7:
+              case 8:
                 if (!resp) {
-                  _context4.next = 14;
+                  _context4.next = 15;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context4.next = 12;
+                _context4.next = 13;
                 return _this3.validarRole();
 
-              case 12:
+              case 13:
                 _this3.$tablaGlobal('#td-schedule');
 
                 _this3.$tablaGlobal('#td-schedule2');
 
-              case 14:
+              case 15:
               case "end":
                 return _context4.stop();
             }
@@ -1024,29 +1025,34 @@ var main_date = getVerifyDate();
       this.btnCrear = false;
       this.btnEditar = false;
     },
-    verifyAvailableParking: function verifyAvailableParking(date) {
-      var _this6 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+    verifyAvailableParking: function () {
+      var _verifyAvailableParking = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9(date) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                _this6.datos.fecha = date;
-                _this6.datos.fecha_inicio = date;
-                _this6.datos.fecha_fin = date;
+                console.log(date);
+                this.datos.fecha = date;
+                this.datos.fecha_inicio = date;
+                this.datos.fecha_fin = date;
 
-              case 3:
+              case 4:
               case "end":
                 return _context9.stop();
             }
           }
-        }, _callee9);
-      }))();
-    },
+        }, _callee9, this);
+      }));
+
+      function verifyAvailableParking(_x2) {
+        return _verifyAvailableParking.apply(this, arguments);
+      }
+
+      return verifyAvailableParking;
+    }(),
     changeUser: function () {
       var _changeUser = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee10(userId) {
-        var _this7 = this;
+        var _this6 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee10$(_context10) {
           while (1) {
@@ -1063,12 +1069,12 @@ var main_date = getVerifyDate();
                   user_id: userId
                 }).then(function (res) {
                   $("#contentSedes").removeClass('d-none');
-                  _this7.datos.multisedes = res.data.user.multisedes;
-                  _this7.datos.user_id = userId;
+                  _this6.datos.multisedes = res.data.user.multisedes;
+                  _this6.datos.user_id = userId;
                 })["catch"](function (err) {
                   return console.log(err);
                 })["finally"](function () {
-                  _this7.isSearchSedes = false;
+                  _this6.isSearchSedes = false;
                 });
 
               case 7:
@@ -1079,7 +1085,7 @@ var main_date = getVerifyDate();
         }, _callee10, this);
       }));
 
-      function changeUser(_x2) {
+      function changeUser(_x3) {
         return _changeUser.apply(this, arguments);
       }
 
