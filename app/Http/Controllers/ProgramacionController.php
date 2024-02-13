@@ -500,7 +500,7 @@ class ProgramacionController extends Controller
             'programacion' => $data
         ];
 
-        // Mail::to($email)->send(new ProgramacionMail($settings));
+        Mail::to($email)->send(new ProgramacionMail($settings));
     }
 
     public function getTurnosParking(Request $request) {
