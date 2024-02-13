@@ -729,7 +729,7 @@ export default {
             this.btnClose = true;
             this.btnEditar = false;
             this.btnCrear = false;
-            this.titulo = "Crer Reserva"
+            this.titulo = "Crear Reserva"
             this.datos.sede_id = this.session.curr_sede_id;
             this.mode = 'crear';
 

@@ -1,4 +1,4 @@
-    <template>
+<template>
     <main id="js-page-content" role="main" class="page-content">
         <div class="content">
             <div class="subheader">
@@ -191,8 +191,7 @@
                     <div id="panel-4" class="panel">
                         <div class="panel-hdr">
                             <h2>
-                                <h2 style="text-align: center; font-size: 1.125rem;"><b> ESTACIONAMIENTOS DISPONIBLES
-                                        HOY</b></h2>
+                                <h2 style="text-align: center; font-size: 1.125rem;"><b> ESTACIONAMIENTOS DISPONIBLES HOY</b></h2>
                             </h2>
                             <div class="panel-toolbar">
                                 <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse"
@@ -221,8 +220,8 @@
                                             <td>{{ pmd.sede_name }}</td>
                                             <td>{{ pmd.sede_email }}</td>
                                             <td>
-                                                <button type="button" @click="abrirModal(pmd)" class="btn btn-primary">
-                                                    Reservar
+                                                <button type="button" @click="abrirModal(pmd, 'hoy')" class="btn btn-primary">
+                                                    <span>Reservar</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -319,8 +318,8 @@
                                             <td>{{ pmd.sede_name }}</td>
                                             <td>{{ pmd.sede_email }}</td>
                                             <td>
-                                                <button @click="abrirModal(pmd)" class="btn btn-primary">
-                                                    Reservar
+                                                <button @click="abrirModal(pmd, 'tomorrow')" class="btn btn-primary">
+                                                    <span>Reservar</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -334,30 +333,220 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalReserva" aria-hidden="true" aria-labelledby="modalReservaLabel" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
+        <!-- Reservation Modal -->
+        <div class="modal fade" ref="refModal" id="modalForm">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalReservaLabel">Reserva</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Se estan modificando este modal
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger">Cancelar</button>
-                    <button class="btn btn-primary">Crear</button>
-                </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title"> <i class="fa fa-user-plus"></i> {{ titulo }}</h5>
+                        <button @click.prevent="cerrarModal" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <!-- Paso 1 -->
+                            <div class="content_pass_one py-4">
+                                <div class="form-row">
+                                    <!-- Fecha Reserva -->
+                                    <div class="form-group col-md-6">
+                                        <label for="Fecha" class="d-block">Fecha de reserva</label>
+                                        <!-- <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                            placeholder="Fecha"> -->
+
+                                        <v-datepicker 
+                                            :disabled-dates="disabledCustomDates" 
+                                            :language="es"
+                                            @selected="verifyAvailableParking" 
+                                            id="datePicker"
+                                            placeholder="Seleccionar Fecha"
+                                            v-model="datos.fecha"
+                                        >
+                                        </v-datepicker>
+                                    </div>
+
+                                    <!-- Usuario Admin -->
+                                    <div class="form-group col-md-6" v-if="user && user.role_id == 1">
+                                        <label for="Usuario">Usuario</label>
+                                        <v-select class="vue-select2" name="select2" :options="usersFilter"
+                                            v-model="datos.user_id" :reduce="label => label.code" @input="changeUser">
+                                        </v-select>
+                                    </div>
+
+                                    <!-- Usuario Normal -->
+                                    <div class="form-group col-md-6" v-if="user && user.role_id != 1">
+                                        <label for="Usuario">Usuario</label>
+                                        <select id="Usuario" class="browser-default custom-select" disabled
+                                            v-model="datos.user_id">
+                                            <option :value="user.id" :key="user.id + user.nombre">{{ user.nombre
+                                                + ' ' + user.apellido }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" v-if="isSearchSedes">
+                                        <span class="w-100" v-if="isSearchSedes">Cargando Sedes...</span>
+                                    </div>
+
+                                    <!-- Sedes -->
+                                    <div class="form-group col-md-6 d-none" id="contentSedes">
+                                        <label for="Sedes">Sedes</label>
+                                        <select name="Sedes" id="Sedes" class="browser-default custom-select"
+                                            @change="changeSede" :disabled="user.role_id != 1" v-model="datos.sede_id">
+                                            <option value="">Selecciona una sede</option>
+                                            <option v-for="multisede in datos.multisedes" :key="multisede.sede_id"
+                                                :value="multisede.sede_id">{{ multisede.sede_name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Paso 2 -->
+                            <div class="content_pass_two py-4">
+                                <!-- Estacionamientos Disponibles -->
+                                <div class="form-row mb-4">
+                                    <div class="form-group col-md-6" id="contentEstacionamientos">
+                                        <label for="Estacionamiento">Estacionamiento Disponibles</label>
+                                        <select id="Estacionamiento" class="browser-default custom-select" disabled
+                                            v-model="datos.estacionamiento_id">
+                                            <option v-for="parking in available_parkings" :key="parking.numero"
+                                                :value="parking.id">{{ parking.numero }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Fechas De Estacionamiento -->
+                                <div class="form-row">
+                                    <div class="frame-wrap bg-faded col-md-6" style="text-align: center; margin: auto;">
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="bordered"
+                                                id="option-bordered" v-model="allDay" @click="onChange('D')">
+                                            <label class="custom-control-label" for="option-bordered">Todo el día</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small" v-model="morning" @click="onChange('M')">
+                                            <label class="custom-control-label" for="option-small">Mañana</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox d-inline-flex mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="small"
+                                                id="option-small2" v-model="afternoon" @click="onChange('T')">
+                                            <label class="custom-control-label" for="option-small2">Tarde</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_inicio">Hora Inicio</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_inicio" class="form-control"
+                                            :disabled="true" placeholder="Hora inicio" v-model="datos.hora_inicio">
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="hora_fin">Hora Fin</label>
+                                        <input type="time" min="06:00" max="18:00" id="hora_fin" class="form-control"
+                                            :disabled="true" placeholder="Hora fin" v-model="datos.hora_fin">
+                                    </div>
+                                </div>
+
+                                <div class="form-row ">
+                                    <div class="form-group col-md-12">
+                                        <label for="Observaciones">Observaciones</label>
+                                        <textarea id="Observaciones" class="form-control"
+                                            v-model="datos.observacion"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" @click.prevent="cerrarModal" v-if="btnClose"
+                                data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-danger" @click.prevent="back"
+                                v-if="btnBack">Volver</button>
+                            <button type="button" class="btn btn-primary" @click.prevent="buscar" v-if="isBtnSearch"
+                                :disabled="isBtnSearchDisabled">
+                                <span v-if="!isLoadingBtnSearch">Buscar</span>
+                                <span v-if="isLoadingBtnSearch">Buscando...</span>
+                            </button>
+                            <button type="submit" class="btn btn-primary" @click.prevent="crear"
+                                v-if="btnCrear">
+                                    <span v-if="!isSaving">Crear</span>
+                                    <span v-if="isSaving">Creando...</span>
+                                </button>
+
+                            <button type="submit" class="btn btn-primary" @click.prevent="editar"
+                                v-if="btnEditar">
+                                <span>Actualizar</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+        <!-- End Reservation Modal -->
     </main>
 </template>
+
+<style>
+#datePicker {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.vdp-datepicker .prev,
+.vdp-datepicker .next {
+    display: none;
+}
+
+.vdp-datepicker__calendar header span.day__month_btn,
+.vdp-datepicker__calendar header span.month__year_btn {
+    display: block;
+    width: 100%;
+}
+</style>
+
 <script>
 
 import Spinner from './Spinner.vue';
 import DateRangePicker from 'vue2-daterange-picker'
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
+
+import { es } from 'vuejs-datepicker/dist/locale';
+
+const getVerifyDate = () => {
+    let curr_date = new Date();
+    let num_day = curr_date.getDay();
+
+    if (num_day == 0) curr_date.setDate(curr_date.getDate() + 1);
+
+    if (num_day == 6) curr_date.setDate(curr_date.getDate() + 2);
+
+    let curr_date_tomorrow = new Date(curr_date);
+    curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+
+    console.log({curr_date, curr_date_tomorrow})
+
+    return {
+        'start_date': curr_date,
+        'end_date': curr_date_tomorrow
+    };
+}
+
+const main_date = getVerifyDate();
 
 export default {
     components: {
@@ -370,10 +559,20 @@ export default {
         const startDate = new Date();
         const endDate = new Date();
         endDate.setDate(endDate.getDate());
+        
         return{
+            titulo: '',
             pickerDates: {
                 startDate,
                 endDate
+            },
+            isLoadingBtnSearch: false,
+            isBtnSearchDisabled: false,
+            es: es,
+            disabledCustomDates: {
+                customPredictor: function (date) {
+                    return date.getDate() != main_date.start_date.getDate() && date.getDate() != main_date.end_date.getDate()
+                }
             },
             locale: {
                 format: 'mm/dd/yyyy',
@@ -391,6 +590,7 @@ export default {
             isLoading: false,
             schedules: [],
             sedes: [],
+            available_parkings: [],
             programacionma: [],
             estacionesma: [],
             programacionhoy: [],
@@ -398,7 +598,14 @@ export default {
             allDay: false,
             morning: false,
             afternoon: false,
+            btnClose: false,
+            btnBack: false,
+            isBtnSearch: false,
+            btnCrear: false,
+            btnEditar: false,
             disabled: false,
+            isSearchSedes: false,
+            isLoadingModalNuevo: false,
             datos: {
                 estacionamiento_id: '',
                 user_id: '',
@@ -413,6 +620,7 @@ export default {
             },
             propietario: "",
             usuario: "",
+            isSaving: false,
             numero: "",
             fecha: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
             report: {
@@ -435,7 +643,7 @@ export default {
         this.user = JSON.parse(user_local)
 
         // const token = localStorage.getItem('access_token');
-        //     await axios.get('api/getSession/' + token).then((res) => {
+        //     await axios.get('api/getuser/' + token).then((res) => {
         //         this.user = res.data;
         // });
     },
@@ -459,7 +667,8 @@ export default {
                     .then(response=> {                        
                         let report = response.data;
     
-                        console.log(report)
+                        console.log(' ---------------- obtener datos dashboard ---------------- ');
+                        console.log(report.estacioneshoy)
     
                         this.sedes = report.sedes;
                         this.report.totalUsers = report.total_users;
@@ -575,10 +784,35 @@ export default {
                     break;
             }
         },
-        abrirModal(item) {
+        abrirModal: async function(item, type) {
+            console.log('-------------- abrir modal crear --------------')
+
+            this.isLoadingModalNuevo = true;
+
+            this.available_parkings = [{
+                id: item.id,
+                numero: item.numero
+            }];
+
+            this.datos.estacionamiento_id = item.id;
+            this.isBtnSearch = false;
+            this.btnClose = true;
+            this.btnEditar = false;
+            this.btnCrear = true;
+            this.titulo = "Crear Reserva";
+            this.datos.sede_id = this.user.curr_sede_id;
+            this.datos.fecha = type == 'hoy' ? main_date.start_date : main_date.end_date;
+            this.mode = 'crear';
+
+            await this.changeUser(this.user.id);
+
+            this.isLoadingModalNuevo = false;
+
+            $('#modalForm').modal('show');
+
             // console.log(this.user)
             // console.log(item)
-            console.log(item)
+            // console.log(item)
             // this.datos.estacionamiento_id = item.id;
             // this.datos.user_id = this.user.id;
             // this.datos.hora_inicio = "";
@@ -590,9 +824,7 @@ export default {
             // this.allDay = false;
             // this.morning = false;
             // this.afternoon = false;
-            // $('#modalForm').modal('show')
-            $('#modalReserva').modal('show')
-            
+            // $('#modalForm').modal('show')            
         },
         exportExcel(){
             axios.get('/api/export').then((res)=>{
@@ -606,36 +838,138 @@ export default {
         changeSede(e) {
             this.getDataDashboard(true, e.target.value);
         },
-        async crear() {
-            this.datos.fecha_inicio = this.pickerDates.startDate;
-            this.datos.fecha_fin = this.pickerDates.endDate;
-
-            if(!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin ){
+        validarCampos() {
+            if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
                 this.$swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Completa los campos requeridos!',
                 });
                 return false;
-            } else {
-                await axios.post('api/programacion', this.datos).then(response=>{
-                    if(response.data.isSuccess == false){
-                        this.$swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.data.message,
-                        })
-                    }  else {
-                        $('#modalFormDashboard').modal('hide')
-
-                        this.$router.push({
-                            name: 'programacion'
-                        })
-                    }
-                })
             }
+            return true;
+        },
+        crear: async function() {
+            let valid = await this.validarCampos();
 
-        }
+            if(valid) {
+                this.isSaving = true;
+                
+                await axios.post('api/programacion', this.datos).then(response => {
+                        if (response.data.isSuccess == false) {
+                            this.$swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            })
+                        } else {
+                            this.$router.push({ path: 'reservas' })
+                            $("#modalForm").modal("hide");
+                        }
+    
+                    }).catch(function (error) {
+                        console.log(error);
+                    })
+                    .finally(() => {
+                        this.isSaving = false;
+                    });
+            }
+        },
+        cerrarModal: function () {
+            console.log('--------------  cerrar modal --------------');
+            $('#modalForm').modal('hide');
+            
+            console.log(' ----------- reset datos ------------- ');
+
+            this.allDay = false;
+            this.morning = false;
+            this.afternoon = false;
+
+            this.datos.hora_inicio = '';
+            this.datos.hora_fin = '';
+            this.datos.observacion = '';
+            this.datos.estacionamiento_id = 0;
+            this.datos.fecha = "";
+
+            this.btnClose = true;
+            this.btnBack = false;
+            this.isBtnSearch = true;
+            this.btnCrear = false;
+            this.btnEditar   = false;
+        },
+        verifyAvailableParking: async function(date) {            
+            this.datos.fecha = date;
+            this.datos.fecha_inicio = date;
+            this.datos.fecha_fin = date;
+        },
+        changeUser: async function (userId) {
+            console.log(' ---------- change user v2 ----------- ');
+
+            this.isSearchSedes = true;
+
+            console.log(userId)
+
+            // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente boton buscar
+            if(this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined)  this.isBtnSearchDisabled = false;
+
+            $("#contentSedes").addClass('d-none');
+
+            await axios.post('/api/multisedes-usuario', {
+                user_id: userId
+            })
+                .then((res) => {
+
+                    $("#contentSedes").removeClass('d-none');
+
+                    this.datos.multisedes = res.data.user.multisedes;
+                    this.datos.user_id = userId;
+                })
+                .catch((err) => console.log(err))
+                .finally(() => {
+                    this.isSearchSedes = false;
+                })
+        },
+        buscar: async function () {
+            console.log("------------ buscar estacionamientos ------------");
+
+            console.log(this.mode)
+
+            if(this.datos.fecha == "") return this.$swal.fire({
+                icon: "warning",
+                title: "Campos faltantes",
+                text: "Ingresa la fecha de la reserva"
+            })
+
+            this.isLoadingBtnSearch = true;
+            
+            await axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos)
+                .then((res) => {
+                    const { available_parkings } = res.data
+
+                    this.available_parkings = available_parkings
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    $(".content_pass_one").addClass('d-none')
+                    $(".content_pass_two").removeClass('d-none')
+
+                    this.btnClose = false;
+                    
+                    if(this.mode == 'crear') {
+                        this.btnCrear = true;
+                        this.btnEditar = false;
+                    } else {
+                        this.btnCrear = false;
+                        this.btnEditar = true;
+                    }
+
+                    this.btnBack = true;
+                    this.isBtnSearch = false;
+                    this.isLoadingBtnSearch = false;
+                })
+        },
     }
 }
 </script>
