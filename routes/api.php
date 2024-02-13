@@ -51,3 +51,4 @@ Route::resource('sede', SedeController::class);
 Route::resource('programacion', ProgramacionController::class);
 Route::post('validar-disponibilidad-reservas-fecha', [ProgramacionController::class, 'getParkingByDate']);
 Route::post('multisedes-usuario', [ProgramacionController::class, 'getSedesByUser']);
+Route::post('disponibilidad-estacionamiento-turnos', [ProgramacionController::class, 'getTurnosParking']);

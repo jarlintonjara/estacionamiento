@@ -151,13 +151,23 @@ class ProgramacionController extends Controller
 
         $period = new CarbonPeriod($start_date, '1 day', $end_date);
 
+        /* 
+            --------------------------------------------------
+            Validacion de 1 reserva de estacionmiento por dia
+            --------------------------------------------------
+        */
+
         // Rango fecha semana actual
         $date = Carbon::parse($request->fecha_inicio);
 
         $start_curr_week = $date->startOfWeek()->toDateString();
         $end_curr_week = $date->endOfWeek()->toDateString();
 
-        // Validacion de las 3 reservas diarias por semana
+        /* 
+            -------------------------
+            Validacion de las 3 reservas diarias por semana
+            -------------------------
+        */
         $schedules_week = ProgramacionModel::where('fecha', '>=', $start_curr_week)
         ->where('fecha', '<=', $end_curr_week)->where('user_id','=', $request->user_id)->where('status', '=' ,1)->get();
 
@@ -441,38 +451,24 @@ class ProgramacionController extends Controller
         $sedeId = $request->sede_id;
         $date = date('Y-m-d', strtotime($request->fecha));
 
-        $parkings = EstacionamientoModel::where('deleted_at', null)->where('sede_id', $sedeId)->get();
-        $schedules = [];
-
         $available_parkings = [];
-        
-        foreach($parkings as $parking) {
-            $schedules = DB::table('estacionamiento as e')
-            ->select('e.*', 'p.fecha', 'p.turno')
-            ->join('programacion as p', 'p.estacionamiento_id', '=', 'e.id')
-            ->where('e.sede_id', $sedeId)
-            ->whereDate('p.fecha', $date)
-            ->get();
 
-            if(count($schedules) > 0) {
-                foreach($schedules as $schedule) {
-                    if($schedule->turno == "M" || $schedule->turno == "T" || $schedule->turno == "D") {
-                        array_push($available_parkings, $parking);
-                    }
-                }
-            } else {
-                array_push($available_parkings, $parking);
-            }
-        }
-
-        $coleccion = collect($available_parkings);
-
-        $available_parkings = $coleccion->unique()->values()->all();
+        $available_parkings = DB::table('estacionamiento')
+            ->select('estacionamiento.numero', 'estacionamiento.id', 'estacionamiento.sede_id')
+            ->where('estacionamiento.sede_id', $sedeId)
+            ->whereNotIn('estacionamiento.id', function($query) use ($date) {
+                $query->select('programacion.estacionamiento_id')
+                    ->from('programacion')
+                    ->join('estacionamiento', 'programacion.estacionamiento_id', '=', 'estacionamiento.id')
+                    ->where('programacion.fecha', $date);
+            })
+        ->get();
 
         return response()->json([
             'sede_id' => $sedeId,
+            'cantidad' => count($available_parkings),
             'date' => $date,
-            'schedules' => $schedules,
+            'schedules' => [],
             'available_parkings' => $available_parkings
         ]);
     }
@@ -484,9 +480,13 @@ class ProgramacionController extends Controller
         ];
 
         // Mail::to($email)->send(new ProgramacionMail($settings));
-
-        // Mail::to($mensaje, function($message) use ($destinatario, $asunto){
-        //     $message->to($destinatario)->subject($asunto);
-        // });
     }
+
+    public function getTurnosParking(Request $request) {
+        $date = date('Y-m-d', strtotime($request->fecha));
+        $sedeId = $request->sede_id;
+        $parkingId = $request->estacionamiento_id;
+
+        return response()->json($request->all());
+    } 
 }

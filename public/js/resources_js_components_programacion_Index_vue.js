@@ -1091,12 +1091,58 @@ var main_date = getVerifyDate();
 
       return changeUser;
     }(),
-    changeSede: function changeSede(e) {
-      console.log('----------------- cambiar sede ----------------- ');
-      if (e.target.value == "") this.isBtnSearchDisabled = true;else this.isBtnSearchDisabled = false;
-      this.turno;
-      this.datos.sede_id = e.target.value;
-    }
+    validateParkingTurn: function () {
+      var _validateParkingTurn = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee11(datos) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
+                _context11.next = 2;
+                return axios.post('/api/disponibilidad-estacionamiento-turnos', this.datos).then(function (res) {
+                  console.log(res);
+                });
+
+              case 2:
+              case "end":
+                return _context11.stop();
+            }
+          }
+        }, _callee11, this);
+      }));
+
+      function validateParkingTurn(_x4) {
+        return _validateParkingTurn.apply(this, arguments);
+      }
+
+      return validateParkingTurn;
+    }(),
+    changeSede: function () {
+      var _changeSede = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee12(e) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee12$(_context12) {
+          while (1) {
+            switch (_context12.prev = _context12.next) {
+              case 0:
+                console.log('----------------- cambiar sede ----------------- ');
+                console.log(e.target.value);
+                if (e.target.value == "") this.isBtnSearchDisabled = true;else this.isBtnSearchDisabled = false;
+                this.datos.sede_id = e.target.value;
+                _context12.next = 6;
+                return this.validateParkingTurn(this.datos);
+
+              case 6:
+              case "end":
+                return _context12.stop();
+            }
+          }
+        }, _callee12, this);
+      }));
+
+      function changeSede(_x5) {
+        return _changeSede.apply(this, arguments);
+      }
+
+      return changeSede;
+    }()
   }
 });
 
@@ -2645,24 +2691,30 @@ var render = function () {
                               staticClass: "browser-default custom-select",
                               attrs: { id: "Estacionamiento" },
                               on: {
-                                change: function ($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function (o) {
-                                      return o.selected
-                                    })
-                                    .map(function (o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.datos,
-                                    "estacionamiento_id",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                },
+                                change: [
+                                  function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.datos,
+                                      "estacionamiento_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  },
+                                  _vm.changeSede,
+                                ],
                               },
                             },
                             _vm._l(_vm.available_parkings, function (parking) {

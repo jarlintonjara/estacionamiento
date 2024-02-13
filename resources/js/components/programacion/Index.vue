@@ -183,7 +183,7 @@
                                     <div class="form-group col-md-6" id="contentEstacionamientos">
                                         <label for="Estacionamiento">Estacionamiento Disponibles</label>
                                         <select id="Estacionamiento" class="browser-default custom-select"
-                                            v-model="datos.estacionamiento_id">
+                                            v-model="datos.estacionamiento_id" @change="changeSede">
                                             <option v-for="parking in available_parkings" :key="parking.numero"
                                                 :value="parking.id">{{ parking.numero }}</option>
                                         </select>
@@ -870,14 +870,23 @@ export default {
                     this.isSearchSedes = false;
                 })
         },
-        changeSede: function (e) {
+        validateParkingTurn: async function(datos) {
+            await axios.post('/api/disponibilidad-estacionamiento-turnos', this.datos)
+                       .then((res) => {
+                            console.log(res)
+                       })
+        },
+        changeSede: async function (e) {
             console.log('----------------- cambiar sede ----------------- ')
+
+            console.log(e.target.value)
 
             if(e.target.value == "") this.isBtnSearchDisabled = true
             else this.isBtnSearchDisabled = false;
-            
-            this.turno 
-            this.datos.sede_id = e.target.value
+
+            this.datos.sede_id = e.target.value;
+
+            await this.validateParkingTurn(this.datos)
         }
     }
 }
