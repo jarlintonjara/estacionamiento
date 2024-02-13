@@ -233,26 +233,32 @@ class ProgramacionController extends Controller
 
             $register2 = ProgramacionModel::where("user_id", $request->user_id)
             ->where('status',1)
+            ->where('deleted_at', null)
             ->whereDate("fecha", $newDate)
             ->first();
 
             if ($register2) {
-                if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
-                    return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
-                        "isSuccess" => false
-                    ]);
-                } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
-                    return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
-                        "isSuccess" => false
-                    ]);
-                } else if ($register2->turno == "D") {
-                    return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
-                        "isSuccess" => false
-                    ]);
-                }
+                return response()->json([
+                    "message" => "Ya cuentas con una reserva para esta fecha",
+                    "isSuccess" => false
+                ]);
+
+                // if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
+                //     return response()->json([
+                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
+                //         "isSuccess" => false
+                //     ]);
+                // } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
+                //     return response()->json([
+                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
+                //         "isSuccess" => false
+                //     ]);
+                // } else if ($register2->turno == "D") {
+                //     return response()->json([
+                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
+                //         "isSuccess" => false
+                //     ]);
+                // }
             }
         }
 
