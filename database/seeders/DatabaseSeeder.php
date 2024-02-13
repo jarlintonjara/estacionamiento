@@ -23,13 +23,17 @@ class DatabaseSeeder extends Seeder
     static  $roles = [
         'Admin',
         'Usuario',
-        'Propietario'
+        'Vigilante'
     ];
 
     static $sedes = [
         [
             'name' => 'MORRO',
             'email' => 'morro@gmail.com'
+        ],
+        [
+            'name' => 'POLO',
+            'email' => 'polo@gmail.com'
         ]
     ];
 
@@ -51,9 +55,9 @@ class DatabaseSeeder extends Seeder
         $curr_sede = Sede::where('name', 'MORRO')->first();
 
         $user =  User::create([
-            'nombre' => 'Fredy',
-            'apellido' => 'Cumpa',
-            'cargo' => 'Gerente',
+            'nombre' => 'Administrador',
+            'apellido' => 'Admin',
+            'cargo' => 'Administrador',
             'role_id' => 1,
             'sede_id' => $curr_sede->id,
             'curr_sede_id' => $curr_sede->id,

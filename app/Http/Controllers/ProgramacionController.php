@@ -6,6 +6,7 @@ use App\Mail\ConfirmationParkingMail;
 use App\Models\EstacionamientoModel;
 use App\Models\ProgramacionModel;
 use App\Models\User;
+use App\Mail\ProgramacionMail;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -279,7 +280,7 @@ class ProgramacionController extends Controller
 
         // Enviar correo
         $user = User::find($request->user_id);
-        $this->sendEmail($user->email);
+        $this->sendEmail($user->email, $schedule);
 
         return response()->json([
             "isSuccess" => true,
@@ -476,14 +477,16 @@ class ProgramacionController extends Controller
         ]);
     }
 
-    public function sendEmail($email) {
-        $destinatario = $email;
-        $asunto = "Prueba Inchcape";
-        $mensaje = "Este es un correo de prueba";
+    public function sendEmail($email, $data) {        
+        $settings = [
+            'subject' => "Inchcape",
+            'programacion' => $data
+        ];
 
+        Mail::to($email)->send(new ProgramacionMail($settings));
 
-        Mail::raw($mensaje, function($message) use ($destinatario, $asunto){
-            $message->to($destinatario)->subject($asunto);
-        });
+        // Mail::to($mensaje, function($message) use ($destinatario, $asunto){
+        //     $message->to($destinatario)->subject($asunto);
+        // });
     }
 }
