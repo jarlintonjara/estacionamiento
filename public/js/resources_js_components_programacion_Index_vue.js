@@ -319,6 +319,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
  //you need to import the CSS manually
 
 
@@ -354,6 +361,7 @@ var main_date = getVerifyDate();
     endDate.setDate(endDate.getDate());
     return {
       isLoadingModalNuevo: false,
+      isLoadingModalEditar: false,
       es: vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_3__.es,
       disabledCustomDates: {
         customPredictor: function customPredictor(date) {
@@ -417,7 +425,8 @@ var main_date = getVerifyDate();
       isLoadingBtnSearch: false,
       id: '',
       showTable: true,
-      showTable2: false
+      showTable2: false,
+      mode: 'crear'
     };
   },
   created: function () {
@@ -737,9 +746,10 @@ var main_date = getVerifyDate();
             switch (_context5.prev = _context5.next) {
               case 0:
                 console.log("------------ buscar estacionamientos ------------");
+                console.log(this.mode);
 
                 if (!(this.datos.fecha == "")) {
-                  _context5.next = 3;
+                  _context5.next = 4;
                   break;
                 }
 
@@ -749,25 +759,33 @@ var main_date = getVerifyDate();
                   text: "Ingresa la fecha de la reserva"
                 }));
 
-              case 3:
+              case 4:
                 this.isLoadingBtnSearch = true;
-                _context5.next = 6;
+                _context5.next = 7;
                 return axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos).then(function (res) {
                   var available_parkings = res.data.available_parkings;
                   _this4.available_parkings = available_parkings;
-                  $(".content_pass_one").addClass('d-none');
-                  $(".content_pass_two").removeClass('d-none');
-                  _this4.btnCrear = true;
-                  _this4.btnClose = false;
-                  _this4.btnBack = true;
-                  _this4.isBtnSearch = false;
                 })["catch"](function (err) {
                   console.log(err);
                 })["finally"](function () {
+                  $(".content_pass_one").addClass('d-none');
+                  $(".content_pass_two").removeClass('d-none');
+                  _this4.btnClose = false;
+
+                  if (_this4.mode == 'crear') {
+                    _this4.btnCrear = true;
+                    _this4.btnEditar = false;
+                  } else {
+                    _this4.btnCrear = false;
+                    _this4.btnEditar = true;
+                  }
+
+                  _this4.btnBack = true;
+                  _this4.isBtnSearch = false;
                   _this4.isLoadingBtnSearch = false;
                 });
 
-              case 6:
+              case 7:
               case "end":
                 return _context5.stop();
             }
@@ -806,49 +824,32 @@ var main_date = getVerifyDate();
                 valid = _context6.sent;
 
                 if (!valid) {
-                  _context6.next = 14;
+                  _context6.next = 17;
                   break;
                 }
 
                 resp = false;
-                _context6.next = 7;
-                return axios.put('/api/programacion/' + _this5.id, _this5.datos).then(function (response) {
-                  if (response.data.isSuccess == false) {
-                    _this5.$swal.fire({
-                      icon: 'error',
-                      title: 'Oops...',
-                      text: response.data.message
-                    });
-                  } else {
-                    resp = true;
-                    _this5.schedules = [].concat(response.data.schedules);
-                    _this5.nextSchedules = [].concat(response.data.nextSchedules);
-                    _this5.id = '';
-                    $('#modalForm').modal('hide');
+                console.log(_this5.datos);
+                alert("se esta trabajando en esta funcionalidad");
+                return _context6.abrupt("return");
 
-                    _this5.$swal.fire('Programación editado correctamente!', '', 'success');
-                  }
-                })["catch"](function (error) {
-                  console.log(error);
-                });
-
-              case 7:
+              case 10:
                 if (!resp) {
-                  _context6.next = 14;
+                  _context6.next = 17;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context6.next = 12;
+                _context6.next = 15;
                 return _this5.validarRole();
 
-              case 12:
+              case 15:
                 _this5.$tablaGlobal('#td-schedule');
 
                 _this5.$tablaGlobal('#td-schedule2');
 
-              case 14:
+              case 17:
               case "end":
                 return _context6.stop();
             }
@@ -895,12 +896,16 @@ var main_date = getVerifyDate();
                 this.isLoadingModalNuevo = true;
                 this.isBtnSearch = true;
                 this.btnClose = true;
+                this.btnEditar = false;
+                this.btnCrear = false;
                 this.titulo = "Crer Reserva";
                 this.datos.sede_id = this.session.curr_sede_id;
-                _context7.next = 8;
+                this.mode = 'crear';
+                _context7.next = 11;
                 return this.changeUser(this.session.id);
 
-              case 8:
+              case 11:
+                this.isLoadingModalNuevo = false;
                 $('#modalForm').modal('show'); // const startDate = new Date();
                 // const endDate = new Date();
                 // endDate.setDate(endDate.getDate());
@@ -926,7 +931,7 @@ var main_date = getVerifyDate();
                 // this.isBtnSearch = true;
                 // this.btnEditar = false;
 
-              case 9:
+              case 13:
               case "end":
                 return _context7.stop();
             }
@@ -940,35 +945,65 @@ var main_date = getVerifyDate();
 
       return abrirModalCrear;
     }(),
-    abrirModalEditar: function abrirModalEditar(datos) {
-      console.log(" ------------- abrir modal editar ------------- ");
-      console.log(this.datos); // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
+    abrirModalEditar: function () {
+      var _abrirModalEditar = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8(datos) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                console.log(" ------------- abrir modal editar ------------- ");
+                this.isLoadingModalEditar = true; // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
 
-      this.datos.fecha = new Date(datos.fecha + "T00:00:00");
-      this.titulo = "Editar Reserva";
-      this.datos.estacionamiento_id = datos.estacionamiento_id;
-      this.datos.sede_id = datos.sede_id;
-      this.isSearchSedes = false;
-      this.isBtnSearch = true;
-      this.btnClose = true;
-      $("#contentSedes").removeClass('d-none');
-      $("#modalForm").modal("show"); // this.allDay = false;
-      // this.partialDay = false;
-      // this.disabled = false;
-      // this.datos.estacionamiento_id = datos.estacionamiento_id;
-      // this.datos.user_id = datos.user_id;
-      // this.datos.fecha = datos.fecha;
-      // this.datos.hora_inicio = datos.hora_inicio;
-      // this.datos.hora_fin = datos.hora_fin;
-      // this.datos.turno = datos.turno;
-      // this.datos.observacion = datos.observacion;
-      // this.titulo = ' Editar Reserva'
-      // this.btnCrear = false
-      // this.btnEditar = true
-      // this.id = datos.id;
-      // this.onChange(this.datos.turno);
-      // $('#modalForm').modal('show')
-    },
+                this.datos.fecha = new Date(datos.fecha + "T00:00:00");
+                this.titulo = "Editar Reserva";
+                this.datos.estacionamiento_id = datos.estacionamiento_id;
+                this.datos.sede_id = datos.sede.id;
+                this.isSearchSedes = false;
+                this.isBtnSearch = true;
+                this.btnClose = true;
+                this.datos.user_id = datos.user_id;
+                this.datos.turno = datos.turno;
+                this.datos.observacion = datos.observacion;
+                this.btnCrear = false;
+                this.mode = 'editar';
+                this.onChange(this.datos.turno);
+                _context8.next = 17;
+                return this.changeUser(this.datos.user_id);
+
+              case 17:
+                this.isLoadingModalEditar = false;
+                $("#contentSedes").removeClass('d-none');
+                $("#modalForm").modal("show"); // this.allDay = false;
+                // this.partialDay = false;
+                // this.disabled = false;
+                // this.datos.estacionamiento_id = datos.estacionamiento_id;
+                // this.datos.user_id = datos.user_id;
+                // this.datos.fecha = datos.fecha;
+                // this.datos.hora_inicio = datos.hora_inicio;
+                // this.datos.hora_fin = datos.hora_fin;
+                // this.datos.turno = datos.turno;
+                // this.datos.observacion = datos.observacion;
+                // this.titulo = ' Editar Reserva'
+                // this.btnCrear = false
+                // this.btnEditar = true
+                // this.id = datos.id;
+                // this.onChange(this.datos.turno);
+                // $('#modalForm').modal('show')
+
+              case 20:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this);
+      }));
+
+      function abrirModalEditar(_x) {
+        return _abrirModalEditar.apply(this, arguments);
+      }
+
+      return abrirModalEditar;
+    }(),
     cerrarModal: function cerrarModal() {
       console.log('--------------  cerrar modal --------------');
       $('#modalForm').modal('hide');
@@ -982,18 +1017,20 @@ var main_date = getVerifyDate();
       this.datos.hora_fin = '';
       this.datos.observacion = '';
       this.datos.estacionamiento_id = 0;
+      this.datos.fecha = "";
       this.btnClose = true;
       this.btnBack = false;
       this.isBtnSearch = true;
       this.btnCrear = false;
+      this.btnEditar = false;
     },
     verifyAvailableParking: function verifyAvailableParking(date) {
       var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
                 _this6.datos.fecha = date;
                 _this6.datos.fecha_inicio = date;
@@ -1001,27 +1038,27 @@ var main_date = getVerifyDate();
 
               case 3:
               case "end":
-                return _context8.stop();
+                return _context9.stop();
             }
           }
-        }, _callee8);
+        }, _callee9);
       }))();
     },
     changeUser: function () {
-      var _changeUser = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9(userId) {
+      var _changeUser = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee10(userId) {
         var _this7 = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
                 console.log(' ---------- change user v2 ----------- ');
                 this.isSearchSedes = true;
-                console.log(userId); // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
+                console.log(userId); // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente boton buscar
 
                 if (this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined) this.isBtnSearchDisabled = false;
                 $("#contentSedes").addClass('d-none');
-                _context9.next = 7;
+                _context10.next = 7;
                 return axios.post('/api/multisedes-usuario', {
                   user_id: userId
                 }).then(function (res) {
@@ -1031,19 +1068,18 @@ var main_date = getVerifyDate();
                 })["catch"](function (err) {
                   return console.log(err);
                 })["finally"](function () {
-                  _this7.isLoadingModalNuevo = false;
                   _this7.isSearchSedes = false;
                 });
 
               case 7:
               case "end":
-                return _context9.stop();
+                return _context10.stop();
             }
           }
-        }, _callee9, this);
+        }, _callee10, this);
       }));
 
-      function changeUser(_x) {
+      function changeUser(_x2) {
         return _changeUser.apply(this, arguments);
       }
 
@@ -1052,6 +1088,7 @@ var main_date = getVerifyDate();
     changeSede: function changeSede(e) {
       console.log('----------------- cambiar sede ----------------- ');
       if (e.target.value == "") this.isBtnSearchDisabled = true;else this.isBtnSearchDisabled = false;
+      this.turno;
       this.datos.sede_id = e.target.value;
     }
   }
@@ -2167,7 +2204,38 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_c("i", { staticClass: "far fa-edit" })]
+                                    [
+                                      !_vm.isLoadingModalEditar
+                                        ? _c("i", {
+                                            staticClass: "far fa-edit",
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.isLoadingModalEditar
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "p-0 m-0 spinner-border text-dark",
+                                              staticStyle: {
+                                                width: "1rem",
+                                                height: "1rem",
+                                              },
+                                              attrs: { role: "status" },
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "visually-hidden",
+                                                },
+                                                [_vm._v("Loading...")]
+                                              ),
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -2333,17 +2401,6 @@ var render = function () {
                             { staticClass: "d-block", attrs: { for: "Fecha" } },
                             [_vm._v("Fecha de reserva")]
                           ),
-                          _vm._v(" "),
-                          _vm.btnEditar
-                            ? _c("input", {
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "date",
-                                  id: "pickerProgramacion",
-                                  placeholder: "Fecha",
-                                },
-                              })
-                            : _vm._e(),
                           _vm._v(" "),
                           _c("v-datepicker", {
                             attrs: {
@@ -3034,7 +3091,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Guardar")]
+                        [_c("span", [_vm._v("Actualizar")])]
                       )
                     : _vm._e(),
                 ]),

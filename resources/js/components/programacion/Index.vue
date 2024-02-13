@@ -55,8 +55,12 @@
                                             <td>{{ schedule.hora_inicio }}</td>
                                             <td>{{ schedule.hora_fin }}</td>
                                             <td>
-                                                <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i
-                                                        class="far fa-edit"></i></button>
+                                                <button class="btn btn-warning" @click="abrirModalEditar(schedule)">
+                                                    <i v-if="!isLoadingModalEditar" class="far fa-edit"></i>
+                                                    <div v-if="isLoadingModalEditar" class="p-0 m-0 spinner-border text-dark" style="width: 1rem; height: 1rem;" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </button>
                                                 <button class="btn btn-danger" @click="borrar(schedule.id)"><i
                                                         class="fa fa-trash"></i></button>
                                             </td>
@@ -121,8 +125,8 @@
                                     <!-- Fecha Reserva -->
                                     <div class="form-group col-md-6">
                                         <label for="Fecha" class="d-block">Fecha de reserva</label>
-                                        <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
-                                            placeholder="Fecha">
+                                        <!-- <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
+                                            placeholder="Fecha"> -->
 
                                         <v-datepicker 
                                             :disabled-dates="disabledCustomDates" 
@@ -242,8 +246,11 @@
                             </button>
                             <button type="submit" class="btn btn-primary" @click.prevent="crear"
                                 v-if="btnCrear">Crear</button>
+
                             <button type="submit" class="btn btn-primary" @click.prevent="editar"
-                                v-if="btnEditar">Guardar</button>
+                                v-if="btnEditar">
+                                <span>Actualizar</span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -321,6 +328,7 @@ export default {
 
         return {
             isLoadingModalNuevo: false,
+            isLoadingModalEditar: false,
             es: es,
             disabledCustomDates: {
                 customPredictor: function (date) {
@@ -385,7 +393,8 @@ export default {
             isLoadingBtnSearch: false,
             id: '',
             showTable: true,
-            showTable2: false
+            showTable2: false,
+            mode: 'crear'
         }
     },
     created: async function () {
@@ -590,6 +599,8 @@ export default {
         buscar: async function () {
             console.log("------------ buscar estacionamientos ------------");
 
+            console.log(this.mode)
+
             if(this.datos.fecha == "") return this.$swal.fire({
                 icon: "warning",
                 title: "Campos faltantes",
@@ -603,19 +614,26 @@ export default {
                     const { available_parkings } = res.data
 
                     this.available_parkings = available_parkings
-
-                    $(".content_pass_one").addClass('d-none')
-                    $(".content_pass_two").removeClass('d-none')
-
-                    this.btnCrear = true;
-                    this.btnClose = false;
-                    this.btnBack = true;
-                    this.isBtnSearch = false;
                 })
                 .catch((err) => {
                     console.log(err)
                 })
                 .finally(() => {
+                    $(".content_pass_one").addClass('d-none')
+                    $(".content_pass_two").removeClass('d-none')
+
+                    this.btnClose = false;
+                    
+                    if(this.mode == 'crear') {
+                        this.btnCrear = true;
+                        this.btnEditar = false;
+                    } else {
+                        this.btnCrear = false;
+                        this.btnEditar = true;
+                    }
+
+                    this.btnBack = true;
+                    this.isBtnSearch = false;
                     this.isLoadingBtnSearch = false;
                 })
         },
@@ -633,6 +651,11 @@ export default {
             let valid = await this.validarCampos();
             if (valid) {
                 let resp = false;
+
+                console.log(this.datos)
+                alert("se esta trabajando en esta funcionalidad")
+                return;
+
                 await axios.put('/api/programacion/' + this.id, this.datos).then(response => {
                     if (response.data.isSuccess == false) {
 
@@ -702,10 +725,15 @@ export default {
 
             this.isBtnSearch = true;
             this.btnClose = true;
+            this.btnEditar = false;
+            this.btnCrear = false;
             this.titulo = "Crer Reserva"
             this.datos.sede_id = this.session.curr_sede_id;
+            this.mode = 'crear';
 
             await this.changeUser(this.session.id);
+
+            this.isLoadingModalNuevo = false;
 
             $('#modalForm').modal('show');
 
@@ -735,20 +763,31 @@ export default {
             // this.btnEditar = false;
 
         },
-        abrirModalEditar: function(datos) {
+        abrirModalEditar: async function(datos) {
             console.log(" ------------- abrir modal editar ------------- ");
 
-            console.log(this.datos)
+            this.isLoadingModalEditar = true;
 
             // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
             this.datos.fecha = new Date(datos.fecha + "T00:00:00"); 
 
             this.titulo = "Editar Reserva";
             this.datos.estacionamiento_id = datos.estacionamiento_id;
-            this.datos.sede_id = datos.sede_id;
+            this.datos.sede_id = datos.sede.id;
             this.isSearchSedes = false;
             this.isBtnSearch = true;
             this.btnClose = true;
+            this.datos.user_id = datos.user_id;
+            this.datos.turno = datos.turno;
+            this.datos.observacion = datos.observacion;
+            this.btnCrear = false;
+            this.mode = 'editar'
+
+            this.onChange(this.datos.turno)
+
+            await this.changeUser(this.datos.user_id);
+
+            this.isLoadingModalEditar = false;
 
             $("#contentSedes").removeClass('d-none');
 
@@ -788,11 +827,13 @@ export default {
             this.datos.hora_fin = '';
             this.datos.observacion = '';
             this.datos.estacionamiento_id = 0;
+            this.datos.fecha = "";
 
             this.btnClose = true;
             this.btnBack = false;
             this.isBtnSearch = true;
             this.btnCrear = false;
+            this.btnEditar   = false;
         },
         async verifyAvailableParking(date) {
             this.datos.fecha = date;
@@ -806,7 +847,7 @@ export default {
 
             console.log(userId)
 
-            // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente el boton buscar
+            // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente boton buscar
             if(this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined)  this.isBtnSearchDisabled = false;
 
             $("#contentSedes").addClass('d-none');
@@ -823,7 +864,6 @@ export default {
                 })
                 .catch((err) => console.log(err))
                 .finally(() => {
-                    this.isLoadingModalNuevo = false;
                     this.isSearchSedes = false;
                 })
         },
@@ -832,7 +872,8 @@ export default {
 
             if(e.target.value == "") this.isBtnSearchDisabled = true
             else this.isBtnSearchDisabled = false;
-
+            
+            this.turno 
             this.datos.sede_id = e.target.value
         }
     }
