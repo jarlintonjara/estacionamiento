@@ -148,14 +148,9 @@ class ProgramacionController extends Controller
         $end_date = Carbon::parse(date('Y-m-d', strtotime($request->fecha_fin)));
 
         $request['fecha'] = date('Y-m-d', strtotime($request->fecha));
+        $fecha = date('Y-m-d', strtotime($request->fecha));
 
         $period = new CarbonPeriod($start_date, '1 day', $end_date);
-
-        /* 
-            --------------------------------------------------
-            Validacion de 1 reserva de estacionmiento por dia
-            --------------------------------------------------
-        */
 
         // Rango fecha semana actual
         $date = Carbon::parse($request->fecha_inicio);
@@ -163,6 +158,28 @@ class ProgramacionController extends Controller
         $start_curr_week = $date->startOfWeek()->toDateString();
         $end_curr_week = $date->endOfWeek()->toDateString();
 
+
+        /* 
+            --------------------------------------------------
+            Validacion de 1 reserva de estacionmiento por dia
+            --------------------------------------------------
+        */
+
+        // $schedules_existentes = ProgramacionModel::where('deleted_at', null)
+        // ->where('user_id', $request->user_id)
+        // ->where('fecha', $fecha)
+        // ->first();
+
+        // if($schedules_existentes) {
+        //     if($schedules_existentes->turno == $request->turno || $schedules_existentes->turno == "D") {
+        //         return response()->json([
+        //             'message' => 'Ya hay una reserva para este turno'
+        //         ]);
+        //     }
+        // }
+
+        // return response()->json($schedules_existentes);
+        
         /* 
             -------------------------
             Validacion de las 3 reservas diarias por semana
@@ -225,38 +242,34 @@ class ProgramacionController extends Controller
             }
         }
 
-        // return response()->json($request->all());
-
         //validacion por usuario y fecha
-        foreach ($period as $dt) {
-            $newDate = $dt->format("Y-m-d");
+        // foreach ($period as $dt) {
 
             $register2 = ProgramacionModel::where("user_id", $request->user_id)
             ->where('status',1)
             ->where('deleted_at', null)
-            ->whereDate("fecha", $newDate)
+            ->whereDate("fecha", $fecha)
             ->first();
 
             if ($register2) {
                 if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
                     return response()->json([
-                        "message" => "Estacionamiento M ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento ocupado el ". $newDate .  " o ya cuentas con reserva para esa fecha" ,
                         "isSuccess" => false
                     ]);
                 } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
                     return response()->json([
-                        "message" => "Estacionamiento T ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento ocupado el ". $newDate .  " o ya cuentas con reserva para esa fecha" ,
                         "isSuccess" => false
                     ]);
                 } else if ($register2->turno == "D") {
                     return response()->json([
-                        "message" => "Estacionamiento D ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento ocupado el ". $newDate .  " o ya cuentas con reserva para esa fecha" ,
                         "isSuccess" => false
                     ]);
                 }
             }
-        }
-    
+        // }
 
         //crear programación
         $payload = $request->except(['fecha_inicio', 'fecha_fin']);
@@ -304,11 +317,15 @@ class ProgramacionController extends Controller
 
     public function update(Request $request, $id)
     {
+        $date = date('Y-m-d', strtotime($request->fecha));
+
+        $request['fecha'] = $date;
+
         $register = ProgramacionModel::where("user_id", $request->user_id)
             ->where("id", "!=", $id)
             ->where('status',1)
             ->where("estacionamiento_id", $request->estacionamiento_id)
-            ->whereDate("fecha", $request->fecha)->first();
+            ->whereDate("fecha", $date)->first();
 
         if ($register) {
             switch ($register->turno) {

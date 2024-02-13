@@ -455,7 +455,7 @@ export default {
             this.datos.user_id = this.session.id;
         },
         validarCampos() {
-            if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
+            if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin || !this.datos.turno ) {
                 this.$swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -509,7 +509,7 @@ export default {
             this.$tablaGlobal('#td-schedule');
             this.$tablaGlobal('#td-schedule2');
         },
-        onChange(param, isDisabled = false) {
+        onChange(param) {
             this.disabled = false;
             switch (param) {
                 case "D":
@@ -530,11 +530,7 @@ export default {
                     this.allDay = false;
                     this.afternoon = false;
 
-                    console.log("se ejecuta turno tomorow")
-                    this.disabledCheckbox = isDisabled;
-                    
                     if (this.morning) {
-                        console.log(this.morning)
                         this.disabled = true;
                         this.datos.hora_inicio = "07:00";
                         this.datos.hora_fin = "13:30";
@@ -656,8 +652,7 @@ export default {
                 let resp = false;
 
                 console.log(this.datos)
-                alert("se esta trabajando en esta funcionalidad")
-                return;
+                // alert("se esta trabajando en esta funcionalidad")
 
                 await axios.put('/api/programacion/' + this.id, this.datos).then(response => {
                     if (response.data.isSuccess == false) {
@@ -668,16 +663,17 @@ export default {
                             text: response.data.message,
                         })
                     } else {
-                        resp = true;
-                        this.schedules = [].concat(response.data.schedules);
-                        this.nextSchedules = [].concat(response.data.nextSchedules);
-                        this.id = '';
                         $('#modalForm').modal('hide');
-                        this.$swal.fire(
-                            'Programación editado correctamente!',
-                            '',
-                            'success'
-                        )
+                        this.init()
+                        // resp = true;
+                        // this.schedules = [].concat(response.data.schedules);
+                        // this.nextSchedules = [].concat(response.data.nextSchedules);
+                        // this.id = '';
+                        // this.$swal.fire(
+                        //     'Programación editado correctamente!',
+                        //     '',
+                        //     'success'
+                        // )
                     }
 
                 }).catch(function (error) {
@@ -774,6 +770,7 @@ export default {
             // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
             this.datos.fecha = new Date(datos.fecha + "T00:00:00");
 
+            this.id = datos.id;
             this.titulo = "Editar Reserva";
             this.datos.estacionamiento_id = datos.estacionamiento_id;
             this.datos.sede_id = datos.sede.id;
@@ -893,7 +890,6 @@ export default {
                             this.afternoon = false;
                             this.morning = false;
                             this.disabledCheckboxT = false;
-                            this.datos.turno = ''
                         }
                     }
                 })

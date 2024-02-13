@@ -544,7 +544,7 @@ var main_date = getVerifyDate();
       return init;
     }(),
     validarCampos: function validarCampos() {
-      if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin) {
+      if (!this.datos.estacionamiento_id || !this.datos.hora_inicio || !this.datos.hora_fin || !this.datos.turno) {
         this.$swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -617,7 +617,6 @@ var main_date = getVerifyDate();
       this.$tablaGlobal('#td-schedule2');
     },
     onChange: function onChange(param) {
-      var isDisabled = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       this.disabled = false;
 
       switch (param) {
@@ -639,11 +638,8 @@ var main_date = getVerifyDate();
           this.morning = !this.morning;
           this.allDay = false;
           this.afternoon = false;
-          console.log("se ejecuta turno tomorow");
-          this.disabledCheckbox = isDisabled;
 
           if (this.morning) {
-            console.log(this.morning);
             this.disabled = true;
             this.datos.hora_inicio = "07:00";
             this.datos.hora_fin = "13:30";
@@ -826,32 +822,56 @@ var main_date = getVerifyDate();
                 valid = _context6.sent;
 
                 if (!valid) {
-                  _context6.next = 17;
+                  _context6.next = 15;
                   break;
                 }
 
                 resp = false;
-                console.log(_this5.datos);
-                alert("se esta trabajando en esta funcionalidad");
-                return _context6.abrupt("return");
+                console.log(_this5.datos); // alert("se esta trabajando en esta funcionalidad")
 
-              case 10:
+                _context6.next = 8;
+                return axios.put('/api/programacion/' + _this5.id, _this5.datos).then(function (response) {
+                  if (response.data.isSuccess == false) {
+                    _this5.$swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: response.data.message
+                    });
+                  } else {
+                    $('#modalForm').modal('hide');
+
+                    _this5.init(); // resp = true;
+                    // this.schedules = [].concat(response.data.schedules);
+                    // this.nextSchedules = [].concat(response.data.nextSchedules);
+                    // this.id = '';
+                    // this.$swal.fire(
+                    //     'Programación editado correctamente!',
+                    //     '',
+                    //     'success'
+                    // )
+
+                  }
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+
+              case 8:
                 if (!resp) {
-                  _context6.next = 17;
+                  _context6.next = 15;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context6.next = 15;
+                _context6.next = 13;
                 return _this5.validarRole();
 
-              case 15:
+              case 13:
                 _this5.$tablaGlobal('#td-schedule');
 
                 _this5.$tablaGlobal('#td-schedule2');
 
-              case 17:
+              case 15:
               case "end":
                 return _context6.stop();
             }
@@ -957,6 +977,7 @@ var main_date = getVerifyDate();
                 this.isLoadingModalEditar = true; // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
 
                 this.datos.fecha = new Date(datos.fecha + "T00:00:00");
+                this.id = datos.id;
                 this.titulo = "Editar Reserva";
                 this.datos.estacionamiento_id = datos.estacionamiento_id;
                 this.datos.sede_id = datos.sede.id;
@@ -969,10 +990,10 @@ var main_date = getVerifyDate();
                 this.btnCrear = false;
                 this.mode = 'editar';
                 this.onChange(this.datos.turno);
-                _context8.next = 17;
+                _context8.next = 18;
                 return this.changeUser(this.datos.user_id);
 
-              case 17:
+              case 18:
                 this.isLoadingModalEditar = false;
                 $("#contentSedes").removeClass('d-none');
                 $("#modalForm").modal("show"); // this.allDay = false;
@@ -992,7 +1013,7 @@ var main_date = getVerifyDate();
                 // this.onChange(this.datos.turno);
                 // $('#modalForm').modal('show')
 
-              case 20:
+              case 21:
               case "end":
                 return _context8.stop();
             }
@@ -1122,7 +1143,6 @@ var main_date = getVerifyDate();
                       _this7.afternoon = false;
                       _this7.morning = false;
                       _this7.disabledCheckboxT = false;
-                      _this7.datos.turno = '';
                     }
                   }
                 });

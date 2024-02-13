@@ -22,10 +22,10 @@
             <ul class="nav-menu" id="js-nav-menu">
                 <li class="active open">
                     <ul>
-                        <router-link tag="li" to="/dashboard" active-class="active">
+                        <router-link tag="li" v-if="user.role_id == 3" to="/dashboard" active-class="active">
                             <a >Inicio</a>
                         </router-link>
-                        <router-link tag="li" v-if="user.role_id == 1 || user.role_id == 3" to="/usuarios" active-class="active">
+                        <router-link tag="li" v-if="user.role_id == 1" to="/usuarios" active-class="active">
                             <a >Usuarios</a>
                         </router-link>
                         <router-link tag="li" v-if="user.role_id == 1" to="/sedes" active-class="active">
