@@ -238,24 +238,19 @@ class ProgramacionController extends Controller
             ->first();
 
             if ($register2) {
-                // return response()->json([
-                //     "message" => "Ya cuentas con una reserva para esta fecha",
-                //     "isSuccess" => false
-                // ]);
-
                 if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento M ocupado el dia ". $newDate,
                         "isSuccess" => false
                     ]);
                 } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento T ocupado el dia ". $newDate,
                         "isSuccess" => false
                     ]);
                 } else if ($register2->turno == "D") {
                     return response()->json([
-                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "message" => "Estacionamiento D ocupado el dia ". $newDate,
                         "isSuccess" => false
                     ]);
                 }
