@@ -21,11 +21,10 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <div class="panel-hdr">
-                                <button class="btn btn-success" @click="abrirModalCrear"
-                                    :disabled="isBtnDisableNew">
-                                        <span v-if="!isLoadingModalNuevo">Nuevo</span>
-                                        <span v-if="isLoadingModalNuevo">Cargando...</span>
-                                    </button>
+                                <button class="btn btn-success" @click="abrirModalCrear" :disabled="isBtnDisableNew">
+                                    <span v-if="!isLoadingModalNuevo">Nuevo</span>
+                                    <span v-if="isLoadingModalNuevo">Cargando...</span>
+                                </button>
 
                                 <button style="margin-left: auto;" class="btn btn-danger" @click="showT(1)">Semana
                                     Actual</button>
@@ -57,7 +56,9 @@
                                             <td>
                                                 <button class="btn btn-warning" @click="abrirModalEditar(schedule)">
                                                     <i v-if="!isLoadingModalEditar" class="far fa-edit"></i>
-                                                    <div v-if="isLoadingModalEditar" class="p-0 m-0 spinner-border text-dark" style="width: 1rem; height: 1rem;" role="status">
+                                                    <div v-if="isLoadingModalEditar"
+                                                        class="p-0 m-0 spinner-border text-dark"
+                                                        style="width: 1rem; height: 1rem;" role="status">
                                                         <span class="visually-hidden">Loading...</span>
                                                     </div>
                                                 </button>
@@ -128,14 +129,9 @@
                                         <!-- <input v-if="btnEditar" type="date" id="pickerProgramacion" class="form-control"
                                             placeholder="Fecha"> -->
 
-                                        <v-datepicker 
-                                            :disabled-dates="disabledCustomDates" 
-                                            :language="es"
-                                            @selected="verifyAvailableParking" 
-                                            id="datePicker"
-                                            placeholder="Seleccionar Fecha"
-                                            v-model="datos.fecha"
-                                        >
+                                        <v-datepicker :disabled-dates="disabledCustomDates" :language="es"
+                                            @selected="verifyAvailableParking" id="datePicker"
+                                            placeholder="Seleccionar Fecha" v-model="datos.fecha">
                                         </v-datepicker>
                                     </div>
 
@@ -200,12 +196,12 @@
                                         </div>
                                         <div class="custom-control custom-checkbox d-inline-flex mr-3">
                                             <input type="checkbox" class="custom-control-input" name="small"
-                                                id="option-small" v-model="morning" @click="onChange('M')">
+                                                id="option-small" v-model="morning" @click="onChange('M')" :disabled="disabledCheckboxM">
                                             <label class="custom-control-label" for="option-small">Mañana</label>
                                         </div>
                                         <div class="custom-control custom-checkbox d-inline-flex mr-3">
                                             <input type="checkbox" class="custom-control-input" name="small"
-                                                id="option-small2" v-model="afternoon" @click="onChange('T')">
+                                                id="option-small2" v-model="afternoon" :disabled="disabledCheckboxT" @click="onChange('T')">
                                             <label class="custom-control-label" for="option-small2">Tarde</label>
                                         </div>
                                     </div>
@@ -247,8 +243,7 @@
                             <button type="submit" class="btn btn-primary" @click.prevent="crear"
                                 v-if="btnCrear">Crear</button>
 
-                            <button type="submit" class="btn btn-primary" @click.prevent="editar"
-                                v-if="btnEditar">
+                            <button type="submit" class="btn btn-primary" @click.prevent="editar" v-if="btnEditar">
                                 <span>Actualizar</span>
                             </button>
                         </div>
@@ -307,7 +302,7 @@ const getVerifyDate = () => {
     let curr_date_tomorrow = new Date(curr_date);
     curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
 
-    console.log({curr_date, curr_date_tomorrow})
+    console.log({ curr_date, curr_date_tomorrow })
 
     return {
         'start_date': curr_date,
@@ -394,7 +389,9 @@ export default {
             id: '',
             showTable: true,
             showTable2: false,
-            mode: 'crear'
+            mode: 'crear',
+            disabledCheckboxM: false,
+            disabledCheckboxT: false
         }
     },
     created: async function () {
@@ -411,7 +408,7 @@ export default {
     mounted: async function () {
         await this.init();
 
-        this.$refs.refModal.addEventListener('hidden.bs.modal', event  => {
+        this.$refs.refModal.addEventListener('hidden.bs.modal', event => {
             this.cerrarModal();
         });
     },
@@ -512,7 +509,7 @@ export default {
             this.$tablaGlobal('#td-schedule');
             this.$tablaGlobal('#td-schedule2');
         },
-        onChange(param) {
+        onChange(param, isDisabled = false) {
             this.disabled = false;
             switch (param) {
                 case "D":
@@ -533,7 +530,11 @@ export default {
                     this.allDay = false;
                     this.afternoon = false;
 
+                    console.log("se ejecuta turno tomorow")
+                    this.disabledCheckbox = isDisabled;
+                    
                     if (this.morning) {
+                        console.log(this.morning)
                         this.disabled = true;
                         this.datos.hora_inicio = "07:00";
                         this.datos.hora_fin = "13:30";
@@ -603,14 +604,14 @@ export default {
 
             console.log(this.mode)
 
-            if(this.datos.fecha == "") return this.$swal.fire({
+            if (this.datos.fecha == "") return this.$swal.fire({
                 icon: "warning",
                 title: "Campos faltantes",
                 text: "Ingresa la fecha de la reserva"
             })
 
             this.isLoadingBtnSearch = true;
-            
+
             await axios.post('/api/validar-disponibilidad-reservas-fecha', this.datos)
                 .then((res) => {
                     const { available_parkings } = res.data
@@ -625,8 +626,8 @@ export default {
                     $(".content_pass_two").removeClass('d-none')
 
                     this.btnClose = false;
-                    
-                    if(this.mode == 'crear') {
+
+                    if (this.mode == 'crear') {
                         this.btnCrear = true;
                         this.btnEditar = false;
                     } else {
@@ -720,7 +721,7 @@ export default {
                 })
             }
         },
-        abrirModalCrear: async function() {
+        abrirModalCrear: async function () {
             console.log('-------------- abrir modal crear --------------')
 
             this.isLoadingModalNuevo = true;
@@ -765,13 +766,13 @@ export default {
             // this.btnEditar = false;
 
         },
-        abrirModalEditar: async function(datos) {
+        abrirModalEditar: async function (datos) {
             console.log(" ------------- abrir modal editar ------------- ");
 
             this.isLoadingModalEditar = true;
 
             // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
-            this.datos.fecha = new Date(datos.fecha + "T00:00:00"); 
+            this.datos.fecha = new Date(datos.fecha + "T00:00:00");
 
             this.titulo = "Editar Reserva";
             this.datos.estacionamiento_id = datos.estacionamiento_id;
@@ -815,7 +816,7 @@ export default {
         cerrarModal: function () {
             console.log('--------------  cerrar modal --------------');
             $('#modalForm').modal('hide');
-            
+
             $(".content_pass_one").removeClass('d-none');
             $(".content_pass_two").addClass('d-none');
 
@@ -835,9 +836,9 @@ export default {
             this.btnBack = false;
             this.isBtnSearch = true;
             this.btnCrear = false;
-            this.btnEditar   = false;
+            this.btnEditar = false;
         },
-        verifyAvailableParking: async function(date) {            
+        verifyAvailableParking: async function (date) {
             console.log(date)
             this.datos.fecha = date;
             this.datos.fecha_inicio = date;
@@ -851,7 +852,7 @@ export default {
             console.log(userId)
 
             // Cuando un usuario tiene la sede seleccionda en su perfil global, esa sede se debe mostrar en el select de sedes y haiblitar automaticamente boton buscar
-            if(this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined)  this.isBtnSearchDisabled = false;
+            if (this.datos.sede_id != 0 || this.datos.sede_id != null || this.datos.sede_id != undefined) this.isBtnSearchDisabled = false;
 
             $("#contentSedes").addClass('d-none');
 
@@ -870,18 +871,39 @@ export default {
                     this.isSearchSedes = false;
                 })
         },
-        validateParkingTurn: async function(datos) {
-            await axios.post('/api/disponibilidad-estacionamiento-turnos', this.datos)
-                       .then((res) => {
-                            console.log(res)
-                       })
+        validateParkingTurn: async function (datos) {
+            await axios.post('/api/disponibilidad-estacionamiento-turnos', datos)
+                .then((res) => {
+                    console.log(res)
+
+                    if (res.status) {
+                        if (res.data.result != null) {
+                            const {turno} = res.data.result;
+                            this.morning = false;
+                            this.afternoon = false;
+
+                            if(turno == "M") {
+                                this.disabledCheckboxM = true;
+                            } else if (turno == "T") {
+                                this.disabledCheckboxT = true;
+                            }
+                            console.log(turno)
+                        } else {
+                            this.disabledCheckboxM = false;
+                            this.afternoon = false;
+                            this.morning = false;
+                            this.disabledCheckboxT = false;
+                            this.datos.turno = ''
+                        }
+                    }
+                })
         },
         changeSede: async function (e) {
             console.log('----------------- cambiar sede ----------------- ')
 
             console.log(e.target.value)
 
-            if(e.target.value == "") this.isBtnSearchDisabled = true
+            if (e.target.value == "") this.isBtnSearchDisabled = true
             else this.isBtnSearchDisabled = false;
 
             this.datos.sede_id = e.target.value;

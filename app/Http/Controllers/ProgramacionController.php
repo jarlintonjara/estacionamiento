@@ -460,7 +460,8 @@ class ProgramacionController extends Controller
                 $query->select('programacion.estacionamiento_id')
                     ->from('programacion')
                     ->join('estacionamiento', 'programacion.estacionamiento_id', '=', 'estacionamiento.id')
-                    ->where('programacion.fecha', $date);
+                    ->where('programacion.fecha', $date)
+                    ->where('programacion.turno', '=', 'D');
             })
         ->get();
 
@@ -487,6 +488,15 @@ class ProgramacionController extends Controller
         $sedeId = $request->sede_id;
         $parkingId = $request->estacionamiento_id;
 
-        return response()->json($request->all());
+        $curr_parking = DB::table('programacion as p')
+        ->join('estacionamiento', 'estacionamiento.id', '=', 'p.estacionamiento_id')
+        ->where('p.fecha', '=', $date)
+        ->where('estacionamiento.sede_id', '=', $sedeId)
+        ->where('estacionamiento.id', '=', $parkingId)
+        ->first();
+
+        return response()->json([
+            'result' => $curr_parking
+        ]);
     } 
 }

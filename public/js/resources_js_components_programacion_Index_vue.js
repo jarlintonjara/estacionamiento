@@ -321,11 +321,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
  //you need to import the CSS manually
 
 
@@ -426,7 +421,9 @@ var main_date = getVerifyDate();
       id: '',
       showTable: true,
       showTable2: false,
-      mode: 'crear'
+      mode: 'crear',
+      disabledCheckboxM: false,
+      disabledCheckboxT: false
     };
   },
   created: function () {
@@ -620,6 +617,7 @@ var main_date = getVerifyDate();
       this.$tablaGlobal('#td-schedule2');
     },
     onChange: function onChange(param) {
+      var isDisabled = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       this.disabled = false;
 
       switch (param) {
@@ -641,8 +639,11 @@ var main_date = getVerifyDate();
           this.morning = !this.morning;
           this.allDay = false;
           this.afternoon = false;
+          console.log("se ejecuta turno tomorow");
+          this.disabledCheckbox = isDisabled;
 
           if (this.morning) {
+            console.log(this.morning);
             this.disabled = true;
             this.datos.hora_inicio = "07:00";
             this.datos.hora_fin = "13:30";
@@ -1093,13 +1094,37 @@ var main_date = getVerifyDate();
     }(),
     validateParkingTurn: function () {
       var _validateParkingTurn = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee11(datos) {
+        var _this7 = this;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
                 _context11.next = 2;
-                return axios.post('/api/disponibilidad-estacionamiento-turnos', this.datos).then(function (res) {
+                return axios.post('/api/disponibilidad-estacionamiento-turnos', datos).then(function (res) {
                   console.log(res);
+
+                  if (res.status) {
+                    if (res.data.result != null) {
+                      var turno = res.data.result.turno;
+                      _this7.morning = false;
+                      _this7.afternoon = false;
+
+                      if (turno == "M") {
+                        _this7.disabledCheckboxM = true;
+                      } else if (turno == "T") {
+                        _this7.disabledCheckboxT = true;
+                      }
+
+                      console.log(turno);
+                    } else {
+                      _this7.disabledCheckboxM = false;
+                      _this7.afternoon = false;
+                      _this7.morning = false;
+                      _this7.disabledCheckboxT = false;
+                      _this7.datos.turno = '';
+                    }
+                  }
                 });
 
               case 2:
@@ -1107,7 +1132,7 @@ var main_date = getVerifyDate();
                 return _context11.stop();
             }
           }
-        }, _callee11, this);
+        }, _callee11);
       }));
 
       function validateParkingTurn(_x4) {
@@ -2830,6 +2855,7 @@ var render = function () {
                                   type: "checkbox",
                                   name: "small",
                                   id: "option-small",
+                                  disabled: _vm.disabledCheckboxM,
                                 },
                                 domProps: {
                                   checked: Array.isArray(_vm.morning)
@@ -2895,6 +2921,7 @@ var render = function () {
                                   type: "checkbox",
                                   name: "small",
                                   id: "option-small2",
+                                  disabled: _vm.disabledCheckboxT,
                                 },
                                 domProps: {
                                   checked: Array.isArray(_vm.afternoon)
