@@ -238,29 +238,30 @@ class ProgramacionController extends Controller
             ->first();
 
             if ($register2) {
-                return response()->json([
-                    "message" => "Ya cuentas con una reserva para esta fecha",
-                    "isSuccess" => false
-                ]);
+                // return response()->json([
+                //     "message" => "Ya cuentas con una reserva para esta fecha",
+                //     "isSuccess" => false
+                // ]);
 
-                // if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
-                //     return response()->json([
-                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
-                //         "isSuccess" => false
-                //     ]);
-                // } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
-                //     return response()->json([
-                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
-                //         "isSuccess" => false
-                //     ]);
-                // } else if ($register2->turno == "D") {
-                //     return response()->json([
-                //         "message" => "Estacionamiento ocupado el dia ". $newDate,
-                //         "isSuccess" => false
-                //     ]);
-                // }
+                if (($request->turno == "M" || $request->turno == "D") && $register2->turno == "M") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if (($request->turno == "T" || $request->turno == "D") && $register2->turno == "T") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                } else if ($register2->turno == "D") {
+                    return response()->json([
+                        "message" => "Estacionamiento ocupado el dia ". $newDate,
+                        "isSuccess" => false
+                    ]);
+                }
             }
         }
+    
 
         //crear programación
         $payload = $request->except(['fecha_inicio', 'fecha_fin']);
