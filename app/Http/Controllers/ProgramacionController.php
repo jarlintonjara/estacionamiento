@@ -203,6 +203,7 @@ class ProgramacionController extends Controller
 
             if($request->turno == "M") $day = "Mañana";
             else if ($request->turno == "T") $day = "Tarde";
+            else $day = "Seleccionado";
 
             if ($register) {
                 if (($request->turno == "M" || $request->turno == "D") && $register->turno == "M") {
