@@ -123,7 +123,7 @@ class HomeController extends Controller
                     'estacioneshoy' => $schedulesToday->estaciones,
                     'test' => []
                 ]);
-            } else if($curr_user->role_id === 2) {
+            } else if($curr_user->role_id === 2 || $curr_user->role_id === 3) {
                 $users = User::where('sede_id', $curr_user->sede_id)->get()->count();
                 $parkings = EstacionamientoModel::where('deleted_at', null)->where('sede_id', $q_sedeId)->get();
 
