@@ -250,7 +250,7 @@ export default {
             }
             return true;
         },
-        async crear() {
+        crear: async function () {
             let valid = await this.validarCampos();
             if (valid) {
                 this.isLoading = true;

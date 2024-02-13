@@ -1754,19 +1754,17 @@ var render = function () {
             _c(
               "ul",
               [
-                _vm.user.role_id == 3
-                  ? _c(
-                      "router-link",
-                      {
-                        attrs: {
-                          tag: "li",
-                          to: "/dashboard",
-                          "active-class": "active",
-                        },
-                      },
-                      [_c("a", [_vm._v("Inicio")])]
-                    )
-                  : _vm._e(),
+                _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      tag: "li",
+                      to: "/dashboard",
+                      "active-class": "active",
+                    },
+                  },
+                  [_c("a", [_vm._v("Inicio")])]
+                ),
                 _vm._v(" "),
                 _vm.user.role_id == 1
                   ? _c(
