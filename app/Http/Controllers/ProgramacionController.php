@@ -476,6 +476,7 @@ class ProgramacionController extends Controller
         $available_parkings = DB::table('estacionamiento')
             ->select('estacionamiento.numero', 'estacionamiento.id', 'estacionamiento.sede_id')
             ->where('estacionamiento.sede_id', $sedeId)
+            ->where('estacionamiento.deleted_at', null)
             ->whereNotIn('estacionamiento.id', function($query) use ($date) {
                 $query->select('programacion.estacionamiento_id')
                     ->from('programacion')
@@ -484,6 +485,7 @@ class ProgramacionController extends Controller
                     ->where('programacion.turno', '=', 'D');
             })
         ->get();
+
 
         return response()->json([
             'sede_id' => $sedeId,
