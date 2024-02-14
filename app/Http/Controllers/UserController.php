@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('deleted_at', null)->orderBy('apellido', 'ASC')->get();
+        $users = User::where('status', 1)->orderBy('apellido', 'ASC')->get();
         $sedes = Sede::where('deleted_at', null)->get();
         foreach ($users as $user) {
             if ($user->parking_id) {
@@ -204,7 +204,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $user->deleted_at = date('Y-m-d H:i:s');
+        $user->status = 0;
         $user->update();
 
         return response()->json($user);
