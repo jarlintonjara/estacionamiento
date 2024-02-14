@@ -282,7 +282,7 @@ export default {
                 if(res.isConfirmed) {
                     axios.delete('/api/estacionamiento/' + id)
                     .then((res) => {
-                        console.log(' -------- eliminar sede -------- ')
+                        console.log(' -------- eliminar estacionamiento -------- ')
                     })
                     .finally(() => {
                         this.$swal.close();

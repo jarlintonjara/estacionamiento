@@ -372,7 +372,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (res.isConfirmed) {
                     axios["delete"]('/api/estacionamiento/' + id).then(function (res) {
-                      console.log(' -------- eliminar sede -------- ');
+                      console.log(' -------- eliminar estacionamiento -------- ');
                     })["finally"](function () {
                       _this4.$swal.close();
 
