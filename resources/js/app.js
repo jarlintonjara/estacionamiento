@@ -52,7 +52,6 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
             searching: true,
             paging: true,
             fixedHeader: true,
-            fixedColumns: true,
             scrollX: true,
             dom: `<'row'<'col-sm-12 mb-3'B>>
                     <'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6 text-right'f>>" +

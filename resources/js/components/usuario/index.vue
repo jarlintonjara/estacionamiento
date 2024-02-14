@@ -398,7 +398,7 @@ export default {
                     this.isLoading = false;
                 });
 
-                this.datatable = $("#tableUser").DataTable();
+                this.$tablaGlobal("#tableUser");
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");

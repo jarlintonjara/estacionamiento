@@ -511,7 +511,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                this.datatable = $("#tableUser").DataTable();
+                this.$tablaGlobal("#tableUser");
 
               case 4:
               case "end":
