@@ -300,15 +300,19 @@ export default {
                 cancelButtonText: 'NO'
             }).then((res) => {
                 if(res.isConfirmed) {
+                    this.loading();
+
                     this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
                         console.log(' ------------- borrar -----------')
-                        console.log(response)
-                        this.mostrarusers();
+                        this.users = response.data.users;
                     })
                     .catch((error) => {
                         console.log(error);
-                    });
+                    })
+                    .finally(() => {
+                        this.$swal.close();
+                    })
                 }
             })
         },
@@ -337,7 +341,7 @@ export default {
 
             $("#modalForm").modal("show");
 
-            await this.mostrarusers();
+            this.mostrarusers();
         },
         abrirModalEditar(datos) {
             this.parkingsFilter = [];
@@ -392,13 +396,7 @@ export default {
                     this.isLoading = false;
                 });
 
-                console.log(this.users)
-
-                if($.fn.DataTable.isDataTable("#tableUser")) {
-                    $("#tableUser").DataTable().destroy();
-                }
-
-                $("#tableUser").DataTable();
+                this.$tablaGlobal("#tableUser");
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");
@@ -429,6 +427,22 @@ export default {
                     sede_id: e[field_sede],
                     name: e[field_name]
             }))
+        },
+        loading: function(){
+            this.$swal.fire({
+                title: 'Cargando...',
+                html: `
+                    <div class="spinner-border text-primary my-4" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onBeforeOpen: () => {
+                    this.$swal.showLoading()
+                }
+            });
         }
     },
 };

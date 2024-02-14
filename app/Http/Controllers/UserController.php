@@ -209,8 +209,29 @@ class UserController extends Controller
         $user->status = 0;
         $user->update();
 
-        $users = User::where('status', 1)->get();
+        $users = User::where('status', '=', 1)->orderBy('apellido', 'ASC')->get();
 
-        return response()->json($users);
+        foreach ($users as $user) {
+            if ($user->parking_id) {
+                $user["parking"] = $user->parking;
+            } else {
+                $user["parking"] = [
+                    "numero" => "",
+                    "sede" => ""
+                ];
+            }
+            $user["role"] = $user->role;
+            $user["sede"] = $user->sede;
+
+            foreach ($user->multisedes as $multisede) {
+                $multisede['name'] = $multisede->sede->name;
+            }
+
+            $user["multisedes"] = $user->multisedes;
+        }
+
+        return response()->json([
+            "users" => $users
+        ]);
     }
 }

@@ -389,13 +389,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         cancelButtonText: 'NO'
       }).then(function (res) {
         if (res.isConfirmed) {
+          _this3.loading();
+
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
             console.log(' ------------- borrar -----------');
-            console.log(response);
-
-            _this3.mostrarusers();
+            _this3.users = response.data.users;
           })["catch"](function (error) {
             console.log(error);
+          })["finally"](function () {
+            _this3.$swal.close();
           });
         }
       });
@@ -432,10 +434,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.btnCrear = true;
                 this.btnEditar = false;
                 $("#modalForm").modal("show");
-                _context4.next = 9;
-                return this.mostrarusers();
+                this.mostrarusers();
 
-              case 9:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -508,15 +509,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                console.log(this.users);
+                this.$tablaGlobal("#tableUser");
 
-                if ($.fn.DataTable.isDataTable("#tableUser")) {
-                  $("#tableUser").DataTable().destroy();
-                }
-
-                $("#tableUser").DataTable();
-
-              case 6:
+              case 4:
               case "end":
                 return _context5.stop();
             }
@@ -583,6 +578,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           sede_id: e[field_sede],
           name: e[field_name]
         };
+      });
+    },
+    loading: function loading() {
+      var _this8 = this;
+
+      this.$swal.fire({
+        title: 'Cargando...',
+        html: "\n                    <div class=\"spinner-border text-primary my-4\" role=\"status\">\n                        <span class=\"sr-only\">Loading...</span>\n                    </div>\n                ",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        onBeforeOpen: function onBeforeOpen() {
+          _this8.$swal.showLoading();
+        }
       });
     }
   }
