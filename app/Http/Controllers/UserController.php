@@ -203,8 +203,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
-        $data = User::all();
-        return response()->json($data);
+
+        $user->deleted_at = date('Y-m-d H:i:s');
+        $user->update();
+
+        return response()->json($user);
     }
 }
