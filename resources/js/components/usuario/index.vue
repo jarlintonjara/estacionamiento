@@ -390,6 +390,7 @@ export default {
                     this.isLoading = false;
                 });
 
+            $("#tableUser").DataTable().destroy();
             $("#tableUser").DataTable();
         },
         cerrarModal: function() {
