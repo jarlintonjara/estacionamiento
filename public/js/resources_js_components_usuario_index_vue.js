@@ -498,7 +498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context5.prev = _context5.next) {
               case 0:
                 this.isLoading = true;
-                this.datatable.clear();
+                if (this.datatable != null) this.datatable.clear();
                 _context5.next = 4;
                 return this.axios.get("/api/usuario").then(function (response) {
                   _this6.users = response.data.users;

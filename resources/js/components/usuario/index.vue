@@ -383,7 +383,7 @@ export default {
         mostrarusers: async function() {
             this.isLoading = true;
 
-            this.datatable.clear();
+            if(this.datatable != null) this.datatable.clear();
 
             await this.axios
                 .get("/api/usuario")
