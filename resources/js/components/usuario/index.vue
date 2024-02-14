@@ -383,8 +383,6 @@ export default {
         mostrarusers: async function() {
             this.isLoading = true;
 
-            if(this.datatable != null) this.datatable.clear();
-
             await this.axios
                 .get("/api/usuario")
                 .then((response) => {
@@ -392,8 +390,6 @@ export default {
                     this.roles = response.data.roles;
                     this.sedes = this.parseSedeMultiselect(response.data.sedes);
                     this.parkings = response.data.parkings;
-
-                    this.datatable = $("#tableUser").DataTable();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -401,6 +397,8 @@ export default {
                 .finally(() => {
                     this.isLoading = false;
                 });
+
+                this.datatable = $("#tableUser").DataTable();
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");
