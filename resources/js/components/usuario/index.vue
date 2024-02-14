@@ -224,6 +224,7 @@ export default {
             isLoading: false,
             btnEditar: false,
             id: "",
+            datatable: null
         };
     },
     created:  function () {
@@ -289,6 +290,7 @@ export default {
                     .finally(() => {
                         this.isLoading = false;
                     });
+                    
             }
         },
         borrar: function(id) {
@@ -299,14 +301,15 @@ export default {
                 confirmButtonText: 'SI',
                 cancelButtonText: 'NO'
             }).then((res) => {
+                // this.datatable.clear();
+
                 if(res.isConfirmed) {
                     this.loading();
 
                     this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
                         console.log(' ------------- borrar -----------')
-                        this.users = response.data.users;
-                        console.log(this.$refs.dataTable)
+                        this.mostrarusers();
                     })
                     .catch((error) => {
                         console.log(error);
@@ -397,7 +400,7 @@ export default {
                     this.isLoading = false;
                 });
 
-                this.$tablaGlobal("#tableUser");
+                this.datatable = $("#tableUser").DataTable();
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");

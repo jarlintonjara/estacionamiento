@@ -253,7 +253,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       btnCrear: false,
       isLoading: false,
       btnEditar: false,
-      id: ""
+      id: "",
+      datatable: null
     };
   },
   created: function created() {
@@ -388,13 +389,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: 'SI',
         cancelButtonText: 'NO'
       }).then(function (res) {
+        // this.datatable.clear();
         if (res.isConfirmed) {
           _this3.loading();
 
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
             console.log(' ------------- borrar -----------');
-            _this3.users = response.data.users;
-            console.log(_this3.$refs.dataTable);
+
+            _this3.mostrarusers();
           })["catch"](function (error) {
             console.log(error);
           })["finally"](function () {
@@ -510,7 +512,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                this.$tablaGlobal("#tableUser");
+                this.datatable = $("#tableUser").DataTable();
 
               case 4:
               case "end":
