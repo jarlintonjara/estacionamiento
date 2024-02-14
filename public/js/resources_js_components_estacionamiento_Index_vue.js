@@ -368,11 +368,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   title: 'Eliminacion de Registro',
                   text: '¿Estas seguro de eliminar este registro?'
                 }).then(function (res) {
+                  _this4.loading();
+
                   if (res.isConfirmed) {
                     axios["delete"]('/api/estacionamiento/' + id).then(function (res) {
-                      _this4.getEstacionamiento();
+                      console.log(' -------- eliminar sede -------- ');
                     })["finally"](function () {
-                      return window.location.reload();
+                      _this4.$swal.close();
+
+                      window.location.reload();
                     });
                   }
                 });
@@ -384,6 +388,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3);
       }))();
+    },
+    loading: function loading() {
+      var _this5 = this;
+
+      this.$swal.fire({
+        title: 'Cargando...',
+        html: "\n                    <div class=\"spinner-border text-primary my-4\" role=\"status\">\n                        <span class=\"sr-only\">Loading...</span>\n                    </div>\n                ",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        onBeforeOpen: function onBeforeOpen() {
+          _this5.$swal.showLoading();
+        }
+      });
     }
   }
 });

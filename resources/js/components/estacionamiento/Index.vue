@@ -277,14 +277,35 @@ export default {
                 text: '¿Estas seguro de eliminar este registro?'
             })
             .then((res) => {
+                this.loading();
+
                 if(res.isConfirmed) {
                     axios.delete('/api/estacionamiento/' + id)
                     .then((res) => {
-                        this.getEstacionamiento()
+                        console.log(' -------- eliminar sede -------- ')
                     })
-                    .finally(() => window.location.reload() )
+                    .finally(() => {
+                        this.$swal.close();
+                        window.location.reload();
+                    })
                 }
             })
+        },
+        loading: function(){
+            this.$swal.fire({
+                title: 'Cargando...',
+                html: `
+                    <div class="spinner-border text-primary my-4" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onBeforeOpen: () => {
+                    this.$swal.showLoading()
+                }
+            });
         }
     },
 }
