@@ -220,7 +220,7 @@
                                             <td>{{ pmd.sede_name }}</td>
                                             <td>{{ pmd.sede_email }}</td>
                                             <td>
-                                                <button type="button" @click="abrirModal(pmd, 'hoy')" class="btn btn-primary">
+                                                <button type="button" @click="abrirModal(pmd, 'hoy')" class="btn btn-primary" v-if="user.role_id != 3">
                                                     <span>Reservar</span>
                                                 </button>
                                             </td>
@@ -318,7 +318,7 @@
                                             <td>{{ pmd.sede_name }}</td>
                                             <td>{{ pmd.sede_email }}</td>
                                             <td>
-                                                <button @click="abrirModal(pmd, 'tomorrow')" class="btn btn-primary">
+                                                <button @click="abrirModal(pmd, 'tomorrow')" class="btn btn-primary" v-if="user.role_id != 3">
                                                     <span>Reservar</span>
                                                 </button>
                                             </td>

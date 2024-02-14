@@ -2792,19 +2792,21 @@ var render = function () {
                               _c("td", [_vm._v(_vm._s(pmd.sede_email))]),
                               _vm._v(" "),
                               _c("td", [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-primary",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.abrirModal(pmd, "hoy")
+                                _vm.user.role_id != 3
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-primary",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.abrirModal(pmd, "hoy")
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [_c("span", [_vm._v("Reservar")])]
-                                ),
+                                      [_c("span", [_vm._v("Reservar")])]
+                                    )
+                                  : _vm._e(),
                               ]),
                             ])
                           }),
@@ -2918,18 +2920,23 @@ var render = function () {
                                 _c("td", [_vm._v(_vm._s(pmd.sede_email))]),
                                 _vm._v(" "),
                                 _c("td", [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-primary",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.abrirModal(pmd, "tomorrow")
+                                  _vm.user.role_id != 3
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-primary",
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.abrirModal(
+                                                pmd,
+                                                "tomorrow"
+                                              )
+                                            },
+                                          },
                                         },
-                                      },
-                                    },
-                                    [_c("span", [_vm._v("Reservar")])]
-                                  ),
+                                        [_c("span", [_vm._v("Reservar")])]
+                                      )
+                                    : _vm._e(),
                                 ]),
                               ]
                             )
