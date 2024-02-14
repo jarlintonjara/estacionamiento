@@ -394,12 +394,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
             console.log(' ------------- borrar -----------');
-
-            _this3.mostrarusers();
           })["catch"](function (error) {
             console.log(error);
           })["finally"](function () {
             _this3.$swal.close();
+
+            window.location.reload();
           });
         }
       });

@@ -307,13 +307,13 @@ export default {
                     this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
                         console.log(' ------------- borrar -----------')
-                        this.mostrarusers();
                     })
                     .catch((error) => {
                         console.log(error);
                     })
                     .finally(() => {
                         this.$swal.close();
+                        window.location.reload();
                     })
                 }
             })
