@@ -266,10 +266,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                $("#dt-estacionamiento").DataTable().destroy();
                 $("#dt-estacionamiento").DataTable();
 
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

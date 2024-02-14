@@ -157,7 +157,6 @@
                         this.isLoading = false;
                     })
 
-                    $("#tableSedes").DataTable().destroy();
                     $("#tableSedes").DataTable();
             },
             openModalCreate() {

@@ -202,7 +202,6 @@ export default {
                     this.isLoading = false;
                 })
 
-                $("#dt-estacionamiento").DataTable().destroy();
                 $("#dt-estacionamiento").DataTable();
         },
         openModalCreate() {
