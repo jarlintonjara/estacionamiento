@@ -18,7 +18,7 @@
                 <table cellspacing="0" cellpadding="0" border="0" align="center" style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
                     <tr>
                         <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Sede</td>
-                        {{-- <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['sede']['name'] }}</td> --}}
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['sede']['name'] }}</td>
                     </tr>
                     <tr>
                         <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Estacionamiento</td>
