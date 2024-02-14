@@ -499,7 +499,7 @@ class ProgramacionController extends Controller
     public function sendEmail($email, $data) {        
         $settings = [
             'subject' => "Inchcape",
-            'programacion' => $data
+            'programacion' => "hola"
         ];
 
         Mail::to($email)->send(new ProgramacionMail($settings));

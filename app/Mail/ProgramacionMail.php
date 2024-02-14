@@ -20,7 +20,7 @@ class ProgramacionMail extends Mailable
      */
     private $settings;
 
-    public function __construct($settings = null)
+    public function __construct($settings)
     {
         $this->settings = $settings;
     }
