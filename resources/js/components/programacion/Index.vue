@@ -444,13 +444,10 @@ export default {
                     this.isBtnDisableNew = false;
                 })
 
-            $('#td-schedule').DataTable().destroy();
-            $('#td-schedule2').DataTable().destroy();
-
             await this.validarRole();
 
-            this.$tablaGlobal('#td-schedule');
-            this.$tablaGlobal('#td-schedule2');
+            $('#td-schedule').DataTable();
+            $('#td-schedule2').DataTable();
 
             this.datos.user_id = this.session.id;
         },
@@ -551,7 +548,7 @@ export default {
                     break;
             }
         },
-        async crear() {
+        crear: async function() {
             let valid = await this.validarCampos();
             let resp = false;
 
@@ -579,20 +576,21 @@ export default {
                             '',
                             'success'
                         )
-                        this.init();
+                        window.location.reload();
                     }
 
                 }).catch(function (error) {
                     console.log(error);
                 });
 
-                if (resp) {
-                    $('#td-schedule').DataTable().destroy();
-                    $('#td-schedule2').DataTable().destroy();
-                    await this.validarRole();
-                    this.$tablaGlobal('#td-schedule');
-                    this.$tablaGlobal('#td-schedule2');
-                }
+
+                // if (resp) {
+                //     $('#td-schedule').DataTable().destroy();
+                //     $('#td-schedule2').DataTable().destroy();
+                //     await this.validarRole();
+                //     this.$tablaGlobal('#td-schedule');
+                //     this.$tablaGlobal('#td-schedule2');
+                // }
             }
         },
         buscar: async function () {

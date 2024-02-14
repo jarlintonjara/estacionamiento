@@ -519,17 +519,15 @@ var main_date = getVerifyDate();
                 });
 
               case 6:
-                $('#td-schedule').DataTable().destroy();
-                $('#td-schedule2').DataTable().destroy();
-                _context3.next = 10;
+                _context3.next = 8;
                 return this.validarRole();
 
-              case 10:
-                this.$tablaGlobal('#td-schedule');
-                this.$tablaGlobal('#td-schedule2');
+              case 8:
+                $('#td-schedule').DataTable();
+                $('#td-schedule2').DataTable();
                 this.datos.user_id = this.session.id;
 
-              case 13:
+              case 11:
               case "end":
                 return _context3.stop();
             }
@@ -663,32 +661,32 @@ var main_date = getVerifyDate();
           break;
       }
     },
-    crear: function crear() {
-      var _this3 = this;
+    crear: function () {
+      var _crear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var valid, resp;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _this3.validarCampos();
+                return this.validarCampos();
 
               case 2:
                 valid = _context4.sent;
                 resp = false; // this.datos.fecha_inicio = this.pickerDates.startDate;
                 // this.datos.fecha_fin = this.pickerDates.endDate;
 
-                console.log(_this3.datos);
+                console.log(this.datos);
 
                 if (!valid) {
-                  _context4.next = 15;
+                  _context4.next = 8;
                   break;
                 }
 
                 _context4.next = 8;
-                return axios.post('api/programacion', _this3.datos).then(function (response) {
+                return axios.post('api/programacion', this.datos).then(function (response) {
                   console.log(response.data);
 
                   if (response.data.isSuccess == false) {
@@ -705,36 +703,26 @@ var main_date = getVerifyDate();
 
                     _this3.$swal.fire('Programación creada!', '', 'success');
 
-                    _this3.init();
+                    window.location.reload();
                   }
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
               case 8:
-                if (!resp) {
-                  _context4.next = 15;
-                  break;
-                }
-
-                $('#td-schedule').DataTable().destroy();
-                $('#td-schedule2').DataTable().destroy();
-                _context4.next = 13;
-                return _this3.validarRole();
-
-              case 13:
-                _this3.$tablaGlobal('#td-schedule');
-
-                _this3.$tablaGlobal('#td-schedule2');
-
-              case 15:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
-      }))();
-    },
+        }, _callee4, this);
+      }));
+
+      function crear() {
+        return _crear.apply(this, arguments);
+      }
+
+      return crear;
+    }(),
     buscar: function () {
       var _buscar = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         var _this4 = this;
