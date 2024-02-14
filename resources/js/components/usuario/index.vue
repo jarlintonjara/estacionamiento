@@ -390,6 +390,7 @@ export default {
                 });
 
                 console.log(this.users)
+                console.log($.fn)
                 this.$tablaGlobal("#tableUser");
             // $("#tableUser").DataTable().destroy();
             // $("#tableUser").DataTable();
