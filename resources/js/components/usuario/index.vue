@@ -390,6 +390,7 @@ export default {
                     this.isLoading = false;
                 });
 
+                console.log(this.users)
             $("#tableUser").DataTable().destroy();
             $("#tableUser").DataTable();
         },
