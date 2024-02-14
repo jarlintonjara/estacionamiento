@@ -266,7 +266,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                this.$tablaGlobal('#dt-estacionamiento');
+                this.$tablaGlobal("#dt-estacionamiento");
 
               case 5:
               case "end":

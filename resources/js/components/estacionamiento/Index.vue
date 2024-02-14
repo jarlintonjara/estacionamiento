@@ -202,7 +202,7 @@ export default {
                     this.isLoading = false;
                 })
 
-                this.$tablaGlobal('#dt-estacionamiento');
+                this.$tablaGlobal("#dt-estacionamiento");
         },
         openModalCreate() {
             this.isEdit = false;
