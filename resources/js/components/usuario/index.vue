@@ -299,7 +299,6 @@ export default {
                 cancelButtonText: 'NO'
             }).then((res) => {
                 if(res.isConfirmed) {
-                    
                     this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
                         this.mostrarusers();
@@ -391,8 +390,8 @@ export default {
                 });
 
                 console.log(this.users)
-            $("#tableUser").DataTable().destroy();
-            $("#tableUser").DataTable();
+            // $("#tableUser").DataTable().destroy();
+            // $("#tableUser").DataTable();
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");
