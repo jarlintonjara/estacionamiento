@@ -505,10 +505,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                console.log(this.users); // $("#tableUser").DataTable().destroy();
+                console.log(this.users);
+                this.$tableGlobal("#tableUser"); // $("#tableUser").DataTable().destroy();
                 // $("#tableUser").DataTable();
 
-              case 4:
+              case 5:
               case "end":
                 return _context5.stop();
             }
