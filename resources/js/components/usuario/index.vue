@@ -228,10 +228,10 @@ export default {
     },
     created:  function () {
         const curr_user = localStorage.getItem('curr_user');
-        this.session = JSON.parse(curr_user)
+        this.session = JSON.parse(curr_user);
     },
-    mounted: function () {
-        this.mostrarusers();
+    mounted: async function () {
+        await this.mostrarusers();
     },
     methods: {
         validarCampos() {
@@ -252,6 +252,7 @@ export default {
         },
         crear: async function () {
             let valid = await this.validarCampos();
+
             if (valid) {
                 this.isLoading = true;
                 axios
@@ -301,7 +302,7 @@ export default {
                     });
             }
         },
-        abrirModalCrear() {
+        abrirModalCrear: async function() {
             this.datos = {
                 nombre: "",
                 apellido: "",
@@ -323,7 +324,10 @@ export default {
             this.titulo = "Crear usuario";
             this.btnCrear = true;
             this.btnEditar = false;
+
             $("#modalForm").modal("show");
+
+            await this.mostrarusers();
         },
         abrirModalEditar(datos) {
             this.parkingsFilter = [];
@@ -360,7 +364,7 @@ export default {
             this.id = datos.id;
             $("#modalForm").modal("show");
         },
-        async mostrarusers() {
+        mostrarusers: async function() {
             this.isLoading = true;
 
             await this.axios
@@ -378,7 +382,7 @@ export default {
                     this.isLoading = false;
                 });
 
-            await $("#tableUser").DataTable();
+            $("#tableUser").DataTable();
         },
         cerrarModal() {
             $("#modalForm").modal("hide");

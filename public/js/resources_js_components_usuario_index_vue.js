@@ -260,9 +260,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var curr_user = localStorage.getItem('curr_user');
     this.session = JSON.parse(curr_user);
   },
-  mounted: function mounted() {
-    this.mostrarusers();
-  },
+  mounted: function () {
+    var _mounted = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.mostrarusers();
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
   methods: {
     validarCampos: function validarCampos() {
       if (!this.datos.nombre || !this.datos.apellido || !this.datos.email || !this.datos.role_id) {
@@ -277,19 +297,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return true;
     },
     crear: function () {
-      var _crear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _crear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var _this = this;
 
         var valid;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context.next = 2;
+                _context2.next = 2;
                 return this.validarCampos();
 
               case 2:
-                valid = _context.sent;
+                valid = _context2.sent;
 
                 if (valid) {
                   this.isLoading = true;
@@ -308,10 +328,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function crear() {
@@ -323,17 +343,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     editar: function editar() {
       var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var valid;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context2.next = 2;
+                _context3.next = 2;
                 return _this2.validarCampos();
 
               case 2:
-                valid = _context2.sent;
+                valid = _context3.sent;
 
                 if (valid) {
                   _this2.isLoading = true;
@@ -352,10 +372,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }))();
     },
     borrar: function borrar(id) {
@@ -369,34 +389,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
     },
-    abrirModalCrear: function abrirModalCrear() {
-      var _this4 = this;
+    abrirModalCrear: function () {
+      var _abrirModalCrear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var _this4 = this;
 
-      this.datos = {
-        nombre: "",
-        apellido: "",
-        documento: "",
-        email: "",
-        role_id: "",
-        parking_id: "",
-        cargo: "",
-        area: "",
-        password: "",
-        sede_id: ""
-      };
-      this.parkingsFilter = [];
-      this.parkings.map(function (i) {
-        if (!_this4.users.find(function (e) {
-          return e.parking_id == i.id;
-        })) {
-          _this4.parkingsFilter.push(i);
-        }
-      });
-      this.titulo = "Crear usuario";
-      this.btnCrear = true;
-      this.btnEditar = false;
-      $("#modalForm").modal("show");
-    },
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.datos = {
+                  nombre: "",
+                  apellido: "",
+                  documento: "",
+                  email: "",
+                  role_id: "",
+                  parking_id: "",
+                  cargo: "",
+                  area: "",
+                  password: "",
+                  sede_id: ""
+                };
+                this.parkingsFilter = [];
+                this.parkings.map(function (i) {
+                  if (!_this4.users.find(function (e) {
+                    return e.parking_id == i.id;
+                  })) {
+                    _this4.parkingsFilter.push(i);
+                  }
+                });
+                this.titulo = "Crear usuario";
+                this.btnCrear = true;
+                this.btnEditar = false;
+                $("#modalForm").modal("show");
+                _context4.next = 9;
+                return this.mostrarusers();
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function abrirModalCrear() {
+        return _abrirModalCrear.apply(this, arguments);
+      }
+
+      return abrirModalCrear;
+    }(),
     abrirModalEditar: function abrirModalEditar(datos) {
       var _this5 = this;
 
@@ -434,17 +475,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.id = datos.id;
       $("#modalForm").modal("show");
     },
-    mostrarusers: function mostrarusers() {
-      var _this6 = this;
+    mostrarusers: function () {
+      var _mostrarusers = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _this6.isLoading = true;
-                _context3.next = 3;
-                return _this6.axios.get("/api/usuario").then(function (response) {
+                this.isLoading = true;
+                _context5.next = 3;
+                return this.axios.get("/api/usuario").then(function (response) {
                   _this6.users = response.data.users;
                   _this6.roles = response.data.roles;
                   _this6.sedes = _this6.parseSedeMultiselect(response.data.sedes);
@@ -456,17 +497,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                _context3.next = 5;
-                return $("#tableUser").DataTable();
+                $("#tableUser").DataTable();
 
-              case 5:
+              case 4:
               case "end":
-                return _context3.stop();
+                return _context5.stop();
             }
           }
-        }, _callee3);
-      }))();
-    },
+        }, _callee5, this);
+      }));
+
+      function mostrarusers() {
+        return _mostrarusers.apply(this, arguments);
+      }
+
+      return mostrarusers;
+    }(),
     cerrarModal: function cerrarModal() {
       $("#modalForm").modal("hide");
     },
@@ -478,17 +524,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         title: "Resetear Contraseña",
         text: "¿Estas seguro de resetear la contraseña?"
       }).then( /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(res) {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(res) {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
             while (1) {
-              switch (_context4.prev = _context4.next) {
+              switch (_context6.prev = _context6.next) {
                 case 0:
                   if (!res.isConfirmed) {
-                    _context4.next = 3;
+                    _context6.next = 3;
                     break;
                   }
 
-                  _context4.next = 3;
+                  _context6.next = 3;
                   return _this7.axios.post("/api/resetSimplePassword", {
                     id_user: id
                   }).then(function (res) {
@@ -501,10 +547,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 3:
                 case "end":
-                  return _context4.stop();
+                  return _context6.stop();
               }
             }
-          }, _callee4);
+          }, _callee6);
         }));
 
         return function (_x) {
