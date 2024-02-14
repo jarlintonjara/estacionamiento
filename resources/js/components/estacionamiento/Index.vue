@@ -186,14 +186,12 @@ export default {
 
             return true;
         },
-        async getEstacionamiento(sede_id = this.session.curr_sede_id) {
+        getEstacionamiento: async function(sede_id = this.session.curr_sede_id) {
 
             this.isLoading = true;
 
             await axios.get(`/api/estacionamiento?curr_sede_id=${sede_id}`)
                 .then((res) => {
-
-                    console.log(res)
                     this.sedes = res.data.sedes;
                     this.estacionamientos = res.data.estacionamientos;
                 })
@@ -204,7 +202,7 @@ export default {
                     this.isLoading = false;
                 })
 
-                $('#dt-estacionamiento').DataTable();
+                this.$tablaGlobal('#dt-estacionamiento');
         },
         openModalCreate() {
             this.isEdit = false;
@@ -217,7 +215,7 @@ export default {
         closeModal() {
             $("#modalEstacionamiento").modal("hide")
         },
-        async create() {
+        create: function () {
             let errors = this.validateFields();
 
             if(errors) {
@@ -227,7 +225,7 @@ export default {
                     .then((res) => {
                         $("#modalEstacionamiento").modal("hide")
 
-                        this.getEstacionamiento()
+                        this.getEstacionamiento();
                     })
                     .catch((err) => {
                         console.log(err)
@@ -284,6 +282,7 @@ export default {
                     .then((res) => {
                         this.getEstacionamiento()
                     })
+                    .finally(() => window.location.reload() )
                 }
             })
         }

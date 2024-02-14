@@ -239,6 +239,7 @@
                         .then((res) => {
                             this.getSedes()
                         })
+                        .finally(() => window.location.reload() )
                     }
                 })
             },

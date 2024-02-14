@@ -354,6 +354,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   if (res.isConfirmed) {
                     axios["delete"]('/api/sede/' + id).then(function (res) {
                       _this5.getSedes();
+                    })["finally"](function () {
+                      return window.location.reload();
                     });
                   }
                 });

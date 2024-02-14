@@ -243,21 +243,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return true;
     },
-    getEstacionamiento: function getEstacionamiento() {
-      var _arguments = arguments,
-          _this = this;
+    getEstacionamiento: function () {
+      var _getEstacionamiento = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _this = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var sede_id;
+        var sede_id,
+            _args = arguments;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                sede_id = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : _this.session.curr_sede_id;
-                _this.isLoading = true;
+                sede_id = _args.length > 0 && _args[0] !== undefined ? _args[0] : this.session.curr_sede_id;
+                this.isLoading = true;
                 _context.next = 4;
                 return axios.get("/api/estacionamiento?curr_sede_id=".concat(sede_id)).then(function (res) {
-                  console.log(res);
                   _this.sedes = res.data.sedes;
                   _this.estacionamientos = res.data.estacionamientos;
                 })["catch"](function (err) {
@@ -267,16 +266,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                $('#dt-estacionamiento').DataTable();
+                this.$tablaGlobal('#dt-estacionamiento');
 
               case 5:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
-      }))();
-    },
+        }, _callee, this);
+      }));
+
+      function getEstacionamiento() {
+        return _getEstacionamiento.apply(this, arguments);
+      }
+
+      return getEstacionamiento;
+    }(),
     openModalCreate: function openModalCreate() {
       this.isEdit = false;
       this.isCreated = true;
@@ -290,34 +295,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     create: function create() {
       var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var errors;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                errors = _this2.validateFields();
+      var errors = this.validateFields();
 
-                if (errors) {
-                  _this2.isLoading = true;
-                  axios.post('/api/estacionamiento', _this2.fields).then(function (res) {
-                    $("#modalEstacionamiento").modal("hide");
+      if (errors) {
+        this.isLoading = true;
+        axios.post('/api/estacionamiento', this.fields).then(function (res) {
+          $("#modalEstacionamiento").modal("hide");
 
-                    _this2.getEstacionamiento();
-                  })["catch"](function (err) {
-                    console.log(err);
-                  })["finally"](function () {
-                    _this2.isLoading = false;
-                  });
-                }
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
+          _this2.getEstacionamiento();
+        })["catch"](function (err) {
+          console.log(err);
+        })["finally"](function () {
+          _this2.isLoading = false;
+        });
+      }
     },
     editModal: function editModal(estacionamiento) {
       this.title = "Editar Estacionamiento " + estacionamiento.numero;
@@ -331,11 +322,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     update: function update() {
       var _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var errors;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 errors = _this3.validateFields();
 
@@ -354,10 +345,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3);
+        }, _callee2);
       }))();
     },
     reset: function reset() {
@@ -367,10 +358,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteElem: function deleteElem(id) {
       var _this4 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 _this4.$swal.fire({
                   icon: 'warning',
@@ -380,16 +371,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   if (res.isConfirmed) {
                     axios["delete"]('/api/estacionamiento/' + id).then(function (res) {
                       _this4.getEstacionamiento();
+                    })["finally"](function () {
+                      return window.location.reload();
                     });
                   }
                 });
 
               case 1:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4);
+        }, _callee3);
       }))();
     }
   }
