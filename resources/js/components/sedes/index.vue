@@ -237,11 +237,30 @@
                     if(res.isConfirmed) {
                         axios.delete('/api/sede/' + id)
                         .then((res) => {
-                            this.getSedes()
+                            console.log(' -------- eliminar sede -------- ')
                         })
-                        .finally(() => window.location.reload() )
+                        .finally(() => {
+                            this.$swal.close();
+                            window.location.reload();
+                        })
                     }
                 })
+            },
+            loading: function(){
+                this.$swal.fire({
+                    title: 'Cargando...',
+                    html: `
+                        <div class="spinner-border text-primary my-4" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    onBeforeOpen: () => {
+                        this.$swal.showLoading()
+                    }
+                });
             },
             reset() {
                 this.fields.name = "";

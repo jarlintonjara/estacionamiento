@@ -353,9 +353,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (res) {
                   if (res.isConfirmed) {
                     axios["delete"]('/api/sede/' + id).then(function (res) {
-                      _this5.getSedes();
+                      console.log(' -------- eliminar sede -------- ');
                     })["finally"](function () {
-                      return window.location.reload();
+                      _this5.$swal.close();
+
+                      window.location.reload();
                     });
                   }
                 });
@@ -367,6 +369,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee5);
       }))();
+    },
+    loading: function loading() {
+      var _this6 = this;
+
+      this.$swal.fire({
+        title: 'Cargando...',
+        html: "\n                    <div class=\"spinner-border text-primary my-4\" role=\"status\">\n                        <span class=\"sr-only\">Loading...</span>\n                    </div>\n                ",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        onBeforeOpen: function onBeforeOpen() {
+          _this6.$swal.showLoading();
+        }
+      });
     },
     reset: function reset() {
       this.fields.name = "";
