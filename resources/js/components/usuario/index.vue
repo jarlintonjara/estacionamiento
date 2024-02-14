@@ -290,17 +290,22 @@ export default {
                     });
             }
         },
-        borrar(id) {
-            if (confirm("¿Confirma eliminar el registro?")) {
-                this.axios
-                    .delete(`/api/usuario/${id}`)
+        borrar: function(id) {
+            this.$swal.fire({
+                icon: 'warning',
+                title: '¿Estas seguro(a) de eliminar este registro?'
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    
+                    this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
-                        this.users = [].concat(response.data);
+                        this.mostrarusers();
                     })
                     .catch((error) => {
                         console.log(error);
                     });
-            }
+                }
+            })
         },
         abrirModalCrear: async function() {
             this.datos = {
@@ -384,7 +389,7 @@ export default {
 
             $("#tableUser").DataTable();
         },
-        cerrarModal() {
+        cerrarModal: function() {
             $("#modalForm").modal("hide");
         },
         resetPassword(id) {

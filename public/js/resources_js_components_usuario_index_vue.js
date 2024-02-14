@@ -381,13 +381,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     borrar: function borrar(id) {
       var _this3 = this;
 
-      if (confirm("¿Confirma eliminar el registro?")) {
-        this.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
-          _this3.users = [].concat(response.data);
-        })["catch"](function (error) {
-          console.log(error);
-        });
-      }
+      this.$swal.fire({
+        icon: 'warning',
+        title: '¿Estas seguro(a) de eliminar este registro?'
+      }).then(function (res) {
+        if (res.isConfirmed) {
+          _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
+            _this3.mostrarusers();
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        }
+      });
     },
     abrirModalCrear: function () {
       var _abrirModalCrear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
