@@ -157,7 +157,8 @@
                         this.isLoading = false;
                     })
 
-                await $('#tableSedes').DataTable();
+                    $("#tableSedes").DataTable().destroy();
+                    $("#tableSedes").DataTable();
             },
             openModalCreate() {
                 this.title = "Crear Sede";

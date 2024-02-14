@@ -220,8 +220,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                _context.next = 5;
-                return $('#tableSedes').DataTable();
+                $("#tableSedes").DataTable().destroy();
+                $("#tableSedes").DataTable();
 
               case 5:
               case "end":

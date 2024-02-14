@@ -202,7 +202,8 @@ export default {
                     this.isLoading = false;
                 })
 
-                this.$tablaGlobal("#dt-estacionamiento");
+                $("#dt-estacionamiento").DataTable().destroy();
+                $("#dt-estacionamiento").DataTable();
         },
         openModalCreate() {
             this.isEdit = false;
