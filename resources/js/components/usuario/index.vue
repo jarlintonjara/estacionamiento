@@ -306,6 +306,7 @@ export default {
                     .then((response) => {
                         console.log(' ------------- borrar -----------')
                         this.users = response.data.users;
+                        console.log(this.$refs.dataTable)
                     })
                     .catch((error) => {
                         console.log(error);

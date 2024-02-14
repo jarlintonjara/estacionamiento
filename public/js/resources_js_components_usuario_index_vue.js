@@ -394,6 +394,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
             console.log(' ------------- borrar -----------');
             _this3.users = response.data.users;
+            console.log(_this3.$refs.dataTable);
           })["catch"](function (error) {
             console.log(error);
           })["finally"](function () {
