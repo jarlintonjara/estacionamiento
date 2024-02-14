@@ -293,7 +293,10 @@ export default {
         borrar: function(id) {
             this.$swal.fire({
                 icon: 'warning',
-                title: '¿Estas seguro(a) de eliminar este registro?'
+                title: '¿Estas seguro(a) de eliminar este registro?',
+                showCancelButton: true,
+                confirmButtonText: 'SI',
+                cancelButtonText: 'NO'
             }).then((res) => {
                 if(res.isConfirmed) {
                     

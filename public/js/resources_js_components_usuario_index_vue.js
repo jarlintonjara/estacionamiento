@@ -383,7 +383,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.$swal.fire({
         icon: 'warning',
-        title: '¿Estas seguro(a) de eliminar este registro?'
+        title: '¿Estas seguro(a) de eliminar este registro?',
+        showCancelButton: true,
+        confirmButtonText: 'SI',
+        cancelButtonText: 'NO'
       }).then(function (res) {
         if (res.isConfirmed) {
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
