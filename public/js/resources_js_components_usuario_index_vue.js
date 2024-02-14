@@ -506,7 +506,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 console.log(this.users);
-                this.$tableGlobal("#tableUser"); // $("#tableUser").DataTable().destroy();
+                this.$tablaGlobal("#tableUser"); // $("#tableUser").DataTable().destroy();
                 // $("#tableUser").DataTable();
 
               case 5:

@@ -390,7 +390,7 @@ export default {
                 });
 
                 console.log(this.users)
-                this.$tableGlobal("#tableUser");
+                this.$tablaGlobal("#tableUser");
             // $("#tableUser").DataTable().destroy();
             // $("#tableUser").DataTable();
         },
