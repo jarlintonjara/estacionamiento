@@ -305,6 +305,8 @@ class ProgramacionController extends Controller
         }
 
         // Enviar correo
+        $schedule['sede'] = $schedule->parking->sede;
+
         $user = User::find($request->user_id);
         $this->sendEmail($user->email, $schedule);
 
@@ -498,8 +500,8 @@ class ProgramacionController extends Controller
 
     public function sendEmail($email, $data) {        
         $settings = [
-            'subject' => "Inchcape",
-            'programacion' => "hola"
+            'subject' => "Confirmacion de Reserva - Inchcape",
+            'programacion' => $data
         ];
 
         Mail::to($email)->send(new ProgramacionMail($settings));

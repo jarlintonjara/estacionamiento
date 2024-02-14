@@ -300,14 +300,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (errors) {
         this.isLoading = true;
         axios.post('/api/estacionamiento', this.fields).then(function (res) {
-          $("#modalEstacionamiento").modal("hide");
-
           _this2.getEstacionamiento();
         })["catch"](function (err) {
           console.log(err);
         })["finally"](function () {
           _this2.isLoading = false;
         });
+        $("#modalEstacionamiento").modal("hide");
       }
     },
     editModal: function editModal(estacionamiento) {

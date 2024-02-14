@@ -17,20 +17,20 @@
 
                 <table cellspacing="0" cellpadding="0" border="0" align="center" style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
                     <tr>
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Sede</td>
+                        {{-- <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['sede']['name'] }}</td> --}}
+                    </tr>
+                    <tr>
                         <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Estacionamiento</td>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $settings['programacion']  }}</td>
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['parking']['numero']  }}</td>
                     </tr>
                     <tr>
                         <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Fecha</td>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;"></td>
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['fecha'] }}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Hora</td>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;"></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Sede</td>
-                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;"></td>
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">Horario</td>
+                        <td style="padding: 20px; border: 1px solid #cccccc; text-align: center;">{{ $reserva['hora_inicio'] }} - {{ $reserva['hora_fin'] }}</td>
                     </tr>
                 </table>
                 

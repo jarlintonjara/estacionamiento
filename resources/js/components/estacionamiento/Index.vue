@@ -223,8 +223,6 @@ export default {
 
                 axios.post('/api/estacionamiento', this.fields)
                     .then((res) => {
-                        $("#modalEstacionamiento").modal("hide")
-
                         this.getEstacionamiento();
                     })
                     .catch((err) => {
@@ -233,6 +231,8 @@ export default {
                     .finally(() => {
                         this.isLoading = false;
                     })
+
+                $("#modalEstacionamiento").modal("hide")
             }
         },
         editModal(estacionamiento) {

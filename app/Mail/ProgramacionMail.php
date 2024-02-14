@@ -25,37 +25,44 @@ class ProgramacionMail extends Mailable
         $this->settings = $settings;
     }
 
+    public function build() {
+        return $this->view('mail.ReservaConfirmacion')
+        ->subject($this->settings['subject'])->with([
+            'reserva'=> $this->settings['programacion']
+        ]);
+    }
+
     /**
      * Get the message envelope.
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
-    {
-        return new Envelope(
-            subject: $this->settings['subject'],
-        );
-    }
+    // public function envelope()
+    // {
+    //     return new Envelope(
+    //         subject: $this->settings['subject'],
+    //     );
+    // }
 
     /**
      * Get the message content definition.
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
-    {
-        return new Content(
-            view: 'mail.ReservaConfirmacion',
-        );
-    }
+    // public function content()
+    // {
+    //     return new Content(
+    //         view: 'mail.ReservaConfirmacion',
+    //     );
+    // }
 
     /**
      * Get the attachments for the message.
      *
      * @return array
      */
-    public function attachments()
-    {
-        return [];
-    }
+    // public function attachments()
+    // {
+    //     return [];
+    // }
 }
