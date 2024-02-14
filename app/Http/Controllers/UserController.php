@@ -53,7 +53,7 @@ class UserController extends Controller
 
         $roles = RoleModel::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('deleted_at', null)->get();
-        
+
         return response()->json([
             "roles" => $roles,
             "sedes" => $sedes,
@@ -209,6 +209,8 @@ class UserController extends Controller
         $user->status = 0;
         $user->update();
 
-        return response()->json($user);
+        $users = User::where('status', 1)->get();
+
+        return response()->json($users);
     }
 }

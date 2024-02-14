@@ -3027,38 +3027,6 @@ var render = function () {
                         1
                       ),
                       _vm._v(" "),
-                      _vm.user && _vm.user.role_id == 1
-                        ? _c(
-                            "div",
-                            { staticClass: "form-group col-md-6" },
-                            [
-                              _c("label", { attrs: { for: "Usuario" } }, [
-                                _vm._v("Usuario"),
-                              ]),
-                              _vm._v(" "),
-                              _c("v-select", {
-                                staticClass: "vue-select2",
-                                attrs: {
-                                  name: "select2",
-                                  options: _vm.usersFilter,
-                                  reduce: function (label) {
-                                    return label.code
-                                  },
-                                },
-                                on: { input: _vm.changeUser },
-                                model: {
-                                  value: _vm.datos.user_id,
-                                  callback: function ($$v) {
-                                    _vm.$set(_vm.datos, "user_id", $$v)
-                                  },
-                                  expression: "datos.user_id",
-                                },
-                              }),
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
                       _vm.user && _vm.user.role_id != 1
                         ? _c("div", { staticClass: "form-group col-md-6" }, [
                             _c("label", { attrs: { for: "Usuario" } }, [

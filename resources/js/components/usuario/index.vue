@@ -255,6 +255,7 @@ export default {
 
             if (valid) {
                 this.isLoading = true;
+                
                 axios
                     .post("api/usuario", this.datos)
                     .then((response) => {
@@ -301,6 +302,8 @@ export default {
                 if(res.isConfirmed) {
                     this.axios.delete(`/api/usuario/${id}`)
                     .then((response) => {
+                        console.log(' ------------- borrar -----------')
+                        console.log(response)
                         this.mostrarusers();
                     })
                     .catch((error) => {
@@ -390,10 +393,12 @@ export default {
                 });
 
                 console.log(this.users)
-                console.log($.fn.DataTable.isDataTable("#tableUser"))
-                this.$tablaGlobal("#tableUser");
-            // $("#tableUser").DataTable().destroy();
-            // $("#tableUser").DataTable();
+
+                if($.fn.DataTable.isDataTable("#tableUser")) {
+                    $("#tableUser").DataTable().destroy();
+                }
+
+                $("#tableUser").DataTable();
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");

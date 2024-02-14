@@ -390,6 +390,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (res) {
         if (res.isConfirmed) {
           _this3.axios["delete"]("/api/usuario/".concat(id)).then(function (response) {
+            console.log(' ------------- borrar -----------');
+            console.log(response);
+
             _this3.mostrarusers();
           })["catch"](function (error) {
             console.log(error);
@@ -506,9 +509,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 console.log(this.users);
-                console.log($.fn.DataTable.isDataTable("#tableUser"));
-                this.$tablaGlobal("#tableUser"); // $("#tableUser").DataTable().destroy();
-                // $("#tableUser").DataTable();
+
+                if ($.fn.DataTable.isDataTable("#tableUser")) {
+                  $("#tableUser").DataTable().destroy();
+                }
+
+                $("#tableUser").DataTable();
 
               case 6:
               case "end":

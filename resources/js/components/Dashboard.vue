@@ -367,12 +367,12 @@
                                     </div>
 
                                     <!-- Usuario Admin -->
-                                    <div class="form-group col-md-6" v-if="user && user.role_id == 1">
+                                    <!-- <div class="form-group col-md-6" v-if="user && user.role_id == 1">
                                         <label for="Usuario">Usuario</label>
                                         <v-select class="vue-select2" name="select2" :options="usersFilter"
                                             v-model="datos.user_id" :reduce="label => label.code" @input="changeUser">
                                         </v-select>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Usuario Normal -->
                                     <div class="form-group col-md-6" v-if="user && user.role_id != 1">
