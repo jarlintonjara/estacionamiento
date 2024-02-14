@@ -389,7 +389,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: 'SI',
         cancelButtonText: 'NO'
       }).then(function (res) {
-        // this.datatable.clear();
         if (res.isConfirmed) {
           _this3.loading();
 
@@ -499,20 +498,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context5.prev = _context5.next) {
               case 0:
                 this.isLoading = true;
-                _context5.next = 3;
+                this.datatable.clear();
+                _context5.next = 4;
                 return this.axios.get("/api/usuario").then(function (response) {
                   _this6.users = response.data.users;
                   _this6.roles = response.data.roles;
                   _this6.sedes = _this6.parseSedeMultiselect(response.data.sedes);
                   _this6.parkings = response.data.parkings;
+                  _this6.datatable = $("#tableUser").DataTable();
                 })["catch"](function (error) {
                   console.log(error);
                 })["finally"](function () {
                   _this6.isLoading = false;
                 });
-
-              case 3:
-                this.datatable = $("#tableUser").DataTable();
 
               case 4:
               case "end":

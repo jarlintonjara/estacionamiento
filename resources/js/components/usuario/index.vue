@@ -301,8 +301,6 @@ export default {
                 confirmButtonText: 'SI',
                 cancelButtonText: 'NO'
             }).then((res) => {
-                // this.datatable.clear();
-
                 if(res.isConfirmed) {
                     this.loading();
 
@@ -385,6 +383,8 @@ export default {
         mostrarusers: async function() {
             this.isLoading = true;
 
+            this.datatable.clear();
+
             await this.axios
                 .get("/api/usuario")
                 .then((response) => {
@@ -392,6 +392,8 @@ export default {
                     this.roles = response.data.roles;
                     this.sedes = this.parseSedeMultiselect(response.data.sedes);
                     this.parkings = response.data.parkings;
+
+                    this.datatable = $("#tableUser").DataTable();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -399,8 +401,6 @@ export default {
                 .finally(() => {
                     this.isLoading = false;
                 });
-
-                this.datatable = $("#tableUser").DataTable();
         },
         cerrarModal: function() {
             $("#modalForm").modal("hide");
