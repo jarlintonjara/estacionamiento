@@ -2789,8 +2789,6 @@ var render = function () {
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(pmd.sede_name))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(pmd.sede_email))]),
-                              _vm._v(" "),
                               _c("td", [
                                 _vm.user.role_id != 3
                                   ? _c(
@@ -3836,8 +3834,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Número")]),
         _vm._v(" "),
         _c("th", [_vm._v("Sede")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Email")]),
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")]),
       ]),

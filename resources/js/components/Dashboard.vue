@@ -210,7 +210,7 @@
                                         <tr>
                                             <th>Número</th>
                                             <th>Sede</th>
-                                            <th>Email</th>
+                                            <!-- <th>Email</th> -->
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -218,7 +218,7 @@
                                         <tr v-for="pmd in estacioneshoy" :key="pmd.numero+pmd.id">
                                             <td>{{ pmd.numero }}</td>
                                             <td>{{ pmd.sede_name }}</td>
-                                            <td>{{ pmd.sede_email }}</td>
+                                            <!-- <td>{{ pmd.sede_email }}</td> -->
                                             <td>
                                                 <button type="button" @click="abrirModal(pmd, 'hoy')" class="btn btn-primary" v-if="user.role_id != 3">
                                                     <span>Reservar</span>
