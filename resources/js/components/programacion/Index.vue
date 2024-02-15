@@ -516,7 +516,7 @@ export default {
 
                     if (this.allDay) {
                         this.disabled = true;
-                        this.datos.hora_inicio = "07:00";
+                        this.datos.hora_inicio = "08:00";
                         this.datos.hora_fin = "19:00";
                         this.datos.turno = "D";
                     }
@@ -529,7 +529,7 @@ export default {
 
                     if (this.morning) {
                         this.disabled = true;
-                        this.datos.hora_inicio = "07:00";
+                        this.datos.hora_inicio = "08:00";
                         this.datos.hora_fin = "13:30";
                         this.datos.turno = "M";
                     }
