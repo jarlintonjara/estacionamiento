@@ -573,6 +573,8 @@ var getVerifyDate = function getVerifyDate() {
   if (num_day == 6) curr_date.setDate(curr_date.getDate() + 2);
   var curr_date_tomorrow = new Date(curr_date);
   curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+  if (curr_date_tomorrow.getDay() == 0) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+  if (curr_date_tomorrow.getDay() == 6) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 2);
   console.log({
     curr_date: curr_date,
     curr_date_tomorrow: curr_date_tomorrow
@@ -644,8 +646,8 @@ var main_date = getVerifyDate();
         estacionamiento_id: '',
         user_id: '',
         fecha: date,
-        fecha_inicio: startDate,
-        fecha_fin: endDate,
+        fecha_inicio: main_date.start_date,
+        fecha_fin: main_date.end_date,
         hora_inicio: '',
         hora_fin: '',
         turno: '',
@@ -993,35 +995,10 @@ var main_date = getVerifyDate();
 
               case 2:
                 valid = _context6.sent;
+                console.log(this.datos);
+                return _context6.abrupt("return");
 
-                if (!valid) {
-                  _context6.next = 7;
-                  break;
-                }
-
-                this.isSaving = true;
-                _context6.next = 7;
-                return axios.post('api/programacion', this.datos).then(function (response) {
-                  if (response.data.isSuccess == false) {
-                    _this3.$swal.fire({
-                      icon: 'error',
-                      title: 'Oops...',
-                      text: response.data.message
-                    });
-                  } else {
-                    _this3.$router.push({
-                      path: 'reservas'
-                    });
-
-                    $("#modalForm").modal("hide");
-                  }
-                })["catch"](function (error) {
-                  console.log(error);
-                })["finally"](function () {
-                  _this3.isSaving = false;
-                });
-
-              case 7:
+              case 9:
               case "end":
                 return _context6.stop();
             }
@@ -1058,11 +1035,12 @@ var main_date = getVerifyDate();
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
+              console.log(date);
               this.datos.fecha = date;
               this.datos.fecha_inicio = date;
               this.datos.fecha_fin = date;
 
-            case 3:
+            case 4:
             case "end":
               return _context7.stop();
           }

@@ -538,7 +538,11 @@ const getVerifyDate = () => {
     let curr_date_tomorrow = new Date(curr_date);
     curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
 
-    console.log({curr_date, curr_date_tomorrow})
+    if(curr_date_tomorrow.getDay() == 0) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+
+    if(curr_date_tomorrow.getDay() == 6) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 2)
+
+    console.log({ curr_date, curr_date_tomorrow })
 
     return {
         'start_date': curr_date,
@@ -610,8 +614,8 @@ export default {
                 estacionamiento_id: '',
                 user_id: '',
                 fecha: date,
-                fecha_inicio: startDate,
-                fecha_fin: endDate,
+                fecha_inicio: main_date.start_date,
+                fecha_fin: main_date.end_date,
                 hora_inicio: '',
                 hora_fin: '',
                 turno: '',
@@ -852,6 +856,9 @@ export default {
         crear: async function() {
             let valid = await this.validarCampos();
 
+            console.log(this.datos)
+            return;
+
             if(valid) {
                 this.isSaving = true;
                 
@@ -898,6 +905,7 @@ export default {
             this.btnEditar   = false;
         },
         verifyAvailableParking: async function(date) {            
+            console.log(date)
             this.datos.fecha = date;
             this.datos.fecha_inicio = date;
             this.datos.fecha_fin = date;
