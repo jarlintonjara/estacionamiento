@@ -27,10 +27,10 @@
                                 </button>
 
                             <div class="content d-flex w-100 justify-content-end gap-2">
-                                    <button class="btn btn-danger" @click="showT(1)">Semana
+                                    <button class="btn btn-danger" @click="showT(1)" :disabled="isBtnDisableNew">Semana
                                         Actual</button>
 
-                                    <button class="btn btn-danger" @click="showT(2)">Semana
+                                    <button class="btn btn-danger" @click="showT(2)" :disabled="isBtnDisableNew">Semana
                                         Siguiente</button>
                                 </div>
                             </div><br>
@@ -93,8 +93,14 @@
                                             <td>{{ schedule.hora_inicio }}</td>
                                             <td>{{ schedule.hora_fin }}</td>
                                             <td>
-                                                <button class="btn btn-warning" @click="abrirModalEditar(schedule)"><i
-                                                        class="far fa-edit"></i></button>
+                                                <button class="btn btn-warning" @click="abrirModalEditar(schedule)">
+                                                    <i v-if="!schedule.editing" class="far fa-edit"></i>
+                                                    <div v-if="schedule.editing"
+                                                        class="p-0 m-0 spinner-border text-dark"
+                                                        style="width: 1rem; height: 1rem;" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </button>
                                                 <button class="btn btn-danger" @click="borrar(schedule.id)"><i
                                                         class="fa fa-trash"></i></button>
                                             </td>

@@ -323,6 +323,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
  //you need to import the CSS manually
 
 
@@ -2152,6 +2158,7 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-danger",
+                          attrs: { disabled: _vm.isBtnDisableNew },
                           on: {
                             click: function ($event) {
                               return _vm.showT(1)
@@ -2169,6 +2176,7 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-danger",
+                          attrs: { disabled: _vm.isBtnDisableNew },
                           on: {
                             click: function ($event) {
                               return _vm.showT(2)
@@ -2344,7 +2352,38 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_c("i", { staticClass: "far fa-edit" })]
+                                    [
+                                      !schedule.editing
+                                        ? _c("i", {
+                                            staticClass: "far fa-edit",
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      schedule.editing
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "p-0 m-0 spinner-border text-dark",
+                                              staticStyle: {
+                                                width: "1rem",
+                                                height: "1rem",
+                                              },
+                                              attrs: { role: "status" },
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "visually-hidden",
+                                                },
+                                                [_vm._v("Loading...")]
+                                              ),
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c(
