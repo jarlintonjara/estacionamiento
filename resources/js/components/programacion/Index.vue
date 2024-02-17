@@ -302,6 +302,10 @@ const getVerifyDate = () => {
     let curr_date_tomorrow = new Date(curr_date);
     curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
 
+    if(curr_date_tomorrow.getDay() == 0) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 1);
+
+    if(curr_date_tomorrow.getDay() == 6) curr_date_tomorrow.setDate(curr_date_tomorrow.getDate() + 2)
+
     console.log({ curr_date, curr_date_tomorrow })
 
     return {

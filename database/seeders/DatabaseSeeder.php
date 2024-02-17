@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
         //     $user->password = Hash::make('12345678');
         //     $user->update();
         // }
+        // return;
         
         foreach(self::$sedes as $sede) {
             $sede = Sede::create([
