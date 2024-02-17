@@ -321,6 +321,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
  //you need to import the CSS manually
 
 
@@ -503,15 +505,13 @@ var main_date = getVerifyDate();
               case 0:
                 console.log(' ----------- cargando reservas ----------- ');
                 this.isLoading = true;
-                console.log('session user id');
-                console.log(this.session.id);
-                _context3.next = 6;
+                _context3.next = 4;
                 return this.axios.get("/api/programacion?user_id=".concat(this.session.id)).then(function (response) {
                   _this2.users = response.data.users;
                   _this2.parkings = response.data.parkings;
                   _this2.schedules = response.data.schedules;
                   _this2.nextSchedules = response.data.nextSchedules;
-                  console.log(response.data.schedules);
+                  console.log(response.data);
                 })["catch"](function (error) {
                   console.log(error);
                   _this2.schedules = [];
@@ -520,16 +520,16 @@ var main_date = getVerifyDate();
                   _this2.isBtnDisableNew = false;
                 });
 
-              case 6:
-                _context3.next = 8;
+              case 4:
+                _context3.next = 6;
                 return this.validarRole();
 
-              case 8:
+              case 6:
                 $('#td-schedule').DataTable();
                 $('#td-schedule2').DataTable();
                 this.datos.user_id = this.session.id;
 
-              case 11:
+              case 9:
               case "end":
                 return _context3.stop();
             }
@@ -667,7 +667,7 @@ var main_date = getVerifyDate();
       var _crear = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var _this3 = this;
 
-        var valid, resp;
+        var valid;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -677,20 +677,14 @@ var main_date = getVerifyDate();
 
               case 2:
                 valid = _context4.sent;
-                resp = false; // this.datos.fecha_inicio = this.pickerDates.startDate;
-                // this.datos.fecha_fin = this.pickerDates.endDate;
-
-                console.log(this.datos);
 
                 if (!valid) {
-                  _context4.next = 8;
+                  _context4.next = 6;
                   break;
                 }
 
-                _context4.next = 8;
+                _context4.next = 6;
                 return axios.post('api/programacion', this.datos).then(function (response) {
-                  console.log(response.data);
-
                   if (response.data.isSuccess == false) {
                     _this3.$swal.fire({
                       icon: 'error',
@@ -698,7 +692,6 @@ var main_date = getVerifyDate();
                       text: response.data.message
                     });
                   } else {
-                    resp = true;
                     _this3.schedules = [].concat(response.data.schedules);
                     _this3.nextSchedules = [].concat(response.data.nextSchedules);
                     $('#modalForm').modal('hide');
@@ -711,7 +704,7 @@ var main_date = getVerifyDate();
                   console.log(error);
                 });
 
-              case 8:
+              case 6:
               case "end":
                 return _context4.stop();
             }
@@ -812,14 +805,12 @@ var main_date = getVerifyDate();
                 valid = _context6.sent;
 
                 if (!valid) {
-                  _context6.next = 15;
+                  _context6.next = 14;
                   break;
                 }
 
                 resp = false;
-                console.log(_this5.datos); // alert("se esta trabajando en esta funcionalidad")
-
-                _context6.next = 8;
+                _context6.next = 7;
                 return axios.put('/api/programacion/' + _this5.id, _this5.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
                     _this5.$swal.fire({
@@ -830,38 +821,29 @@ var main_date = getVerifyDate();
                   } else {
                     $('#modalForm').modal('hide');
 
-                    _this5.init(); // resp = true;
-                    // this.schedules = [].concat(response.data.schedules);
-                    // this.nextSchedules = [].concat(response.data.nextSchedules);
-                    // this.id = '';
-                    // this.$swal.fire(
-                    //     'Programación editado correctamente!',
-                    //     '',
-                    //     'success'
-                    // )
-
+                    _this5.init();
                   }
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
-              case 8:
+              case 7:
                 if (!resp) {
-                  _context6.next = 15;
+                  _context6.next = 14;
                   break;
                 }
 
                 $('#td-schedule').DataTable().destroy();
                 $('#td-schedule2').DataTable().destroy();
-                _context6.next = 13;
+                _context6.next = 12;
                 return _this5.validarRole();
 
-              case 13:
+              case 12:
                 _this5.$tablaGlobal('#td-schedule');
 
                 _this5.$tablaGlobal('#td-schedule2');
 
-              case 15:
+              case 14:
               case "end":
                 return _context6.stop();
             }
@@ -870,18 +852,7 @@ var main_date = getVerifyDate();
       }))();
     },
     borrar: function borrar(id) {
-      var self = this; // this.$swal.fire({
-      //     title: 'Seguro de eliminar?',
-      //     text: "",
-      //     type: 'warning',
-      //     showCancelButton: true,
-      //     confirmButtonColor: '#3085d6',
-      //     cancelButtonColor: '#d33',
-      //     confirmButtonText: 'Si'
-      // }).then(function (result) {
-      //     if (result.isConfirmed) {
-      //     }
-      // })
+      var self = this;
 
       if (confirm("¿Confirma eliminar el registro?")) {
         self.axios["delete"]("/api/programacion/".concat(id)).then(function (response) {
@@ -918,30 +889,7 @@ var main_date = getVerifyDate();
 
               case 11:
                 this.isLoadingModalNuevo = false;
-                $('#modalForm').modal('show'); // const startDate = new Date();
-                // const endDate = new Date();
-                // endDate.setDate(endDate.getDate());
-                // this.pickerDates = {
-                //     startDate,
-                //     endDate
-                // }
-                // this.allDay = false;
-                // this.morning = false;
-                // this.afternoon = false;
-                // this.disabled = false;
-                // this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
-                // // this.datos.user_id = '';
-                // this.datos.fecha = '';
-                // this.datos.fecha_inicio = '';
-                // this.datos.fecha_fin = '';
-                // this.datos.hora_inicio = '';
-                // this.datos.hora_fin = '';
-                // this.datos.observacion = '';
-                // this.titulo = 'Crear Reserva';
-                // this.btnCrear = false;
-                // this.btnClose = true;
-                // this.isBtnSearch = true;
-                // this.btnEditar = false;
+                $('#modalForm').modal('show');
 
               case 13:
               case "end":
@@ -964,7 +912,8 @@ var main_date = getVerifyDate();
             switch (_context8.prev = _context8.next) {
               case 0:
                 console.log(" ------------- abrir modal editar ------------- ");
-                this.isLoadingModalEditar = true; // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
+                this.isLoadingModalEditar = true;
+                datos.editing = true; // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
 
                 this.datos.fecha = new Date(datos.fecha + "T00:00:00");
                 this.id = datos.id;
@@ -980,30 +929,16 @@ var main_date = getVerifyDate();
                 this.btnCrear = false;
                 this.mode = 'editar';
                 this.onChange(this.datos.turno);
-                _context8.next = 18;
+                _context8.next = 19;
                 return this.changeUser(this.datos.user_id);
 
-              case 18:
+              case 19:
                 this.isLoadingModalEditar = false;
                 $("#contentSedes").removeClass('d-none');
-                $("#modalForm").modal("show"); // this.allDay = false;
-                // this.partialDay = false;
-                // this.disabled = false;
-                // this.datos.estacionamiento_id = datos.estacionamiento_id;
-                // this.datos.user_id = datos.user_id;
-                // this.datos.fecha = datos.fecha;
-                // this.datos.hora_inicio = datos.hora_inicio;
-                // this.datos.hora_fin = datos.hora_fin;
-                // this.datos.turno = datos.turno;
-                // this.datos.observacion = datos.observacion;
-                // this.titulo = ' Editar Reserva'
-                // this.btnCrear = false
-                // this.btnEditar = true
-                // this.id = datos.id;
-                // this.onChange(this.datos.turno);
-                // $('#modalForm').modal('show')
+                $("#modalForm").modal("show");
+                datos.editing = false;
 
-              case 21:
+              case 23:
               case "end":
                 return _context8.stop();
             }
@@ -2207,33 +2142,44 @@ var render = function () {
                   ),
                   _vm._v(" "),
                   _c(
-                    "button",
+                    "div",
                     {
-                      staticClass: "btn btn-danger",
-                      staticStyle: { "margin-left": "auto" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.showT(1)
-                        },
-                      },
-                    },
-                    [_vm._v("Semana\n                                Actual")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger d-none",
-                      staticStyle: { "margin-left": "auto" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.showT(2)
-                        },
-                      },
+                      staticClass:
+                        "content d-flex w-100 justify-content-end gap-2",
                     },
                     [
-                      _vm._v(
-                        "Semana\n                                Siguiente"
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function ($event) {
+                              return _vm.showT(1)
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "Semana\n                                    Actual"
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function ($event) {
+                              return _vm.showT(2)
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "Semana\n                                    Siguiente"
+                          ),
+                        ]
                       ),
                     ]
                   ),
@@ -2292,13 +2238,13 @@ var render = function () {
                                       },
                                     },
                                     [
-                                      !_vm.isLoadingModalEditar
+                                      !schedule.editing
                                         ? _c("i", {
                                             staticClass: "far fa-edit",
                                           })
                                         : _vm._e(),
                                       _vm._v(" "),
-                                      _vm.isLoadingModalEditar
+                                      schedule.editing
                                         ? _c(
                                             "div",
                                             {
@@ -2361,68 +2307,61 @@ var render = function () {
                           _vm._v(" "),
                           _c(
                             "tbody",
-                            _vm._l(
-                              _vm.nextSchedulesFilter,
-                              function (schedule) {
-                                return _c("tr", { key: schedule.id }, [
-                                  _c("td", [
-                                    _vm._v(_vm._s(schedule.parking.numero)),
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        schedule.user.nombre +
-                                          " " +
-                                          schedule.user.apellido
-                                      )
-                                    ),
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(_vm._s(schedule.sede.name)),
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(schedule.dia))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(_vm._s(schedule.hora_inicio)),
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-warning",
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.abrirModalEditar(
-                                              schedule
-                                            )
-                                          },
+                            _vm._l(_vm.nextSchedules, function (schedule) {
+                              return _c("tr", { key: schedule.id }, [
+                                _c("td", [
+                                  _vm._v(_vm._s(schedule.parking.numero)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      schedule.user.nombre +
+                                        " " +
+                                        schedule.user.apellido
+                                    )
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(schedule.sede.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(schedule.dia))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(schedule.hora_inicio)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(schedule.hora_fin))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-warning",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.abrirModalEditar(schedule)
                                         },
                                       },
-                                      [_c("i", { staticClass: "far fa-edit" })]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger",
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.borrar(schedule.id)
-                                          },
+                                    },
+                                    [_c("i", { staticClass: "far fa-edit" })]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.borrar(schedule.id)
                                         },
                                       },
-                                      [_c("i", { staticClass: "fa fa-trash" })]
-                                    ),
-                                  ]),
-                                ])
-                              }
-                            ),
+                                    },
+                                    [_c("i", { staticClass: "fa fa-trash" })]
+                                  ),
+                                ]),
+                              ])
+                            }),
                             0
                           ),
                         ]

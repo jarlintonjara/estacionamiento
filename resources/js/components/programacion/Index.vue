@@ -26,11 +26,13 @@
                                     <span v-if="isLoadingModalNuevo">Cargando...</span>
                                 </button>
 
-                                <button style="margin-left: auto;" class="btn btn-danger" @click="showT(1)">Semana
-                                    Actual</button>
+                            <div class="content d-flex w-100 justify-content-end gap-2">
+                                    <button class="btn btn-danger" @click="showT(1)">Semana
+                                        Actual</button>
 
-                                <button style="margin-left: auto;" class="btn btn-danger d-none" @click="showT(2)">Semana
-                                    Siguiente</button>
+                                    <button class="btn btn-danger" @click="showT(2)">Semana
+                                        Siguiente</button>
+                                </div>
                             </div><br>
                             <div v-if="showTable">
                                 <table id="td-schedule" class="table table-bordered table-hover table-striped w-100">
@@ -55,8 +57,8 @@
                                             <td>{{ schedule.hora_fin }}</td>
                                             <td>
                                                 <button class="btn btn-warning" @click="abrirModalEditar(schedule)">
-                                                    <i v-if="!isLoadingModalEditar" class="far fa-edit"></i>
-                                                    <div v-if="isLoadingModalEditar"
+                                                    <i v-if="!schedule.editing" class="far fa-edit"></i>
+                                                    <div v-if="schedule.editing"
                                                         class="p-0 m-0 spinner-border text-dark"
                                                         style="width: 1rem; height: 1rem;" role="status">
                                                         <span class="visually-hidden">Loading...</span>
@@ -83,7 +85,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="schedule in nextSchedulesFilter" :key="schedule.id">
+                                        <tr v-for="schedule in nextSchedules" :key="schedule.id">
                                             <td>{{ schedule.parking.numero }}</td>
                                             <td>{{ schedule.user.nombre + " " + schedule.user.apellido }}</td>
                                             <td>{{ schedule.sede.name }}</td>
@@ -427,9 +429,6 @@ export default {
 
             this.isLoading = true;
 
-            console.log('session user id')
-            console.log(this.session.id)
-
             await this.axios.get(`/api/programacion?user_id=${this.session.id}`)
                 .then(response => {
                     this.users = response.data.users;
@@ -437,7 +436,7 @@ export default {
                     this.schedules = response.data.schedules;
                     this.nextSchedules = response.data.nextSchedules;
 
-                    console.log(response.data.schedules)
+                    console.log(response.data)
                 })
                 .catch(error => {
                     console.log(error);
@@ -554,16 +553,9 @@ export default {
         },
         crear: async function() {
             let valid = await this.validarCampos();
-            let resp = false;
-
-            // this.datos.fecha_inicio = this.pickerDates.startDate;
-            // this.datos.fecha_fin = this.pickerDates.endDate;
-
-            console.log(this.datos)
 
             if (valid) {
                 await axios.post('api/programacion', this.datos).then(response => {
-                    console.log(response.data)
                     if (response.data.isSuccess == false) {
                         this.$swal.fire({
                             icon: 'error',
@@ -571,7 +563,6 @@ export default {
                             text: response.data.message,
                         })
                     } else {
-                        resp = true;
                         this.schedules = [].concat(response.data.schedules);
                         this.nextSchedules = [].concat(response.data.nextSchedules);
                         $('#modalForm').modal('hide');
@@ -586,15 +577,6 @@ export default {
                 }).catch(function (error) {
                     console.log(error);
                 });
-
-
-                // if (resp) {
-                //     $('#td-schedule').DataTable().destroy();
-                //     $('#td-schedule2').DataTable().destroy();
-                //     await this.validarRole();
-                //     this.$tablaGlobal('#td-schedule');
-                //     this.$tablaGlobal('#td-schedule2');
-                // }
             }
         },
         buscar: async function () {
@@ -652,10 +634,6 @@ export default {
             let valid = await this.validarCampos();
             if (valid) {
                 let resp = false;
-
-                console.log(this.datos)
-                // alert("se esta trabajando en esta funcionalidad")
-
                 await axios.put('/api/programacion/' + this.id, this.datos).then(response => {
                     if (response.data.isSuccess == false) {
 
@@ -667,15 +645,6 @@ export default {
                     } else {
                         $('#modalForm').modal('hide');
                         this.init()
-                        // resp = true;
-                        // this.schedules = [].concat(response.data.schedules);
-                        // this.nextSchedules = [].concat(response.data.nextSchedules);
-                        // this.id = '';
-                        // this.$swal.fire(
-                        //     'Programación editado correctamente!',
-                        //     '',
-                        //     'success'
-                        // )
                     }
 
                 }).catch(function (error) {
@@ -692,18 +661,6 @@ export default {
         },
         borrar(id) {
             let self = this;
-            // this.$swal.fire({
-            //     title: 'Seguro de eliminar?',
-            //     text: "",
-            //     type: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Si'
-            // }).then(function (result) {
-            //     if (result.isConfirmed) {
-            //     }
-            // })
             if (confirm("¿Confirma eliminar el registro?")) {
                 self.axios.delete(`/api/programacion/${id}`).then(response => {
                     let id = response.data.id;
@@ -737,37 +694,12 @@ export default {
             this.isLoadingModalNuevo = false;
 
             $('#modalForm').modal('show');
-
-            // const startDate = new Date();
-            // const endDate = new Date();
-            // endDate.setDate(endDate.getDate());
-            // this.pickerDates = {
-            //     startDate,
-            //     endDate
-            // }
-            // this.allDay = false;
-            // this.morning = false;
-            // this.afternoon = false;
-            // this.disabled = false;
-            // this.datos.estacionamiento_id = this.parkingsFilter.length == 1 ? this.parkingsFilter[0].id : '';
-            // // this.datos.user_id = '';
-            // this.datos.fecha = '';
-            // this.datos.fecha_inicio = '';
-            // this.datos.fecha_fin = '';
-            // this.datos.hora_inicio = '';
-            // this.datos.hora_fin = '';
-            // this.datos.observacion = '';
-            // this.titulo = 'Crear Reserva';
-            // this.btnCrear = false;
-            // this.btnClose = true;
-            // this.isBtnSearch = true;
-            // this.btnEditar = false;
-
         },
         abrirModalEditar: async function (datos) {
             console.log(" ------------- abrir modal editar ------------- ");
 
             this.isLoadingModalEditar = true;
+            datos.editing = true;
 
             // Estable la hora en medianoche evitando la ambigüedad de zonas horarias
             this.datos.fecha = new Date(datos.fecha + "T00:00:00");
@@ -795,22 +727,7 @@ export default {
 
             $("#modalForm").modal("show");
 
-            // this.allDay = false;
-            // this.partialDay = false;
-            // this.disabled = false;
-            // this.datos.estacionamiento_id = datos.estacionamiento_id;
-            // this.datos.user_id = datos.user_id;
-            // this.datos.fecha = datos.fecha;
-            // this.datos.hora_inicio = datos.hora_inicio;
-            // this.datos.hora_fin = datos.hora_fin;
-            // this.datos.turno = datos.turno;
-            // this.datos.observacion = datos.observacion;
-            // this.titulo = ' Editar Reserva'
-            // this.btnCrear = false
-            // this.btnEditar = true
-            // this.id = datos.id;
-            // this.onChange(this.datos.turno);
-            // $('#modalForm').modal('show')
+            datos.editing = false;
         },
         cerrarModal: function () {
             console.log('--------------  cerrar modal --------------');

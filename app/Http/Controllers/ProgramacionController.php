@@ -57,6 +57,8 @@ class ProgramacionController extends Controller
         $currUser = User::find($request->query('user_id'));
         $users = User::where('status', 1)->get();
         $parkings = EstacionamientoModel::where('deleted_at', null)->get();
+
+        //Programaciones de la semana actual
         $schedules = ProgramacionModel::select('programacion.*')
             ->join('estacionamiento as e', 'programacion.estacionamiento_id', '=' , 'e.id')
             ->where('status',1)
@@ -71,7 +73,6 @@ class ProgramacionController extends Controller
         $week = Carbon::now()->weekOfYear;
         $schedulesFilter = isset($schedules[str_pad($week,2,"0",STR_PAD_LEFT)])? $schedules[str_pad($week,2,"0",STR_PAD_LEFT)] : [] ;
 
-        $test = [];
 
         foreach ($schedulesFilter as $schedule) {
                 $newDate = Carbon::parse($schedule->fecha);
@@ -80,6 +81,7 @@ class ProgramacionController extends Controller
                 $schedule["user"] = $schedule->user;
                 $schedule["parking"] = $schedule->parking;
                 $schedule["sede"] = $schedule->parking->sede;
+                $schedule["editing"] = false;
         }
 
         //Programaciones de la semana siguiente
@@ -99,8 +101,7 @@ class ProgramacionController extends Controller
             "users" => $users,
             "schedules" => $schedulesFilter,
             "nextSchedules" => $nextSchedules,
-            "schedulesW" => $schedules,
-            "test" => $test
+            "schedulesW" => $schedules
         ]);
     }
 
