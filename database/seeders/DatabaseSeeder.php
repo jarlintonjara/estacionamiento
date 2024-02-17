@@ -39,13 +39,13 @@ class DatabaseSeeder extends Seeder
 
     public function run()
     {        
-        // $users = User::all();
+        $users = User::all();
         
-        // foreach($users as $user) {
-        //     $user->password = Hash::make('12345678');
-        //     $user->update();
-        // }
-        // return;
+        foreach($users as $user) {
+            $user->password = Hash::make('12345678');
+            $user->update();
+        }
+        return;
         
         foreach(self::$sedes as $sede) {
             $sede = Sede::create([

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sede;
+use App\Models\User;
+use App\Models\UsersSedes;
 use Illuminate\Http\Request;
 
 class SedeController extends Controller
@@ -110,9 +112,16 @@ class SedeController extends Controller
     public function destroy($id)
     {
         $sede = Sede::find($id);
-
         $sede->deleted_at = date('Y-m-d H:i:s');
         $sede->update();
+
+        $users_sedes = UsersSedes::all();
+
+        foreach($users_sedes as $user_sede) {
+            if($user_sede->sede_id == $id){
+                $user_sede->delete();
+            }
+        }
 
         return response()->json([
             'status' => true,

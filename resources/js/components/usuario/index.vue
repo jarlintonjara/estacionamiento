@@ -386,6 +386,8 @@ export default {
             await this.axios
                 .get("/api/usuario")
                 .then((response) => {
+                    console.log(response.data.users)
+
                     this.users = response.data.users;
                     this.roles = response.data.roles;
                     this.sedes = this.parseSedeMultiselect(response.data.sedes);

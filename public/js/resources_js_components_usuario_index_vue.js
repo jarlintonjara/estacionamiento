@@ -500,6 +500,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.isLoading = true;
                 _context5.next = 3;
                 return this.axios.get("/api/usuario").then(function (response) {
+                  console.log(response.data.users);
                   _this6.users = response.data.users;
                   _this6.roles = response.data.roles;
                   _this6.sedes = _this6.parseSedeMultiselect(response.data.sedes);
