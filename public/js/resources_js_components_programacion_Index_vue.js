@@ -789,6 +789,7 @@ var main_date = getVerifyDate();
     back: function back() {
       $(".content_pass_one").removeClass('d-none');
       $(".content_pass_two").addClass('d-none');
+      this.btnEditar = false;
       this.btnCrear = false;
       if (this.datos.sede_id == "") this.isBtnSearchDisabled = true;
       this.btnBack = false;
