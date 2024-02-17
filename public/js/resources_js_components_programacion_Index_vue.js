@@ -871,6 +871,7 @@ var main_date = getVerifyDate();
             return e.id !== id;
           }));
           self.$swal.fire('Eliminado!', '', 'success');
+          window.location.reload();
         })["catch"](function (error) {
           console.log(error);
         });
