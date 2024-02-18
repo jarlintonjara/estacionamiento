@@ -2768,7 +2768,7 @@ var render = function () {
                               _c("td", [_vm._v(_vm._s(pmd.sede_name))]),
                               _vm._v(" "),
                               _c("td", [
-                                _vm.user.role_id != 3
+                                _vm.user.role_id == 2
                                   ? _c(
                                       "button",
                                       {
@@ -2894,7 +2894,7 @@ var render = function () {
                                 _c("td", [_vm._v(_vm._s(pmd.sede_name))]),
                                 _vm._v(" "),
                                 _c("td", [
-                                  _vm.user.role_id != 3
+                                  _vm.user.role_id == 2
                                     ? _c(
                                         "button",
                                         {
