@@ -995,10 +995,35 @@ var main_date = getVerifyDate();
 
               case 2:
                 valid = _context6.sent;
-                console.log(this.datos);
-                return _context6.abrupt("return");
 
-              case 9:
+                if (!valid) {
+                  _context6.next = 7;
+                  break;
+                }
+
+                this.isSaving = true;
+                _context6.next = 7;
+                return axios.post('api/programacion', this.datos).then(function (response) {
+                  if (response.data.isSuccess == false) {
+                    _this3.$swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: response.data.message
+                    });
+                  } else {
+                    _this3.$router.push({
+                      path: 'reservas'
+                    });
+
+                    $("#modalForm").modal("hide");
+                  }
+                })["catch"](function (error) {
+                  console.log(error);
+                })["finally"](function () {
+                  _this3.isSaving = false;
+                });
+
+              case 7:
               case "end":
                 return _context6.stop();
             }

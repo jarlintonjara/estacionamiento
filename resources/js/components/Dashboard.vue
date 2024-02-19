@@ -856,9 +856,6 @@ export default {
         crear: async function() {
             let valid = await this.validarCampos();
 
-            console.log(this.datos)
-            return;
-
             if(valid) {
                 this.isSaving = true;
                 
