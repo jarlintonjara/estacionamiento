@@ -3692,7 +3692,7 @@ var staticRenderFns = [
       _c("h1", { staticClass: "subheader-title" }, [
         _c("i", { staticClass: "subheader-icon fal fa-chart-area" }),
         _vm._v(" "),
-        _c("span", { staticClass: "fw-300" }, [_vm._v("Dashboard")]),
+        _c("span", { staticClass: "fw-300" }, [_vm._v("Dashboard -  testing")]),
       ]),
     ])
   },
