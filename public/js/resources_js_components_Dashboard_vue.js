@@ -645,9 +645,9 @@ var main_date = getVerifyDate();
       datos: {
         estacionamiento_id: '',
         user_id: '',
-        fecha: date,
-        fecha_inicio: main_date.start_date,
-        fecha_fin: main_date.end_date,
+        fecha: '',
+        fecha_inicio: '',
+        fecha_fin: '',
         hora_inicio: '',
         hora_fin: '',
         turno: '',
@@ -995,14 +995,16 @@ var main_date = getVerifyDate();
 
               case 2:
                 valid = _context6.sent;
+                this.datos.fecha_inicio = this.datos.fecha;
+                this.datos.fecha_fin = this.datos.fecha;
 
                 if (!valid) {
-                  _context6.next = 7;
+                  _context6.next = 9;
                   break;
                 }
 
                 this.isSaving = true;
-                _context6.next = 7;
+                _context6.next = 9;
                 return axios.post('api/programacion', this.datos).then(function (response) {
                   if (response.data.isSuccess == false) {
                     _this3.$swal.fire({
@@ -1023,7 +1025,7 @@ var main_date = getVerifyDate();
                   _this3.isSaving = false;
                 });
 
-              case 7:
+              case 9:
               case "end":
                 return _context6.stop();
             }

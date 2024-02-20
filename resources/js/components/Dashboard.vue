@@ -613,9 +613,9 @@ export default {
             datos: {
                 estacionamiento_id: '',
                 user_id: '',
-                fecha: date,
-                fecha_inicio: main_date.start_date,
-                fecha_fin: main_date.end_date,
+                fecha: '',
+                fecha_inicio: '',
+                fecha_fin: '',
                 hora_inicio: '',
                 hora_fin: '',
                 turno: '',
@@ -855,6 +855,9 @@ export default {
         },
         crear: async function() {
             let valid = await this.validarCampos();
+
+            this.datos.fecha_inicio = this.datos.fecha;
+            this.datos.fecha_fin = this.datos.fecha;
 
             if(valid) {
                 this.isSaving = true;

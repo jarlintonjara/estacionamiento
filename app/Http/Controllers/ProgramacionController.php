@@ -186,6 +186,7 @@ class ProgramacionController extends Controller
             Validacion de las 3 reservas diarias por semana
             -------------------------
         */
+        
         $schedules_week = ProgramacionModel::where('fecha', '>=', $start_curr_week)
         ->where('fecha', '<=', $end_curr_week)->where('user_id','=', $request->user_id)->where('status', '=' ,1)->get();
 
