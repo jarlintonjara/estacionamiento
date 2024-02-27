@@ -32,7 +32,7 @@ class HomeController extends Controller
         ->join('sedes as s', 's.id', '=', 'e.sede_id')
         ->where('s.id', '=', $sedeId)
         ->where('programacion.status', '=', 1)
-        ->where('estacionamiento.deleted_at', null)
+        // ->where('estacionamiento.deleted_at', null)
         ->whereDate('programacion.fecha', '=', $fecha)
         ->get();
 
@@ -77,7 +77,6 @@ class HomeController extends Controller
             ->join('sedes as s', 'e.sede_id', '=', 's.id')
             ->where('s.id', '=', $q_sedeId)
             ->where('p.deleted_at', null)
-            ->where('e.deleted_at', null)
             ->get();
 
             /* 
